@@ -1,7 +1,7 @@
 // Configurações do site: troque aqui e o site inteiro acompanha.
 
 /** E-mail que recebe os formulários (contato, teste grátis, testadores). */
-export const EMAIL_FORMULARIOS = 'kitprojetista@gmail.com';
+export const EMAIL_FORMULARIOS = 'contato@kitprojetista.com.br';
 
 /** E-mail mostrado ao público. */
 export const EMAIL_CONTATO = 'contato@kitprojetista.com.br';
