@@ -141,3 +141,7 @@ a.button { text-decoration: none; }
 .hero-split h1 { font-size: clamp(44px, 5.4vw, 80px); }
 .hero-split .video-frame { height: min(calc(100vh - 200px), 780px); min-height: 520px; width: auto; aspect-ratio: 9 / 16; border-radius: 26px; box-shadow: 0 25px 55px rgba(4,17,28,.35); border: 1px solid rgba(176,221,231,.28); }
 .hero-split .hero-footnote { right: auto; left: clamp(24px, 7vw, 120px); bottom: 90px; }
+
+/* Título mais largo no computador e rodapé do topo sem sobrepor botões no celular */
+@media (min-width: 900px) { .hero:not(.hero-split):not(.hero-legal) h1 { max-width: 1000px; } .hero-copy { max-width: 560px; } }
+@media (max-width: 650px) { .hero { min-height: 0; padding-bottom: 110px; }.hero .hero-footnote { position: static; margin-top: 26px; } }

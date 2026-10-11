@@ -95,8 +95,8 @@ export default function Inicio() {
         <div className="hero-orbit orbit-one" />
         <div className="hero-orbit orbit-two" />
         <div className="eyebrow"><span className="eyebrow-dot" /> PLUG-IN PARA AUTOCAD</div>
-        <h1>Já pensou em otimizar o <em>seu tempo</em> com o plugin?</h1>
-        <p className="hero-copy">O Kit Projetista transforma tarefas repetitivas em poucos cliques, para você projetar melhor e entregar mais.</p>
+        <h1>Já pensou em otimizar o <em>seu tempo</em> no AutoCAD?</h1>
+        <p className="hero-copy">O Kit Projetista é um plugin com ferramentas de CAD que medem linhas, numeram elementos, extraem quantitativos e aceleram as edições do dia a dia. O que levava horas passa a levar poucos cliques, para você projetar melhor e entregar mais.</p>
         <div className="hero-actions">
           <button className="button button-primary" onClick={() => setTesteAberto(true)}>
             Teste Gratuito por 7 dias <ArrowRight size={17} />
