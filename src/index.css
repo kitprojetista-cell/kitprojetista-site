@@ -134,9 +134,10 @@ a.button { text-decoration: none; }
 @media (max-width: 650px) { .hero-compact { min-height: 680px; }.hero-legal { min-height: 380px; padding-top: 130px; }.audience-grid { grid-template-columns: 1fr; }.footer-middle { order: 3; width: 100%; } }
 @media (max-width: 390px) { .features-grid-3 { grid-template-columns: 1fr; } }
 
-/* Calculadora no computador: vídeo no topo, ao lado do título */
-.hero-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 330px); gap: clamp(40px, 6vw, 100px); align-items: center; padding-top: 140px; padding-bottom: 150px; }
+/* Calculadora no computador: vídeo no topo, ao lado do título, ocupando a altura da tela */
+.hero-split { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(30px, 4vw, 70px); align-items: center; min-height: max(760px, 100vh); padding-top: 100px; padding-bottom: 120px; }
 .hero-split .hero-text, .hero-split .hero-media { position: relative; z-index: 2; }
-.hero-split h1 { font-size: clamp(44px, 5.6vw, 80px); }
-.hero-split .video-frame { width: 100%; box-shadow: 0 25px 55px rgba(4,17,28,.35); border: 1px solid rgba(176,221,231,.28); }
+.hero-split .hero-media { justify-self: center; }
+.hero-split h1 { font-size: clamp(44px, 5.4vw, 80px); }
+.hero-split .video-frame { height: min(calc(100vh - 200px), 780px); min-height: 520px; width: auto; aspect-ratio: 9 / 16; border-radius: 26px; box-shadow: 0 25px 55px rgba(4,17,28,.35); border: 1px solid rgba(176,221,231,.28); }
 .hero-split .hero-footnote { right: auto; left: clamp(24px, 7vw, 120px); bottom: 90px; }
