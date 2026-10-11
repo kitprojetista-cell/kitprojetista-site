@@ -17,7 +17,7 @@ export const LINK_TESTE_GRATIS =
 export const PLAY_STORE = '';
 
 /** ID do Short do YouTube mostrado na página da Calculadora (o que vem depois de /shorts/). Vazio = sem vídeo. */
-export const YOUTUBE_SHORT = '';
+export const YOUTUBE_SHORT = 'OU_fz9o2fj4';
 
 /** Caminho base do site (vem do build: "/" com domínio próprio, "/nome-do-repo/" no github.io). */
 export const BASE = import.meta.env.BASE_URL;
