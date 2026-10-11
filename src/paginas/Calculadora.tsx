@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import {
   ArrowRight, Calculator, Check, ChevronDown, ClipboardList, FileText, HardHat, Home, Ruler, ShieldCheck, Sparkles, Store, Wrench,
 } from 'lucide-react';
@@ -15,6 +15,33 @@ const recursos = [
   { icon: Wrench, title: 'Na obra', description: 'Nível, esquadro e quanto cobrar pelo serviço, direto no celular.', tone: 'blue' },
 ];
 
+/** true no computador (tela larga): o vídeo vai para o topo, ao lado do título. */
+function useTelaLarga() {
+  const consulta = '(min-width: 900px)';
+  const [larga, setLarga] = useState(() => window.matchMedia(consulta).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(consulta);
+    const mudou = () => setLarga(mq.matches);
+    mq.addEventListener('change', mudou);
+    return () => mq.removeEventListener('change', mudou);
+  }, []);
+  return larga;
+}
+
+function Video() {
+  return (
+    <div className="video-frame">
+      <iframe
+        src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_SHORT}`}
+        title="Calculadora do Projetista em 40 segundos"
+        allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        loading="lazy"
+      />
+    </div>
+  );
+}
+
 const perfis = ['Estou construindo ou reformando', 'Trabalho em obra', 'Sou projetista, arquiteto ou engenheiro', 'Outro'];
 
 export default function Calculadora() {
@@ -26,6 +53,8 @@ export default function Calculadora() {
   const [erro, setErro] = useState(false);
   const [ok, setOk] = useState(false);
 
+  const telaLarga = useTelaLarga();
+  const videoNoTopo = Boolean(YOUTUBE_SHORT) && telaLarga;
   const rolar = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
   const enviar = async (e: FormEvent<HTMLFormElement>) => {
@@ -50,9 +79,10 @@ export default function Calculadora() {
 
   return (
     <Layout naInicial={false}>
-      <section className="hero hero-compact section-padding">
+      <section className={`hero hero-compact section-padding ${videoNoTopo ? 'hero-split' : ''}`}>
         <div className="hero-orbit orbit-one" />
         <div className="hero-orbit orbit-two" />
+        <div className="hero-text">
         <div className="eyebrow"><span className="eyebrow-dot" /> APP GRÁTIS PARA ANDROID</div>
         <h1>Saiba quanto material comprar <em>antes de ir à loja.</em></h1>
         <p className="hero-copy">A Calculadora do Projetista faz a conta da sua obra, monta a lista de compras e mostra qual loja sai mais barato. Grátis, sem cadastro e sem anúncios.</p>
@@ -62,25 +92,19 @@ export default function Calculadora() {
           ) : (
             <button className="button button-primary" onClick={() => rolar('testadores')}>Quero ser testador <ArrowRight size={17} /></button>
           )}
-          <button className="button button-outline" onClick={() => rolar(YOUTUBE_SHORT ? 'video' : 'recursos')}>Ver como funciona <ChevronDown size={17} /></button>
+          <button className="button button-outline" onClick={() => rolar(YOUTUBE_SHORT && !videoNoTopo ? 'video' : 'recursos')}>Ver como funciona <ChevronDown size={17} /></button>
         </div>
+        </div>
+        {videoNoTopo && <div className="hero-media"><Video /></div>}
         <div className="hero-footnote"><span>{PLAY_STORE ? 'Disponível na Play Store' : 'Em fase de testes'}</span><span className="foot-line" /><span>Android</span></div>
       </section>
 
-      {YOUTUBE_SHORT && (
+      {YOUTUBE_SHORT && !videoNoTopo && (
         <section id="video" className="features-section section-padding video-section">
           <div className="section-heading">
             <div><div className="eyebrow dark"><span className="eyebrow-dot" /> VEJA EM 40 SEGUNDOS</div><h2>Da medida à <span style={{ color: '#1e6887' }}>lista de compras.</span></h2></div>
           </div>
-          <div className="video-frame">
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_SHORT}`}
-              title="Calculadora do Projetista em 40 segundos"
-              allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              loading="lazy"
-            />
-          </div>
+          <Video />
         </section>
       )}
 

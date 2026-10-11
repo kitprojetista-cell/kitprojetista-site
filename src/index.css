@@ -133,3 +133,10 @@ a.button { text-decoration: none; }
 @media (max-width: 900px) { .features-grid-3, .audience-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 650px) { .hero-compact { min-height: 680px; }.hero-legal { min-height: 380px; padding-top: 130px; }.audience-grid { grid-template-columns: 1fr; }.footer-middle { order: 3; width: 100%; } }
 @media (max-width: 390px) { .features-grid-3 { grid-template-columns: 1fr; } }
+
+/* Calculadora no computador: vídeo no topo, ao lado do título */
+.hero-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 330px); gap: clamp(40px, 6vw, 100px); align-items: center; padding-top: 140px; padding-bottom: 150px; }
+.hero-split .hero-text, .hero-split .hero-media { position: relative; z-index: 2; }
+.hero-split h1 { font-size: clamp(44px, 5.6vw, 80px); }
+.hero-split .video-frame { width: 100%; box-shadow: 0 25px 55px rgba(4,17,28,.35); border: 1px solid rgba(176,221,231,.28); }
+.hero-split .hero-footnote { right: auto; left: clamp(24px, 7vw, 120px); bottom: 90px; }
