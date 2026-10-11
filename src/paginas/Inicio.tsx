@@ -95,7 +95,7 @@ export default function Inicio() {
         <div className="hero-orbit orbit-one" />
         <div className="hero-orbit orbit-two" />
         <div className="eyebrow"><span className="eyebrow-dot" /> PLUG-IN PARA AUTOCAD</div>
-        <h1>Pare de fazer à mão o que o <em>AutoCAD</em> pode fazer por você.</h1>
+        <h1>Já pensou em otimizar o <em>seu tempo</em> com o plugin?</h1>
         <p className="hero-copy">O Kit Projetista transforma tarefas repetitivas em poucos cliques, para você projetar melhor e entregar mais.</p>
         <div className="hero-actions">
           <button className="button button-primary" onClick={() => setTesteAberto(true)}>
