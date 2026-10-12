@@ -1,6 +1,15 @@
 import { ReactNode, useState } from 'react';
-import { ArrowRight, ChevronRight, Menu, MessageCircle, Search, X } from 'lucide-react';
-import { EMAIL_CONTATO, WHATSAPP, rota } from './config';
+import { ArrowRight, ChevronRight, Instagram, Menu, MessageCircle, Search, X, Youtube } from 'lucide-react';
+import { EMAIL_CONTATO, REDES, WHATSAPP, rota } from './config';
+
+function TikTok({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5" />
+      <path d="M14 3c.5 2.6 2.4 4.4 5 4.6" />
+    </svg>
+  );
+}
 
 type Props = { children: ReactNode; naInicial: boolean };
 
@@ -88,6 +97,11 @@ export default function Layout({ children, naInicial }: Props) {
         <div className="footer-brand"><img src={rota('KIT_PROJETISTA_KP_Monogram.png')} alt="KP" /><span>KIT PROJETISTA</span></div>
         <div className="footer-middle">
           <span className="footer-copyright">© Copyright-2026 Kit Projetista</span>
+          <span className="footer-social">
+            <a href={REDES.instagram} target="_blank" rel="noreferrer" aria-label="Instagram do Kit Projetista"><Instagram size={18} /></a>
+            <a href={REDES.youtube} target="_blank" rel="noreferrer" aria-label="YouTube do Kit Projetista"><Youtube size={18} /></a>
+            <a href={REDES.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok do Kit Projetista"><TikTok size={18} /></a>
+          </span>
           <span className="footer-links">
             <a href={rota('privacidade/')}>Política de privacidade</a>
             <a href={rota('calculadora/privacidade/')}>Privacidade da Calculadora</a>

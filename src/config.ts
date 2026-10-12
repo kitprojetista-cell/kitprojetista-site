@@ -9,6 +9,13 @@ export const EMAIL_CONTATO = 'contato@kitprojetista.com.br';
 export const WHATSAPP =
   'https://wa.me/5519992797870?text=' + encodeURIComponent('Olá! Gostaria de tirar dúvidas sobre o Kit Projetista!');
 
+/** Redes sociais (rodapé do site e dados para o Google). */
+export const REDES = {
+  instagram: 'https://www.instagram.com/kitprojetista/',
+  youtube: 'https://www.youtube.com/@KitProjetista',
+  tiktok: 'https://www.tiktok.com/@kitprojetista',
+};
+
 /** Pasta com o instalador do teste grátis (liberada depois do formulário). */
 export const LINK_TESTE_GRATIS =
   'https://drive.google.com/drive/folders/1ptgHDdMY3EdYjNpjO7veeJzzWjYXIGhA?usp=drive_link';

@@ -145,3 +145,8 @@ a.button { text-decoration: none; }
 /* Título mais largo no computador e rodapé do topo sem sobrepor botões no celular */
 @media (min-width: 900px) { .hero:not(.hero-split):not(.hero-legal) h1 { max-width: 1000px; } .hero-copy { max-width: 560px; } }
 @media (max-width: 650px) { .hero { min-height: 0; padding-bottom: 110px; }.hero .hero-footnote { position: static; margin-top: 26px; } }
+
+/* Redes sociais no rodapé */
+.footer-social { display: flex; gap: 10px; justify-content: center; }
+.footer-social a { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: #416c7a; border: 1px solid #c3d7dc; background: rgba(255,255,255,.5); transition: transform .2s, background .2s, color .2s; }
+.footer-social a:hover { transform: translateY(-2px); background: #1e6887; color: #fff; border-color: #1e6887; }
