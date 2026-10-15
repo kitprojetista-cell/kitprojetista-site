@@ -72,16 +72,19 @@ export const PRIVACIDADE_APP: Texto = {
   selo: 'PRIVACIDADE',
   titulo: 'Política de privacidade',
   destaque: 'Calculadora do Projetista.',
-  atualizada: '10 de outubro de 2026',
-  intro: 'A Calculadora do Projetista é um aplicativo gratuito para Android que ajuda a calcular material de obra, montar listas de compras e comparar orçamentos. Ele não pede cadastro, não coleta dados pessoais e não tem anúncios.',
+  atualizada: '15 de outubro de 2026',
+  intro: 'A Calculadora do Projetista é um aplicativo gratuito para Android que ajuda a calcular material de obra, organizar obras e projetos, montar listas de compras, comparar orçamentos e desenhar plantas (KPCad). Ele não pede cadastro, não coleta dados pessoais e não tem anúncios.',
   secoes: [
     { titulo: 'Quem somos', paragrafos: [`Kit Projetista, responsável pelo aplicativo. ${contato}`] },
     {
       titulo: 'O que fica só no seu celular',
       itens: [
         'Os valores que você digita nas calculadoras.',
-        'Suas medidas salvas (terreno, cômodos, casa, prédio, áreas).',
+        'Suas obras e projetos (nome, cliente e situação) e as medidas salvas em cada um.',
         'A lista de compras e os preços das lojas.',
+        'A sua logo e os seus dados profissionais (nome ou empresa, telefone, CAU/CREA, e-mail), usados só no cabeçalho dos PDFs que você gera.',
+        'As plantas do KPCad e os arquivos DXF e PDF que você abre nele.',
+        'A chave do KPCad, se você ativar.',
         'Os orçamentos em PDF que você importa. O arquivo é lido no próprio aparelho; o app guarda só os itens e preços que você confirmar.',
         'Suas preferências (o que te trouxe ao app, estado escolhido para os preços).',
       ],
@@ -97,11 +100,15 @@ export const PRIVACIDADE_APP: Texto = {
         'Internet: só para baixar a tabela de preços.',
         'Sensor de movimento: usado pelo nível, sem permissão especial e sem guardar nada.',
       ],
-      paragrafos: ['O app não acessa câmera, microfone, localização, contatos nem os seus arquivos. Os PDFs só são abertos quando você escolhe o arquivo ou compartilha com o app.'],
+      paragrafos: ['O app não acessa câmera, microfone, localização, contatos nem os seus arquivos por conta própria. Um arquivo (orçamento em PDF, planta em DXF ou PDF, imagem da logo) só é aberto quando você escolhe ou compartilha com o app.'],
     },
     {
       titulo: 'Compartilhamento',
-      paragrafos: ['Quando você toca em "Enviar lista pelo WhatsApp" ou em compartilhar, o app abre o WhatsApp ou outro app escolhido por você com o texto pronto. Você decide se envia e para quem.'],
+      paragrafos: ['Quando você toca em "Enviar lista pelo WhatsApp" ou em compartilhar (lista, orçamento em PDF, planta em DXF ou PDF), o app abre o WhatsApp ou outro app escolhido por você com o conteúdo pronto. Você decide se envia e para quem.'],
+    },
+    {
+      titulo: 'Código do celular e chave do KPCad',
+      paragrafos: ['O KPCad faz parte do plano Essencial do Kit Projetista. Para ativar, o app mostra um "código deste celular", calculado no próprio aparelho a partir de um identificador que o Android dá a este app. Esse código não é enviado pelo app: só sai do celular se você mesmo mandar, para receber a sua chave. A chave é conferida no próprio aparelho, sem internet, e fica guardada só nele.'],
     },
     {
       titulo: 'Terceiros',
