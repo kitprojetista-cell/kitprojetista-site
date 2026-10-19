@@ -72,7 +72,7 @@ export const PRIVACIDADE_APP: Texto = {
   selo: 'PRIVACIDADE',
   titulo: 'Política de privacidade',
   destaque: 'Calculadora do Projetista.',
-  atualizada: '15 de outubro de 2026',
+  atualizada: '19 de outubro de 2026',
   intro: 'A Calculadora do Projetista é um aplicativo gratuito para Android que ajuda a calcular material de obra, organizar obras e projetos, montar listas de compras, comparar orçamentos e desenhar plantas (KPCad). Ele não pede cadastro, não coleta dados pessoais e não tem anúncios.',
   secoes: [
     { titulo: 'Quem somos', paragrafos: [`Kit Projetista, responsável pelo aplicativo. ${contato}`] },
