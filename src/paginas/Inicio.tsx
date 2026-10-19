@@ -21,7 +21,7 @@ const plans = [
     name: 'Fundador',
     price: '15,00',
     period: '/mês',
-    description: 'Preço travado para sempre, só para os primeiros assinantes',
+    description: 'Preço de fundador mantido nas renovações, só para os primeiros assinantes',
     features: incluso,
     featured: true,
     badge: 'VAGAS LIMITADAS',
@@ -31,7 +31,7 @@ const plans = [
     name: 'Mensal',
     price: '29,90',
     period: '/mês',
-    description: 'Sem fidelidade, cancele quando quiser',
+    description: 'Sem renovação automática: você renova quando quiser',
     features: incluso,
     link: 'https://pay.hotmart.com/S107938754U?off=g9wl3dq9',
   },
@@ -120,7 +120,7 @@ export default function Inicio() {
       <section id="planos" className="pricing-section section-padding">
         <div className="section-heading pricing-heading">
           <div><div className="eyebrow"><span className="eyebrow-dot" /> UM PLANO, TUDO INCLUSO</div><h2>Tudo do Kit, <em>um preço só.</em></h2></div>
-          <p style={{ fontSize: '15px' }}>Todas as ferramentas do plugin e o KPCad no celular, sem escolher módulo. Teste <span style={{ color: '#79c3d2' }}>7 dias grátis</span>.</p>
+          <p style={{ fontSize: '15px' }}>Todas as ferramentas do plugin e o KPCad no celular, sem escolher módulo. Teste <span style={{ color: '#79c3d2' }}>7 dias grátis</span> no plugin e, depois de comprar, ainda tem 7 dias de garantia na Hotmart.</p>
         </div>
         <div className="plans-list plans-unico">
           {plans.map((plan) => (
@@ -131,7 +131,7 @@ export default function Inicio() {
               <div className="plan-features">{plan.features.map((item) => <span key={item}><Check size={14} /> {item}</span>)}</div>
               {plan.link ? (
                 <a href={plan.link} target="_blank" rel="noreferrer" className={`plan-cta ${plan.featured ? 'plan-cta-primary' : ''}`} style={{ textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  Começar 7 dias grátis <ArrowRight size={15} />
+                  Assinar <ArrowRight size={15} />
                 </a>
               ) : (
                 <button type="button" onClick={() => ir('contato')} className={`plan-cta ${plan.featured ? 'plan-cta-primary' : ''}`} style={{ background: 'none', border: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', font: 'inherit' }}>
