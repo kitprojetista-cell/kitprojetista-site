@@ -95,9 +95,17 @@ export const PRIVACIDADE_APP: Texto = {
       paragrafos: ['O app baixa, no máximo uma vez por dia, uma tabela pública de preços de referência (SINAPI) hospedada no GitHub. Nenhum dado seu é enviado nesse download. Como em qualquer acesso à internet, o servidor do GitHub recebe o endereço IP do aparelho; veja a política de privacidade do GitHub.'],
     },
     {
+      titulo: 'Avisos (notificações), só se você ligar',
+      paragrafos: [
+        'O app pode avisar quando a tabela de preços for atualizada e quando sair novidade. Isso fica desligado até você aceitar, e dá para desligar a qualquer momento em Sobre › Avisos.',
+        'Os avisos são entregues pelo Firebase Cloud Messaging, um serviço do Google. Quando você liga, o Firebase cria neste aparelho um identificador do aplicativo (token), que fica com o Google só para entregar as notificações. Os avisos vão para todos que ligaram, por assunto: o app não pede cadastro, não guarda nem envia esse identificador para nós e não envia dados das suas obras. Ao desligar, o identificador é apagado. Veja também a política de privacidade do Google.',
+      ],
+    },
+    {
       titulo: 'Permissões',
       itens: [
-        'Internet: só para baixar a tabela de preços.',
+        'Internet: para baixar a tabela de preços e, se você ligar os avisos, para recebê-los.',
+        'Notificações (Android 13 ou mais novo): pedida só se você ligar os avisos.',
         'Sensor de movimento: usado pelo nível, sem permissão especial e sem guardar nada.',
       ],
       paragrafos: ['O app não acessa câmera, microfone, localização, contatos nem os seus arquivos por conta própria. Um arquivo (orçamento em PDF, planta em DXF ou PDF, imagem da logo) só é aberto quando você escolhe ou compartilha com o app.'],
@@ -112,7 +120,7 @@ export const PRIVACIDADE_APP: Texto = {
     },
     {
       titulo: 'Terceiros',
-      paragrafos: ['O app não usa ferramentas de análise, publicidade nem rastreamento. Não vendemos nem compartilhamos dados, porque não recebemos dados do app.'],
+      paragrafos: ['O app não usa ferramentas de análise, publicidade nem rastreamento. O único serviço de terceiros é o Firebase Cloud Messaging (Google), usado só para entregar os avisos, se você ligar. Não vendemos nem compartilhamos dados, porque não recebemos dados do app.'],
     },
     {
       titulo: 'Teste antes do lançamento',
