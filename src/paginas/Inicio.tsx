@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { ArrowRight, Check, ChevronDown, FileSpreadsheet, Layers3, Move3d, Ruler, Sparkles } from 'lucide-react';
+import { ArrowRight, Check, X, ChevronDown, FileSpreadsheet, Layers3, Move3d, Ruler, Sparkles } from 'lucide-react';
 import Layout, { irPara } from '../Layout';
 import TesteModal from '../TesteModal';
 import { rota } from '../config';
@@ -98,7 +98,7 @@ export default function Inicio() {
           <a className="button button-glass" href={rota('calculadora/')}>Conheça a Calculadora do Projetista <Sparkles size={16} /></a>
           <button className="button button-outline" onClick={() => ir('planos')}>Ver planos <ChevronDown size={17} /></button>
         </div>
-        <div className="hero-footnote"><span>Feito para quem projeta</span><span className="foot-line" /><span>Compatível com AutoCAD</span></div>
+        <div className="hero-footnote"><span>Feito para quem projeta</span><span className="foot-line" /><span>AutoCAD 2015 a 2027 · Civil 3D</span></div>
       </section>
 
       <section id="recursos" className="features-section section-padding">
@@ -140,6 +140,16 @@ export default function Inicio() {
               )}
             </div>
           ))}
+        </div>
+        <div className="compat" id="compatibilidade">
+          <div>
+            <h3><Check size={16} /> Funciona em</h3>
+            <p>AutoCAD 2015 a 2027 no Windows (64 bits), e nos produtos baseados nele: Civil 3D, Architecture, MEP, Electrical, Mechanical, Map 3D e Plant 3D.</p>
+          </div>
+          <div>
+            <h3><X size={16} /> Não funciona em</h3>
+            <p>AutoCAD LT (não aceita plugins), AutoCAD para Mac, AutoCAD Web e outros programas de CAD, como BricsCAD e ZWCAD. Na dúvida, teste os 7 dias grátis antes de assinar.</p>
+          </div>
         </div>
       </section>
 

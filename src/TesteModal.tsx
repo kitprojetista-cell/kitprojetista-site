@@ -63,7 +63,7 @@ export default function TesteModal({ aberto, fechar }: Props) {
         ) : (
           <>
             <h3 id="teste-titulo" className="modal-title">Comece seu teste.</h3>
-            <p className="modal-copy">Deixe seu contato e o download é liberado na hora.</p>
+            <p className="modal-copy">Deixe seu contato e o download é liberado na hora. Funciona no AutoCAD 2015 a 2027 e no Civil 3D, no Windows (não funciona no AutoCAD LT).</p>
             <form className="contact-form" onSubmit={enviar}>
               <label>Nome (obrigatório)<input required type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome e Sobrenome" /></label>
               <label>E-mail (obrigatório)<input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="seu@email.com" /></label>
