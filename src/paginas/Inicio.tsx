@@ -33,7 +33,7 @@ const plans = [
     period: '/mês',
     description: 'Sem fidelidade, cancele quando quiser',
     features: incluso,
-    link: 'https://pay.hotmart.com/S107938754U?off=fj1hpydp',
+    link: 'https://pay.hotmart.com/S107938754U?off=g9wl3dq9',
   },
   {
     name: 'Anual',
@@ -41,7 +41,7 @@ const plans = [
     period: '/ano',
     description: 'Sai por R$ 20,75 por mês, economia de R$ 109,80 no ano',
     features: incluso,
-    link: 'https://pay.hotmart.com/S107938754U?off=g9wl3dq9',
+    link: 'https://pay.hotmart.com/S107938754U?off=fj1hpydp',
   },
 ];
 
