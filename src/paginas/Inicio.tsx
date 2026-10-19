@@ -13,7 +13,7 @@ const features = [
 ];
 
 // Um plano só (Kit Projetista: todas as ferramentas + KPCad no celular), com três jeitos de pagar.
-// Os links são as ofertas da Hotmart; enquanto uma estiver vazia, o botão leva ao formulário de contato.
+// Os links são as ofertas da Hotmart (se um ficar vazio, o botão leva ao formulário de contato).
 const incluso = ['Todas as ferramentas do plugin', 'KPCad: a planta no celular', 'Atualizações e ferramentas novas', 'Suporte pelo WhatsApp e e-mail'];
 
 const plans = [
@@ -25,7 +25,7 @@ const plans = [
     features: incluso,
     featured: true,
     badge: 'VAGAS LIMITADAS',
-    link: '',
+    link: 'https://pay.hotmart.com/S107938754U?off=x9z14ao9',
   },
   {
     name: 'Mensal',
@@ -33,7 +33,7 @@ const plans = [
     period: '/mês',
     description: 'Sem fidelidade, cancele quando quiser',
     features: incluso,
-    link: '',
+    link: 'https://pay.hotmart.com/S107938754U?off=fj1hpydp',
   },
   {
     name: 'Anual',
@@ -41,7 +41,7 @@ const plans = [
     period: '/ano',
     description: 'Sai por R$ 20,75 por mês, economia de R$ 109,80 no ano',
     features: incluso,
-    link: '',
+    link: 'https://pay.hotmart.com/S107938754U?off=g9wl3dq9',
   },
 ];
 
