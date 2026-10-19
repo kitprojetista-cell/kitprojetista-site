@@ -12,47 +12,41 @@ const features = [
   { icon: Move3d, title: 'Edição rápida', description: 'Acelere o que antes era repetitivo.', tone: 'steel' },
 ];
 
+// Um plano só (Kit Projetista: todas as ferramentas + KPCad no celular), com três jeitos de pagar.
+// Os links são as ofertas da Hotmart; enquanto uma estiver vazia, o botão leva ao formulário de contato.
+const incluso = ['Todas as ferramentas do plugin', 'KPCad: a planta no celular', 'Atualizações e ferramentas novas', 'Suporte pelo WhatsApp e e-mail'];
+
 const plans = [
   {
-    name: 'Basic',
-    price: '19,90',
-    description: 'Para começar a ganhar tempo',
-    features: ['Medidor de linhas', 'Numeração automática', 'Atualizações mensais'],
-    link: 'https://pay.hotmart.com/S107938754U?off=x9z14ao9&_hi=eyJjaWQiOiIxNzkxMzkyNDAwNDg0OTMwNTE4Nzg0NTIwMDk3NTAwIiwiYmlkIjoiMTc5MTM5MjQwMDQ4NDkzMDUxODc4NDUyMDA5NzUwMCIsInNpZCI6ImM5YmRjMGZkZDBjYzQzODFiZWQ3YmVkMDVhMzUzZGUzIn0=.1791662406725',
-  },
-  {
-    name: 'Essencial',
-    price: '27,90',
-    description: 'O equilíbrio para sua rotina',
-    features: ['Tudo do plano Basic', 'Quantitativo de materiais', 'Suporte prioritário'],
-    link: 'https://pay.hotmart.com/S107938754U?off=hstw0pym&_hi=eyJjaWQiOiIxNzkxMzkyNDAwNDg0OTMwNTE4Nzg0NTIwMDk3NTAwIiwiYmlkIjoiMTc5MTM5MjQwMDQ4NDkzMDUxODc4NDUyMDA5NzUwMCIsInNpZCI6ImM5YmRjMGZkZDBjYzQzODFiZWQ3YmVkMDVhMzUzZGUzIn0=.1791662679501',
-  },
-  {
-    name: 'Plus',
-    price: '34,90',
-    description: 'Mais potência para seus projetos',
-    features: ['Tudo do plano Essencial', 'Edição rápida', 'Biblioteca de comandos'],
-    link: 'https://pay.hotmart.com/S107938754U?off=w9iwxv2e&_hi=eyJjaWQiOiIxNzkxMzkyNDAwNDg0OTMwNTE4Nzg0NTIwMDk3NTAwIiwiYmlkIjoiMTc5MTM5MjQwMDQ4NDkzMDUxODc4NDUyMDA5NzUwMCIsInNpZCI6ImM5YmRjMGZkZDBjYzQzODFiZWQ3YmVkMDVhMzUzZGUzIn0=.1791659465295',
-  },
-  {
-    name: 'Premium',
-    price: '39,90',
-    description: 'Para equipes que produzem mais',
-    features: ['Tudo do plano Plus', 'Licença para 2 usuários', 'Atendimento especializado'],
-    link: 'https://pay.hotmart.com/S107938754U?off=xwx7v2xl&_hi=eyJjaWQiOiIxNzkxMzkyNDAwNDg0OTMwNTE4Nzg0NTIwMDk3NTAwIiwiYmlkIjoiMTc5MTM5MjQwMDQ4NDkzMDUxODc4NDUyMDA5NzUwMCIsInNpZCI6ImM5YmRjMGZkZDBjYzQzODFiZWQ3YmVkMDVhMzUzZGUzIn0=.1791659521654',
-  },
-  {
-    name: 'Ultimate',
-    price: '54,90',
-    description: 'O máximo do Kit Projetista',
-    features: ['Tudo do plano Premium', 'Licenças ilimitadas', 'Implementação assistida'],
+    name: 'Fundador',
+    price: '15,00',
+    period: '/mês',
+    description: 'Preço travado para sempre, só para os primeiros assinantes',
+    features: incluso,
     featured: true,
-    link: 'https://pay.hotmart.com/S107938754U?off=bkkbtij1&_hi=eyJjaWQiOiIxNzkxMzkyNDAwNDg0OTMwNTE4Nzg0NTIwMDk3NTAwIiwiYmlkIjoiMTc5MTM5MjQwMDQ4NDkzMDUxODc4NDUyMDA5NzUwMCIsInNpZCI6ImM5YmRjMGZkZDBjYzQzODFiZWQ3YmVkMDVhMzUzZGUzIn0=.1791659538171',
+    badge: 'VAGAS LIMITADAS',
+    link: '',
+  },
+  {
+    name: 'Mensal',
+    price: '29,90',
+    period: '/mês',
+    description: 'Sem fidelidade, cancele quando quiser',
+    features: incluso,
+    link: '',
+  },
+  {
+    name: 'Anual',
+    price: '249',
+    period: '/ano',
+    description: 'Sai por R$ 20,75 por mês, economia de R$ 109,80 no ano',
+    features: incluso,
+    link: '',
   },
 ];
 
 export default function Inicio() {
-  const [selectedPlan, setSelectedPlan] = useState('Essencial');
+  const [selectedPlan, setSelectedPlan] = useState('Fundador');
   const [submitted, setSubmitted] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -125,19 +119,25 @@ export default function Inicio() {
 
       <section id="planos" className="pricing-section section-padding">
         <div className="section-heading pricing-heading">
-          <div><div className="eyebrow"><span className="eyebrow-dot" /> PLANOS QUE CABEM NO SEU PROJETO</div><h2>Escolha o seu <em>plano.</em></h2></div>
-          <p style={{ fontSize: '15px' }}>Comece pequeno, cresça no seu ritmo. Todos os planos incluem <span style={{ color: '#79c3d2' }}>7 dias gratuito</span>.</p>
+          <div><div className="eyebrow"><span className="eyebrow-dot" /> UM PLANO, TUDO INCLUSO</div><h2>Tudo do Kit, <em>um preço só.</em></h2></div>
+          <p style={{ fontSize: '15px' }}>Todas as ferramentas do plugin e o KPCad no celular, sem escolher módulo. Teste <span style={{ color: '#79c3d2' }}>7 dias grátis</span>.</p>
         </div>
-        <div className="plans-list">
+        <div className="plans-list plans-unico">
           {plans.map((plan) => (
             <div key={plan.name} className={`plan-card ${plan.featured ? 'plan-featured' : ''} ${selectedPlan === plan.name ? 'plan-selected' : ''}`} onClick={() => setSelectedPlan(plan.name)}>
-              <div className="plan-card-top"><span className="plan-name">{plan.name}</span>{plan.featured && <span className="popular-badge">MAIS ESCOLHIDO</span>}</div>
-              <div className="price"><small>R$</small> {plan.price}<span>/mês</span></div>
+              <div className="plan-card-top"><span className="plan-name">{plan.name}</span>{plan.badge && <span className="popular-badge">{plan.badge}</span>}</div>
+              <div className="price"><small>R$</small> {plan.price}<span>{plan.period}</span></div>
               <p>{plan.description}</p>
               <div className="plan-features">{plan.features.map((item) => <span key={item}><Check size={14} /> {item}</span>)}</div>
-              <a href={plan.link} target="_blank" rel="noreferrer" className={`plan-cta ${plan.featured ? 'plan-cta-primary' : ''}`} style={{ textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                Assinar plano <ArrowRight size={15} />
-              </a>
+              {plan.link ? (
+                <a href={plan.link} target="_blank" rel="noreferrer" className={`plan-cta ${plan.featured ? 'plan-cta-primary' : ''}`} style={{ textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  Começar 7 dias grátis <ArrowRight size={15} />
+                </a>
+              ) : (
+                <button type="button" onClick={() => ir('contato')} className={`plan-cta ${plan.featured ? 'plan-cta-primary' : ''}`} style={{ background: 'none', border: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', font: 'inherit' }}>
+                  Quero esse <ArrowRight size={15} />
+                </button>
+              )}
             </div>
           ))}
         </div>
