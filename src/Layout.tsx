@@ -105,6 +105,9 @@ export default function Layout({ children, naInicial }: Props) {
           <span className="footer-links">
             <a href={rota('privacidade/')}>Política de privacidade</a>
             <a href={rota('calculadora/privacidade/')}>Privacidade da Calculadora</a>
+            <a href={rota('termos/')}>Termos de uso</a>
+            <a href={rota('en/privacy/')} lang="en">Privacy (English)</a>
+            <a href={rota('en/terms/')} lang="en">Terms (English)</a>
             <a href={`mailto:${EMAIL_CONTATO}`}>{EMAIL_CONTATO}</a>
           </span>
         </div>

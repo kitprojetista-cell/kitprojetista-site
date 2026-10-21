@@ -22,6 +22,23 @@ const paginas = [
     titulo: 'Política de privacidade | Kit Projetista',
     descricao: 'Como o Kit Projetista, o site e o atendimento tratam os seus dados, conforme a LGPD.',
   },
+  {
+    rota: 'termos',
+    titulo: 'Termos de uso | Kit Projetista',
+    descricao: 'Termos de uso do Kit Projetista: licença, teste grátis, assinatura, reembolso e suporte.',
+  },
+  {
+    rota: 'en/privacy',
+    titulo: 'Privacy policy | Kit Projetista',
+    descricao: 'How Kit Projetista, its website and support handle your data.',
+    idioma: 'en',
+  },
+  {
+    rota: 'en/terms',
+    titulo: 'Terms of use | Kit Projetista',
+    descricao: 'Kit Projetista terms of use: license, free trial, subscription, refunds and support.',
+    idioma: 'en',
+  },
 ];
 
 const trocarMeta = (html, chave, valor) =>
@@ -29,6 +46,7 @@ const trocarMeta = (html, chave, valor) =>
 
 for (const p of paginas) {
   let html = base.replace(/<title>[^<]*<\/title>/, `<title>${p.titulo}</title>`);
+  if (p.idioma) html = html.replace(/<html lang="[^"]*"/, `<html lang="${p.idioma}"`);
   for (const k of ['description', 'og:description', 'twitter:description']) html = trocarMeta(html, k, p.descricao);
   for (const k of ['og:title', 'twitter:title']) html = trocarMeta(html, k, p.titulo);
   html = trocarMeta(html, 'og:url', `${siteUrl}/${p.rota}/`);
