@@ -12,22 +12,25 @@
     <link rel="alternate" hreflang="en" href="%SITE_URL%/en/" />
     <link rel="alternate" hreflang="x-default" href="%SITE_URL%/en/" />
     <script>
-      // Quem vem de fora (navegador sem português) abre a página em inglês, com os preços em dólar.
-      // Só na página inicial; robôs de busca não são redirecionados; a escolha feita no botão PT/EN vale sempre.
+      // Idioma automático, sem botão: navegador em inglês abre a página em inglês (preços em dólar);
+      // qualquer outro idioma fica na página brasileira. Vale nas duas pontas (/ e /en/).
+      // Robôs de busca e prévias de link não são redirecionados.
       (function () {
         try {
-          var p = location.pathname;
-          if (p !== '/' && p !== '/index.html') return;
           if (/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram|preview/i.test(navigator.userAgent)) return;
-          var escolha = null;
-          try { escolha = localStorage.getItem('kp-idioma'); } catch (e) {}
-          if (escolha === 'pt') return;
-          var linguas = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
-          var pt = false;
-          for (var i = 0; i < linguas.length; i++) if (/^pt/i.test(linguas[i])) pt = true;
-          if (escolha === 'en' || !pt) {
-            var h = location.hash === '#planos' ? '#plans' : location.hash === '#contato' ? '#contact' : location.hash === '#recursos' ? '#features' : '';
+          var p = location.pathname;
+          var naInicial = p === '/' || p === '/index.html';
+          var naIngles = p === '/en/' || p === '/en' || p === '/en/index.html';
+          if (!naInicial && !naIngles) return;
+          var lingua = ((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
+          var ingles = lingua.indexOf('en') === 0;
+          var h = location.hash;
+          if (naInicial && ingles) {
+            h = h === '#planos' ? '#plans' : h === '#contato' ? '#contact' : h === '#recursos' ? '#features' : '';
             location.replace('/en/' + h);
+          } else if (naIngles && !ingles) {
+            h = h === '#plans' ? '#planos' : h === '#contact' ? '#contato' : h === '#features' ? '#recursos' : '';
+            location.replace('/' + h);
           }
         } catch (e) {}
       })();

@@ -32,9 +32,6 @@ export const BASE = import.meta.env.BASE_URL;
 /** Monta um link interno respeitando o caminho base. */
 export const rota = (caminho = '') => BASE + caminho.replace(/^\//, '');
 
-/** Escolha de idioma do visitante (salva no navegador quando ele clica em PT/EN). */
-export const CHAVE_IDIOMA = 'kp-idioma';
-
 /**
  * Planos para quem é de fora (página /en/): preço em dólar e link da oferta internacional da Hotmart.
  * Link vazio = o botão leva ao formulário de contato. A página em inglês nunca mostra os preços em reais.

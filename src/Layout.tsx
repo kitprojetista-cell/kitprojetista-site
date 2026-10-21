@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { ArrowRight, ChevronRight, Instagram, Menu, MessageCircle, Search, X, Youtube } from 'lucide-react';
-import { CHAVE_IDIOMA, EMAIL_CONTATO, REDES, WHATSAPP, rota } from './config';
+import { EMAIL_CONTATO, REDES, WHATSAPP, rota } from './config';
 
 function TikTok({ size = 18 }: { size?: number }) {
   return (
@@ -15,11 +15,6 @@ type Props = { children: ReactNode; naInicial: boolean; en?: boolean };
 
 const WHATSAPP_EN = 'https://wa.me/5519992797870?text=' + encodeURIComponent('Hi! I have a question about Kit Projetista.');
 
-/** Troca de idioma: guarda a escolha (para não redirecionar de novo) e abre a página. */
-export function trocarIdioma(lingua: 'pt' | 'en', destino: string) {
-  try { localStorage.setItem(CHAVE_IDIOMA, lingua); } catch { /* navegador sem armazenamento */ }
-  window.location.href = rota(destino);
-}
 
 /** Vai para uma seção da página inicial (rola se já estiver nela, senão abre a inicial na seção). */
 export function irPara(id: string, naInicial: boolean, en = false) {
@@ -58,7 +53,6 @@ export default function Layout({ children, naInicial, en = false }: Props) {
           <button onClick={() => ir(en ? 'plans' : 'planos')}>{t('Planos', 'Pricing')}</button>
           {!en && <a href={rota('calculadora/')}>Calculadora</a>}
           <button onClick={() => ir(en ? 'contact' : 'contato')}>{t('Contato', 'Contact')}</button>
-          <button lang={en ? 'pt-BR' : 'en'} onClick={() => trocarIdioma(en ? 'pt' : 'en', en ? '' : 'en/')}>{en ? 'Português' : 'English'}</button>
         </nav>
         <div className="header-actions">
           <button
@@ -99,7 +93,6 @@ export default function Layout({ children, naInicial, en = false }: Props) {
           {!en && <a href={rota('calculadora/')}>Calculadora do Projetista <ChevronRight size={16} /></a>}
           <button onClick={() => ir(en ? 'contact' : 'contato')}>{t('Contato', 'Contact')} <ChevronRight size={16} /></button>
           <a href={rota(en ? 'en/privacy/' : 'privacidade/')}>{t('Privacidade', 'Privacy')} <ChevronRight size={16} /></a>
-          <button lang={en ? 'pt-BR' : 'en'} onClick={() => trocarIdioma(en ? 'pt' : 'en', en ? '' : 'en/')}>{en ? 'Ver em português' : 'View in English'} <ChevronRight size={16} /></button>
         </div>
       )}
 
