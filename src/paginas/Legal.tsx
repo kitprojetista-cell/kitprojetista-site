@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Layout from '../Layout';
 import { EMAIL_CONTATO, rota } from '../config';
 
@@ -149,7 +150,7 @@ export const TERMOS_KIT: Texto = {
   "selo": "TERMOS DE USO",
   "titulo": "Termos de uso",
   "destaque": "Kit Projetista.",
-  "atualizada": "9 de outubro de 2026",
+  "atualizada": "21 de outubro de 2026",
   "rotuloData": "Versão de",
   "intro": "Estes Termos regem o uso do Kit Projetista, conjunto de ferramentas (plugin) para AutoCAD e Civil 3D, desenvolvido e licenciado por Odovaldo Dossi de Lima, sob o nome Kit Projetista (\"nós\"). Ao instalar, ativar ou usar o Kit Projetista, você concorda com estes Termos. Se não concordar, não instale nem use o produto.",
   "secoes": [
@@ -192,7 +193,7 @@ export const TERMOS_KIT: Texto = {
       "paragrafos": [
         "5.1. Ao instalar, você tem 7 dias de teste gratuito com todas as ferramentas liberadas. Depois disso, é preciso uma licença ativa.",
         "5.2. As assinaturas são vendidas pela Hotmart ou pela loja de aplicativos da Autodesk, com os preços e as condições de renovação informados no momento da compra. O pagamento é processado por essas plataformas.",
-        "5.3. Você pode cancelar a renovação quando quiser, pela plataforma onde comprou. As ferramentas deixam de funcionar ao fim do período já pago; os seus desenhos continuam normais.",
+        "5.3. A renovação não é automática: para parar de usar, basta não renovar. As ferramentas deixam de funcionar ao fim do período já pago; os seus desenhos continuam normais.",
         "5.4. Você pode desistir da compra em até 7 dias e receber o valor de volta, conforme o Código de Defesa do Consumidor, pedindo o reembolso pela plataforma onde comprou.",
         "5.5. O preço de fundador, quando oferecido, é mantido nas renovações enquanto a assinatura continuar ativa sem interrupção."
       ]
@@ -235,7 +236,7 @@ export const TERMS_KIT_EN: Texto = {
   "selo": "TERMS OF USE",
   "titulo": "Terms of use",
   "destaque": "Kit Projetista.",
-  "atualizada": "October 9, 2026",
+  "atualizada": "October 21, 2026",
   "rotuloData": "Version of",
   "intro": "These Terms govern the use of Kit Projetista, a set of tools (plugin) for AutoCAD and Civil 3D, developed and licensed by Odovaldo Dossi de Lima under the name Kit Projetista (\"we\"). By installing, activating or using Kit Projetista you agree to these Terms. If you do not agree, do not install or use the product. In case of conflict, the Portuguese version prevails.",
   "secoes": [
@@ -278,7 +279,7 @@ export const TERMS_KIT_EN: Texto = {
       "paragrafos": [
         "5.1. After installing, you get a free 7-day trial with every tool unlocked. After that, an active license is required.",
         "5.2. Subscriptions are sold through Hotmart or the Autodesk app store, at the prices and renewal terms shown at checkout. Payment is processed by those platforms.",
-        "5.3. You may cancel renewal at any time on the platform where you bought. The tools stop working at the end of the period already paid; your drawings are not affected.",
+        "5.3. Renewal is not automatic: to stop using it, simply do not renew. The tools stop working at the end of the period already paid; your drawings are not affected.",
         "5.4. You may withdraw from the purchase within 7 days and get your money back, by requesting a refund on the platform where you bought.",
         "5.5. Founder pricing, when offered, is kept on renewals while the subscription remains active without interruption."
       ]
@@ -380,7 +381,15 @@ export const PRIVACY_KIT_EN: Texto = {
   ],
 };
 
-export default function Legal({ texto, voltar }: { texto: Texto; voltar: { href: string; rotulo: string } }) {
+type Link = { href: string; rotulo: string };
+
+/** Outra língua da mesma página: link no topo e, se o navegador não estiver em português, um aviso. */
+export default function Legal({ texto, voltar, outroIdioma }: { texto: Texto; voltar: Link; outroIdioma?: Link & { ingles: boolean } }) {
+  const [sugerir, setSugerir] = useState(false);
+  useEffect(() => {
+    const lingua = (navigator.language || '').toLowerCase();
+    if (outroIdioma?.ingles && !lingua.startsWith('pt')) setSugerir(true);
+  }, [outroIdioma]);
   return (
     <Layout naInicial={false}>
       <section className="hero hero-legal section-padding">
@@ -388,6 +397,12 @@ export default function Legal({ texto, voltar }: { texto: Texto; voltar: { href:
         <div className="eyebrow"><span className="eyebrow-dot" /> {texto.selo}</div>
         <h1>{texto.titulo} <em>{texto.destaque}</em></h1>
         <p className="hero-copy">{texto.rotuloData ?? 'Atualizada em'} {texto.atualizada}</p>
+        {outroIdioma && (
+          <p className="hero-copy" style={{ marginTop: 8 }}>
+            {sugerir && <strong lang="en">This page is also available in English: </strong>}
+            <a href={rota(outroIdioma.href)} lang={outroIdioma.ingles ? 'en' : 'pt-BR'} style={{ color: '#9fd6df', textDecoration: 'underline' }}>{outroIdioma.rotulo}</a>
+          </p>
+        )}
       </section>
 
       <section className="legal-section section-padding">
