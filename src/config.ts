@@ -37,6 +37,6 @@ export const rota = (caminho = '') => BASE + caminho.replace(/^\//, '');
  * Link vazio = o botão leva ao formulário de contato. A página em inglês nunca mostra os preços em reais.
  */
 export const PLANOS_EN = {
-  mensal: { preco: '9.90', link: '' },
-  anual: { preco: '89', link: '' },
+  mensal: { preco: '9.90', link: 'https://pay.hotmart.com/S107938754U?off=4lxmsw4s' },
+  anual: { preco: '89', link: 'https://pay.hotmart.com/S107938754U?off=uz739tzs' },
 };
