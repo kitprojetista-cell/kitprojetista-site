@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { ArrowRight, ChevronRight, Instagram, Menu, MessageCircle, Search, X, Youtube } from 'lucide-react';
-import { EMAIL_CONTATO, REDES, WHATSAPP, rota } from './config';
+import { CHAVE_IDIOMA, EMAIL_CONTATO, REDES, WHATSAPP, rota } from './config';
 
 function TikTok({ size = 18 }: { size?: number }) {
   return (
@@ -11,22 +11,32 @@ function TikTok({ size = 18 }: { size?: number }) {
   );
 }
 
-type Props = { children: ReactNode; naInicial: boolean };
+type Props = { children: ReactNode; naInicial: boolean; en?: boolean };
 
-/** Vai para uma seção da página inicial (rola se já estiver nela, senão abre a inicial na seção). */
-export function irPara(id: string, naInicial: boolean) {
-  if (naInicial) document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  else window.location.href = rota('') + '#' + id;
+const WHATSAPP_EN = 'https://wa.me/5519992797870?text=' + encodeURIComponent('Hi! I have a question about Kit Projetista.');
+
+/** Troca de idioma: guarda a escolha (para não redirecionar de novo) e abre a página. */
+export function trocarIdioma(lingua: 'pt' | 'en', destino: string) {
+  try { localStorage.setItem(CHAVE_IDIOMA, lingua); } catch { /* navegador sem armazenamento */ }
+  window.location.href = rota(destino);
 }
 
-export default function Layout({ children, naInicial }: Props) {
+/** Vai para uma seção da página inicial (rola se já estiver nela, senão abre a inicial na seção). */
+export function irPara(id: string, naInicial: boolean, en = false) {
+  if (naInicial) document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  else window.location.href = rota(en ? 'en/' : '') + '#' + id;
+}
+
+export default function Layout({ children, naInicial, en = false }: Props) {
+  const t = (pt: string, ingles: string) => (en ? ingles : pt);
+  const inicio = rota(en ? 'en/' : '');
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
 
   const ir = (id: string) => {
     setMenuOpen(false);
-    irPara(id, naInicial);
+    irPara(id, naInicial, en);
   };
 
   const handleSearch = () => {
@@ -40,25 +50,26 @@ export default function Layout({ children, naInicial }: Props) {
       <div className="page-noise" />
 
       <header className="topbar">
-        <a className="brand" href={rota('')} aria-label="Ir para o início">
+        <a className="brand" href={inicio} aria-label={t('Ir para o início', 'Go to home')}>
           <span style={{ display: 'block' }}>KIT <b>PROJETISTA</b></span>
         </a>
-        <nav className="desktop-nav" aria-label="Navegação principal">
-          <button onClick={() => ir('recursos')}>Recursos</button>
-          <button onClick={() => ir('planos')}>Planos</button>
-          <a href={rota('calculadora/')}>Calculadora</a>
-          <button onClick={() => ir('contato')}>Contato</button>
+        <nav className="desktop-nav" aria-label={t('Navegação principal', 'Main navigation')}>
+          <button onClick={() => ir(en ? 'features' : 'recursos')}>{t('Recursos', 'Features')}</button>
+          <button onClick={() => ir(en ? 'plans' : 'planos')}>{t('Planos', 'Pricing')}</button>
+          {!en && <a href={rota('calculadora/')}>Calculadora</a>}
+          <button onClick={() => ir(en ? 'contact' : 'contato')}>{t('Contato', 'Contact')}</button>
+          <button lang={en ? 'pt-BR' : 'en'} onClick={() => trocarIdioma(en ? 'pt' : 'en', en ? '' : 'en/')}>{en ? 'Português' : 'English'}</button>
         </nav>
         <div className="header-actions">
           <button
             className="icon-button search-button"
-            aria-label="Pesquisar"
+            aria-label={t('Pesquisar', 'Search')}
             onClick={() => setSearchOpen(!searchOpen)}
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
             <Search size={18} strokeWidth={1.8} />
           </button>
-          <button className="icon-button menu-button" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'} onClick={() => setMenuOpen(!menuOpen)}>
+          <button className="icon-button menu-button" aria-label={menuOpen ? t('Fechar menu', 'Close menu') : t('Abrir menu', 'Open menu')} onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X size={21} /> : <Menu size={21} />}
           </button>
         </div>
@@ -68,7 +79,7 @@ export default function Layout({ children, naInicial }: Props) {
         <div style={{ padding: '15px 20px', backgroundColor: 'rgba(15, 23, 42, 0.95)', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: '10px', backdropFilter: 'blur(10px)', position: 'sticky', top: '0', zIndex: 40 }}>
           <input
             type="text"
-            placeholder="O que procura?"
+            placeholder={t('O que procura?', 'What are you looking for?')}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
@@ -76,18 +87,19 @@ export default function Layout({ children, naInicial }: Props) {
             autoFocus
           />
           <button onClick={handleSearch} className="button button-primary" style={{ padding: '0 20px', borderRadius: '8px' }}>
-            Procurar
+            {t('Procurar', 'Search')}
           </button>
         </div>
       )}
 
       {menuOpen && (
         <div className="mobile-menu">
-          <button onClick={() => ir('recursos')}>Recursos <ChevronRight size={16} /></button>
-          <button onClick={() => ir('planos')}>Planos <ChevronRight size={16} /></button>
-          <a href={rota('calculadora/')}>Calculadora do Projetista <ChevronRight size={16} /></a>
-          <button onClick={() => ir('contato')}>Contato <ChevronRight size={16} /></button>
-          <a href={rota('privacidade/')}>Privacidade <ChevronRight size={16} /></a>
+          <button onClick={() => ir(en ? 'features' : 'recursos')}>{t('Recursos', 'Features')} <ChevronRight size={16} /></button>
+          <button onClick={() => ir(en ? 'plans' : 'planos')}>{t('Planos', 'Pricing')} <ChevronRight size={16} /></button>
+          {!en && <a href={rota('calculadora/')}>Calculadora do Projetista <ChevronRight size={16} /></a>}
+          <button onClick={() => ir(en ? 'contact' : 'contato')}>{t('Contato', 'Contact')} <ChevronRight size={16} /></button>
+          <a href={rota(en ? 'en/privacy/' : 'privacidade/')}>{t('Privacidade', 'Privacy')} <ChevronRight size={16} /></a>
+          <button lang={en ? 'pt-BR' : 'en'} onClick={() => trocarIdioma(en ? 'pt' : 'en', en ? '' : 'en/')}>{en ? 'Ver em português' : 'View in English'} <ChevronRight size={16} /></button>
         </div>
       )}
 
@@ -98,23 +110,30 @@ export default function Layout({ children, naInicial }: Props) {
         <div className="footer-middle">
           <span className="footer-copyright">© Copyright-2026 Kit Projetista</span>
           <span className="footer-social">
-            <a href={REDES.instagram} target="_blank" rel="noreferrer" aria-label="Instagram do Kit Projetista"><Instagram size={18} /></a>
-            <a href={REDES.youtube} target="_blank" rel="noreferrer" aria-label="YouTube do Kit Projetista"><Youtube size={18} /></a>
-            <a href={REDES.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok do Kit Projetista"><TikTok size={18} /></a>
+            <a href={REDES.instagram} target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram size={18} /></a>
+            <a href={REDES.youtube} target="_blank" rel="noreferrer" aria-label="YouTube"><Youtube size={18} /></a>
+            <a href={REDES.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok"><TikTok size={18} /></a>
           </span>
           <span className="footer-links">
-            <a href={rota('privacidade/')}>Política de privacidade</a>
-            <a href={rota('calculadora/privacidade/')}>Privacidade da Calculadora</a>
-            <a href={rota('termos/')}>Termos de uso</a>
-            <a href={rota('en/privacy/')} lang="en">Privacy (English)</a>
-            <a href={rota('en/terms/')} lang="en">Terms (English)</a>
+            {en ? (
+              <>
+                <a href={rota('en/privacy/')}>Privacy policy</a>
+                <a href={rota('en/terms/')}>Terms of use</a>
+              </>
+            ) : (
+              <>
+                <a href={rota('privacidade/')}>Política de privacidade</a>
+                <a href={rota('calculadora/privacidade/')}>Privacidade da Calculadora</a>
+                <a href={rota('termos/')}>Termos de uso</a>
+              </>
+            )}
             <a href={`mailto:${EMAIL_CONTATO}`}>{EMAIL_CONTATO}</a>
           </span>
         </div>
-        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Voltar ao topo <ArrowRight size={14} /></button>
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>{t('Voltar ao topo', 'Back to top')} <ArrowRight size={14} /></button>
       </footer>
 
-      <a className="whatsapp-fab" href={WHATSAPP} target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
+      <a className="whatsapp-fab" href={en ? WHATSAPP_EN : WHATSAPP} target="_blank" rel="noopener noreferrer" aria-label={t('Falar no WhatsApp', 'Chat on WhatsApp')}>
         <MessageCircle size={26} />
       </a>
     </main>

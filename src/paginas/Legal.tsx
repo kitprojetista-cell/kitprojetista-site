@@ -391,7 +391,7 @@ export default function Legal({ texto, voltar, outroIdioma }: { texto: Texto; vo
     if (outroIdioma?.ingles && !lingua.startsWith('pt')) setSugerir(true);
   }, [outroIdioma]);
   return (
-    <Layout naInicial={false}>
+    <Layout naInicial={false} en={outroIdioma?.ingles === false}>
       <section className="hero hero-legal section-padding">
         <div className="hero-orbit orbit-one" />
         <div className="eyebrow"><span className="eyebrow-dot" /> {texto.selo}</div>

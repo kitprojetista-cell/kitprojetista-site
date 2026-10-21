@@ -7,6 +7,12 @@ const base = readFileSync('dist/index.html', 'utf8');
 
 const paginas = [
   {
+    rota: 'en',
+    titulo: 'Kit Projetista | AutoCAD plugin',
+    descricao: 'AutoCAD and Civil 3D tools that turn repetitive tasks into a few clicks: line lengths by layer, quantities, auto numbering, dimensions, area schedules and batch sheets. Free 7-day trial.',
+    idioma: 'en',
+  },
+  {
     rota: 'calculadora',
     titulo: 'Calculadora do Projetista | App grátis para sua obra',
     descricao: 'Calcule tijolo, piso, tinta, concreto e telhado, monte a lista de compras e compare o orçamento das lojas com o preço de referência do SINAPI. Grátis, sem cadastro.',
@@ -47,6 +53,9 @@ const trocarMeta = (html, chave, valor) =>
 for (const p of paginas) {
   let html = base.replace(/<title>[^<]*<\/title>/, `<title>${p.titulo}</title>`);
   if (p.idioma) html = html.replace(/<html lang="[^"]*"/, `<html lang="${p.idioma}"`);
+  if (p.idioma === 'en') html = trocarMeta(html, 'og:locale', 'en_US');
+  // hreflang só faz sentido na inicial em português e na em inglês
+  if (p.rota !== 'en') html = html.replace(/\s*<link rel="alternate" hreflang="[^"]*" href="[^"]*" \/>/g, '');
   for (const k of ['description', 'og:description', 'twitter:description']) html = trocarMeta(html, k, p.descricao);
   for (const k of ['og:title', 'twitter:title']) html = trocarMeta(html, k, p.titulo);
   html = trocarMeta(html, 'og:url', `${siteUrl}/${p.rota}/`);
