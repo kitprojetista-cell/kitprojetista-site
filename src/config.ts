@@ -14,7 +14,7 @@ export const REDES = {
   instagram: 'https://www.instagram.com/kitprojetista/',
   youtube: 'https://www.youtube.com/@KitProjetista',
   tiktok: 'https://www.tiktok.com/@kitprojetista',
-  linkedin: 'https://www.linkedin.com/in/kit-projetista-undefined-954357446/',
+  linkedin: 'https://www.linkedin.com/company/kit-projetista/',
 };
 
 /** Pasta com o instalador do teste grátis (liberada depois do formulário). */
