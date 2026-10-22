@@ -77,7 +77,7 @@ export default function InicioEn() {
 
   return (
     <Layout naInicial en>
-      <section id="home" className="hero section-padding">
+      <section id="home" className="hero hero-com-video section-padding">
         <div className="hero-orbit orbit-one" />
         <div className="hero-orbit orbit-two" />
         <div className="eyebrow"><span className="eyebrow-dot" /> AUTOCAD PLUGIN</div>
@@ -92,6 +92,10 @@ export default function InicioEn() {
             Free 7-day trial <ArrowRight size={17} />
           </button>
           <button className="button button-outline" onClick={() => ir('plans')}>See pricing <ChevronDown size={17} /></button>
+        </div>
+        <div className="hero-video vertical">
+          <video src={rota('videos/room-area-en.mp4')} poster={rota('videos/room-area-en.jpg')} autoPlay muted loop playsInline preload="metadata" aria-label="Room areas in AutoCAD with one click" />
+          <a href="https://www.youtube.com/shorts/UIvM6R6WiQs" target="_blank" rel="noreferrer">▶ Watch with sound on YouTube</a>
         </div>
         <div className="hero-footnote"><span>Made for designers</span><span className="foot-line" /><span>AutoCAD 2015 to 2027 · Civil 3D</span></div>
       </section>

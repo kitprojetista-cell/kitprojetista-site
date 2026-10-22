@@ -86,7 +86,7 @@ export default function Inicio() {
 
   return (
     <Layout naInicial>
-      <section id="inicio" className="hero section-padding">
+      <section id="inicio" className="hero hero-com-video section-padding">
         <div className="hero-orbit orbit-one" />
         <div className="hero-orbit orbit-two" />
         <div className="eyebrow"><span className="eyebrow-dot" /> PLUG-IN PARA AUTOCAD</div>
@@ -102,6 +102,10 @@ export default function Inicio() {
           </button>
           <a className="button button-glass" href={rota('calculadora/')}>Conheça a Calculadora do Projetista <Sparkles size={16} /></a>
           <button className="button button-outline" onClick={() => ir('planos')}>Ver planos <ChevronDown size={17} /></button>
+        </div>
+        <div className="hero-video">
+          <video src={rota('videos/area-comodos-pt.mp4')} poster={rota('videos/area-comodos-pt.jpg')} autoPlay muted loop playsInline preload="metadata" aria-label="Área dos cômodos no AutoCAD com um clique" />
+          <a href="https://www.youtube.com/shorts/eGr1QJeuOcI" target="_blank" rel="noreferrer">▶ Assista com som no YouTube</a>
         </div>
         <div className="hero-footnote"><span>Feito para quem projeta</span><span className="foot-line" /><span>AutoCAD 2015 a 2027 · Civil 3D</span></div>
       </section>
