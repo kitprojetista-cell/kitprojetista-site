@@ -110,6 +110,13 @@ export default function Inicio() {
         <div className="hero-footnote"><span>Feito para quem projeta</span><span className="foot-line" /><span>AutoCAD 2015 a 2027 · Civil 3D</span></div>
       </section>
 
+      <section className="demo-section" aria-label="Demonstração">
+        <div className="eyebrow"><span className="eyebrow-dot" /> VEJA FUNCIONANDO</div>
+        <h2>Área dos cômodos <em>com um clique.</em></h2>
+        <video src={rota('videos/area-comodos-pt.mp4')} poster={rota('videos/area-comodos-pt.jpg')} autoPlay muted loop playsInline preload="metadata" />
+        <a href="https://www.youtube.com/shorts/eGr1QJeuOcI" target="_blank" rel="noreferrer">▶ Assista com som no YouTube</a>
+      </section>
+
       <section id="recursos" className="features-section section-padding">
         <div className="section-heading">
           <div><div className="eyebrow dark"><span className="eyebrow-dot" /> MAIS TEMPO PARA CRIAR</div><h2>Seu projeto.<br /><span style={{ color: '#1e6887' }}>Sem o trabalho repetitivo.</span></h2></div>

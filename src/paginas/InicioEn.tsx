@@ -100,6 +100,13 @@ export default function InicioEn() {
         <div className="hero-footnote"><span>Made for designers</span><span className="foot-line" /><span>AutoCAD 2015 to 2027 · Civil 3D</span></div>
       </section>
 
+      <section className="demo-section" aria-label="Demo">
+        <div className="eyebrow"><span className="eyebrow-dot" /> SEE IT IN ACTION</div>
+        <h2>Room areas <em>in one click.</em></h2>
+        <video className="demo-section-video-vertical" src={rota('videos/room-area-en.mp4')} poster={rota('videos/room-area-en.jpg')} autoPlay muted loop playsInline preload="metadata" />
+        <a href="https://www.youtube.com/shorts/UIvM6R6WiQs" target="_blank" rel="noreferrer">▶ Watch with sound on YouTube</a>
+      </section>
+
       <section id="features" className="features-section section-padding">
         <div className="section-heading">
           <div><div className="eyebrow dark"><span className="eyebrow-dot" /> MORE TIME TO DESIGN</div><h2>Your project.<br /><span style={{ color: '#1e6887' }}>Without the repetitive work.</span></h2></div>

@@ -198,3 +198,14 @@ a.button { text-decoration: none; }
   .hero-video a:hover { color: #fff; text-decoration: underline; }
   .hero-com-video .hero-footnote { display: none; }
 }
+/* Demonstração abaixo da abertura (celular e telas estreitas) */
+.demo-section { display: none; }
+@media (max-width: 1099px) {
+  .demo-section { display: block; background: #14181c; padding: 56px 20px 60px; text-align: center; }
+  .demo-section h2 { color: #fff; font-size: clamp(26px, 6vw, 36px); margin: 12px 0 22px; }
+  .demo-section h2 em { color: #79c3d2; font-style: normal; }
+  .demo-section video { width: 100%; max-width: 420px; border-radius: 16px; border: 1px solid rgba(255,255,255,.18); display: block; margin: 0 auto; background: #14181c; }
+  .demo-section .demo-section-video-vertical { max-width: 300px; }
+  .demo-section a { display: inline-block; margin-top: 14px; color: #9fd6df; font-size: 14px; }
+  .demo-section .eyebrow { justify-content: center; }
+}
