@@ -15,7 +15,7 @@ const features = [
   { icon: Move3d, title: 'Fast editing', description: 'Auto dimensions, batch sheets and PDFs.', tone: 'steel' },
 ];
 
-const included = ['Every plugin tool', 'KPCad: your floor plan on your phone', 'Updates and new tools', 'Support by e-mail and WhatsApp'];
+const included = ['Every plugin tool', 'Work areas: see only the tools you use', 'Updates and new tools', 'Support by e-mail and WhatsApp'];
 
 const plans = [
   {
@@ -110,7 +110,7 @@ export default function InicioEn() {
       <section id="plans" className="pricing-section section-padding">
         <div className="section-heading pricing-heading">
           <div><div className="eyebrow"><span className="eyebrow-dot" /> ONE PLAN, EVERYTHING INCLUDED</div><h2>The whole Kit, <em>one price.</em></h2></div>
-          <p style={{ fontSize: '15px' }}>Every plugin tool and KPCad on your phone, no modules to choose. Try it <span style={{ color: '#79c3d2' }}>free for 7 days</span>, and after buying you still have a 7-day money-back guarantee. The Line Meter stays free forever. Prices in US dollars; you pay in your local currency at checkout.</p>
+          <p style={{ fontSize: '15px' }}>Every plugin tool, no modules to choose. Try it <span style={{ color: '#79c3d2' }}>free for 7 days</span>, and after buying you still have a 7-day money-back guarantee. The Line Meter stays free forever. Prices in US dollars; you pay in your local currency at checkout.</p>
         </div>
         <div className="plans-list plans-unico plans-dois">
           {plans.map((plan) => (
