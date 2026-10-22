@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { ArrowRight, ChevronRight, Instagram, Menu, MessageCircle, Search, X, Youtube } from 'lucide-react';
+import { ArrowRight, ChevronRight, Instagram, Linkedin, Menu, MessageCircle, Search, X, Youtube } from 'lucide-react';
 import { EMAIL_CONTATO, REDES, WHATSAPP, rota } from './config';
 
 function TikTok({ size = 18 }: { size?: number }) {
@@ -106,6 +106,7 @@ export default function Layout({ children, naInicial, en = false }: Props) {
             <a href={REDES.instagram} target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram size={18} /></a>
             <a href={REDES.youtube} target="_blank" rel="noreferrer" aria-label="YouTube"><Youtube size={18} /></a>
             <a href={REDES.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok"><TikTok size={18} /></a>
+            <a href={REDES.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={18} /></a>
           </span>
           <span className="footer-links">
             {en ? (

@@ -1,5 +1,5 @@
 import { ArrowRight, Linkedin } from 'lucide-react';
-import { EQUIPE, rota } from './config';
+import { EQUIPE, REDES, rota } from './config';
 
 /** Seção "Quem faz o Kit": uma pessoa real por trás do produto (português ou inglês). */
 export default function QuemFaz({ en = false }: { en?: boolean }) {
@@ -21,9 +21,14 @@ export default function QuemFaz({ en = false }: { en?: boolean }) {
               'Danielle is a civil engineer and makes sure every Kit Projetista tool works the way real projects need. Before a tool reaches you, she tests it on real drawings in AutoCAD.',
             )}
           </p>
-          <a className="button button-primary team-link" href={EQUIPE.linkedin} target="_blank" rel="noreferrer">
-            <Linkedin size={17} /> {t('Ver perfil no LinkedIn', 'View LinkedIn profile')} <ArrowRight size={16} />
-          </a>
+          <div className="team-links">
+            <a className="button button-primary team-link" href={EQUIPE.linkedin} target="_blank" rel="noreferrer">
+              <Linkedin size={17} /> {t('LinkedIn da Danielle', "Danielle's LinkedIn")} <ArrowRight size={16} />
+            </a>
+            <a className="button button-outline team-link team-link-kit" href={REDES.linkedin} target="_blank" rel="noreferrer">
+              <Linkedin size={17} /> {t('Kit Projetista no LinkedIn', 'Kit Projetista on LinkedIn')}
+            </a>
+          </div>
         </div>
       </div>
     </section>
