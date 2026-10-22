@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { ArrowRight, Check, X, ChevronDown, FileSpreadsheet, Layers3, Move3d, Ruler } from 'lucide-react';
 import Layout, { irPara } from '../Layout';
 import TesteModal from '../TesteModal';
+import QuemFaz from '../QuemFaz';
 import { PLANOS_EN, rota } from '../config';
 import { enviarFormulario } from '../formulario';
 
@@ -142,6 +143,8 @@ export default function InicioEn() {
           </div>
         </div>
       </section>
+
+      <QuemFaz en />
 
       <section id="contact" className="contact-section section-padding">
         <div className="contact-panel">

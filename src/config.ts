@@ -40,3 +40,11 @@ export const PLANOS_EN = {
   mensal: { preco: '9.90', link: 'https://pay.hotmart.com/S107938754U?off=4lxmsw4s' },
   anual: { preco: '89', link: 'https://pay.hotmart.com/S107938754U?off=uz739tzs' },
 };
+
+/** Quem está por trás do Kit (seção "Quem faz o Kit" no site). CREA vazio = não aparece. */
+export const EQUIPE = {
+  nome: 'Danielle Prendin',
+  foto: 'danielle-prendin.jpg',
+  linkedin: 'https://www.linkedin.com/in/danielleprendin/',
+  crea: '',
+};
