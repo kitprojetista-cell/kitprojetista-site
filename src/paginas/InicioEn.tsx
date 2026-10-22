@@ -3,7 +3,7 @@ import { ArrowRight, Check, X, ChevronDown, FileSpreadsheet, Layers3, Move3d, Ru
 import Layout, { irPara } from '../Layout';
 import TesteModal from '../TesteModal';
 import QuemFaz from '../QuemFaz';
-import { PLANOS_EN, rota } from '../config';
+import { EQUIPE, PLANOS_EN, rota } from '../config';
 import { enviarFormulario } from '../formulario';
 
 // Página inicial para quem é de fora: só preços em dólar (oferta internacional da Hotmart).
@@ -83,6 +83,10 @@ export default function InicioEn() {
         <div className="eyebrow"><span className="eyebrow-dot" /> AUTOCAD PLUGIN</div>
         <h1>Ever thought about getting <em>your time</em> back in AutoCAD?</h1>
         <p className="hero-copy">Kit Projetista is an AutoCAD plugin that measures lines, numbers elements, builds quantity and area schedules and speeds up everyday edits. What used to take hours now takes a few clicks, so you can design better and deliver more. In English, with metric units.</p>
+        <a className="hero-autora" href="#about" onClick={(e) => { e.preventDefault(); ir('about'); }}>
+          <img src={rota(EQUIPE.foto)} alt={EQUIPE.nome} width={40} height={40} />
+          <span>Created by civil engineer <b>{EQUIPE.nome}</b></span>
+        </a>
         <div className="hero-actions">
           <button className="button button-primary" onClick={() => setTrialOpen(true)}>
             Free 7-day trial <ArrowRight size={17} />

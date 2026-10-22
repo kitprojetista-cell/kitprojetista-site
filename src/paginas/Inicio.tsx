@@ -3,7 +3,7 @@ import { ArrowRight, Check, X, ChevronDown, FileSpreadsheet, Layers3, Move3d, Ru
 import Layout, { irPara } from '../Layout';
 import TesteModal from '../TesteModal';
 import QuemFaz from '../QuemFaz';
-import { rota } from '../config';
+import { EQUIPE, rota } from '../config';
 import { enviarFormulario } from '../formulario';
 
 const features = [
@@ -92,6 +92,10 @@ export default function Inicio() {
         <div className="eyebrow"><span className="eyebrow-dot" /> PLUG-IN PARA AUTOCAD</div>
         <h1>Já pensou em otimizar o <em>seu tempo</em> no AutoCAD?</h1>
         <p className="hero-copy">O Kit Projetista é um plugin com ferramentas de CAD que medem linhas, numeram elementos, extraem quantitativos e aceleram as edições do dia a dia. O que levava horas passa a levar poucos cliques, para você projetar melhor e entregar mais.</p>
+        <a className="hero-autora" href="#quem-faz" onClick={(e) => { e.preventDefault(); ir('quem-faz'); }}>
+          <img src={rota(EQUIPE.foto)} alt={EQUIPE.nome} width={40} height={40} />
+          <span>Idealizado pela engenheira civil <b>{EQUIPE.nome}</b></span>
+        </a>
         <div className="hero-actions">
           <button className="button button-primary" onClick={() => setTesteAberto(true)}>
             Teste Gratuito por 7 dias <ArrowRight size={17} />

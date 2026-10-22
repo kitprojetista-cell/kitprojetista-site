@@ -180,3 +180,10 @@ a.button { text-decoration: none; }
 .team-link-kit { color: #1e6887 !important; border-color: #9cc3cd !important; }
 .team-link { margin-top: 0; display: inline-flex; gap: 10px; align-items: center; text-decoration: none; }
 @media (max-width: 760px) { .team-card { grid-template-columns: 1fr; text-align: center; gap: 24px; } .team-photo { width: 180px; height: 180px; margin: 0 auto; } .team-copy p { margin-left: auto; margin-right: auto; } .team-copy .eyebrow { justify-content: center; } .team-links { justify-content: center; } }
+.team-dev { font-size: 14px !important; color: #6b8a94 !important; margin-top: 10px; }
+/* Selo da engenheira na abertura */
+.hero-autora { display: inline-flex; align-items: center; gap: 12px; margin-top: 26px; margin-bottom: 26px; padding: 7px 18px 7px 7px; border-radius: 40px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); color: #dbe9ee; font-size: 14px; text-decoration: none; position: relative; z-index: 2; }
+.hero-autora img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(121,195,210,.7); }
+.hero-autora b { color: #fff; font-weight: 700; }
+.hero-autora:hover { background: rgba(255,255,255,.14); }
+@media (max-width: 650px) { .hero-autora { font-size: 12px; padding-right: 14px; } .hero-autora img { width: 34px; height: 34px; } }
