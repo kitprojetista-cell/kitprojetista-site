@@ -60,6 +60,12 @@ export default function TesteModal({ aberto, fechar, en = false }: Props) {
             <a className="button button-primary" href={LINK_TESTE_GRATIS} download>
               {t('Baixar o Kit', 'Download the Kit')} <Download size={17} />
             </a>
+            <p className="form-note" style={{ marginTop: 14 }}>
+              {t(
+                'Ao abrir o instalador, o Windows pode mostrar um aviso de "Editor desconhecido". É normal: o Kit ainda não tem assinatura digital. Clique em "Mais informações" e depois em "Executar assim mesmo".',
+                'When you open the installer, Windows may show an "Unknown publisher" notice. That is normal: the Kit is not code-signed yet. Click "More info" and then "Run anyway".'
+              )}
+            </p>
           </div>
         ) : (
           <>
