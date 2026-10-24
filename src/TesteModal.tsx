@@ -66,6 +66,10 @@ export default function TesteModal({ aberto, fechar, en = false }: Props) {
                 'When you open the installer, Windows may show an "Unknown publisher" notice. That is normal: the Kit is not code-signed yet. Click "More info" and then "Run anyway".'
               )}
             </p>
+            <p className="form-note" style={{ marginTop: 8 }}>
+              {t('Para conferir que o arquivo é o original, o código de verificação (SHA-256) está ', 'To check the file is the original, the verification code (SHA-256) is ')}
+              <a href={LINK_TESTE_GRATIS + '.sha256'} target="_blank" rel="noreferrer">{t('aqui', 'here')}</a>.
+            </p>
           </div>
         ) : (
           <>
