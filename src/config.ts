@@ -54,4 +54,4 @@ export const EQUIPE = {
  * Contador de visitas: token do Cloudflare Web Analytics (grátis, sem cookies, sem dados pessoais).
  * Vazio = nenhum script de estatística é carregado.
  */
-export const CLOUDFLARE_ANALYTICS_TOKEN = '';
+export const CLOUDFLARE_ANALYTICS_TOKEN = '82866e57033d4cde914938682e6f98dc';

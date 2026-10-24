@@ -11,7 +11,7 @@ export const PRIVACIDADE_KIT: Texto = {
   selo: 'PRIVACIDADE',
   titulo: 'Política de privacidade',
   destaque: 'Kit Projetista.',
-  atualizada: '10 de outubro de 2026',
+  atualizada: '24 de outubro de 2026',
   intro: 'O Kit Projetista é um plugin para AutoCAD e Civil 3D que roda no seu computador. Ele não pede cadastro, não envia seus desenhos para lugar nenhum e não coleta dados de uso. Esta política explica o pouco que ele guarda e o que acontece quando você usa o nosso site, compra ou pede suporte.',
   secoes: [
     { titulo: 'Quem somos', paragrafos: [`Kit Projetista, responsável pelo plugin, pelo site e pelo atendimento. ${contato}`] },
@@ -34,7 +34,7 @@ export const PRIVACIDADE_KIT: Texto = {
     },
     {
       titulo: 'Nosso site e formulários',
-      paragrafos: ['Quando você pede o teste grátis, fala com a gente pelo formulário "Vamos conversar" ou se inscreve como testador da Calculadora do Projetista, recebemos por e-mail o que você preencher (nome, e-mail, WhatsApp, cidade, mensagem e plano de interesse). Usamos esses dados só para liberar o teste, responder você, enviar o convite de teste do app e, se você marcar que aceita, mandar e-mails sobre o Kit Projetista. Você pode cancelar esses e-mails a qualquer momento. O envio passa pelo serviço FormSubmit, que entrega a mensagem na nossa caixa de e-mail. O site não usa anúncios nem ferramentas de rastreamento.'],
+      paragrafos: ['Quando você pede o teste grátis, fala com a gente pelo formulário "Vamos conversar" ou se inscreve como testador da Calculadora do Projetista, recebemos por e-mail o que você preencher (nome, e-mail, WhatsApp, cidade, mensagem e plano de interesse). Usamos esses dados só para liberar o teste, responder você, enviar o convite de teste do app e, se você marcar que aceita, mandar e-mails sobre o Kit Projetista. Você pode cancelar esses e-mails a qualquer momento. O envio passa pelo serviço FormSubmit, que entrega a mensagem na nossa caixa de e-mail. O site não usa anúncios nem cookies. Para saber quantas pessoas visitam o site e de onde vêm (por exemplo, Facebook ou YouTube), usamos o Cloudflare Web Analytics, que conta as visitas de forma anônima, sem cookies e sem identificar quem você é.'],
     },
     {
       titulo: 'Compras',
@@ -46,7 +46,7 @@ export const PRIVACIDADE_KIT: Texto = {
     },
     {
       titulo: 'Terceiros e compartilhamento',
-      paragrafos: ['O plugin não usa ferramentas de análise, redes de publicidade nem SDKs de terceiros. Não vendemos, alugamos nem compartilhamos seus dados com outras empresas, inclusive empresas ligadas a nós. Os únicos terceiros que recebem dados são as plataformas de venda e pagamento (Hotmart, Autodesk e PayPal), só com os dados necessários para a compra, e o serviço que entrega os formulários do site por e-mail. Só trabalhamos com plataformas que se comprometem a proteger esses dados no mesmo nível desta política e da LGPD. Também podemos fornecer dados quando a lei ou uma ordem judicial exigir.'],
+      paragrafos: ['O plugin não usa ferramentas de análise, redes de publicidade nem SDKs de terceiros. Não vendemos, alugamos nem compartilhamos seus dados com outras empresas, inclusive empresas ligadas a nós. Os únicos terceiros que recebem dados são as plataformas de venda e pagamento (Hotmart, Autodesk e PayPal), só com os dados necessários para a compra, o serviço que entrega os formulários do site por e-mail e o Cloudflare Web Analytics, que recebe só dados anônimos de visita ao site. Só trabalhamos com plataformas que se comprometem a proteger esses dados no mesmo nível desta política e da LGPD. Também podemos fornecer dados quando a lei ou uma ordem judicial exigir.'],
     },
     {
       titulo: 'Por quanto tempo guardamos e quando apagamos',
@@ -322,7 +322,7 @@ export const PRIVACY_KIT_EN: Texto = {
   selo: 'PRIVACY',
   titulo: 'Privacy policy',
   destaque: 'Kit Projetista.',
-  atualizada: 'October 10, 2026',
+  atualizada: 'October 24, 2026',
   rotuloData: 'Updated on',
   intro: 'Kit Projetista is a plugin for AutoCAD and Civil 3D that runs on your computer. It requires no sign-up, does not send your drawings anywhere and does not collect usage data. This policy explains the little it stores and what happens when you use our website, buy or ask for support. In case of conflict, the Portuguese version prevails.',
   secoes: [
@@ -346,7 +346,7 @@ export const PRIVACY_KIT_EN: Texto = {
     },
     {
       titulo: 'Our website and forms',
-      paragrafos: ['When you request the free trial, contact us through the "Let\'s talk" form or sign up as a tester of the Calculadora do Projetista app, we receive by e-mail what you fill in (name, e-mail, WhatsApp, city, message and plan of interest). We use this data only to unlock the trial, reply to you, send the app test invitation and, if you agree, send e-mails about Kit Projetista. You can stop these e-mails at any time. Forms are delivered by the FormSubmit service, which sends the message to our inbox. The website uses no ads or tracking tools.'],
+      paragrafos: ['When you request the free trial, contact us through the "Let\'s talk" form or sign up as a tester of the Calculadora do Projetista app, we receive by e-mail what you fill in (name, e-mail, WhatsApp, city, message and plan of interest). We use this data only to unlock the trial, reply to you, send the app test invitation and, if you agree, send e-mails about Kit Projetista. You can stop these e-mails at any time. Forms are delivered by the FormSubmit service, which sends the message to our inbox. The website uses no ads or cookies. To know how many people visit the website and where they come from (for example, Facebook or YouTube), we use Cloudflare Web Analytics, which counts visits anonymously, without cookies and without identifying you.'],
     },
     {
       titulo: 'Purchases',
@@ -358,7 +358,7 @@ export const PRIVACY_KIT_EN: Texto = {
     },
     {
       titulo: 'Third parties and sharing',
-      paragrafos: ['The plugin uses no analytics tools, ad networks or third-party SDKs. We do not sell, rent or share your data with other companies, including companies related to us. The only third parties that receive data are the sales and payment platforms (Hotmart, Autodesk and PayPal), with only the data needed for the purchase, and the service that delivers the website forms by e-mail. We only work with platforms committed to protecting this data at the same level as this policy and the Brazilian General Data Protection Law (LGPD). We may also provide data when required by law or a court order.'],
+      paragrafos: ['The plugin uses no analytics tools, ad networks or third-party SDKs. We do not sell, rent or share your data with other companies, including companies related to us. The only third parties that receive data are the sales and payment platforms (Hotmart, Autodesk and PayPal), with only the data needed for the purchase, the service that delivers the website forms by e-mail, and Cloudflare Web Analytics, which only receives anonymous website visit data. We only work with platforms committed to protecting this data at the same level as this policy and the Brazilian General Data Protection Law (LGPD). We may also provide data when required by law or a court order.'],
     },
     {
       titulo: 'How long we keep data and when we delete it',
