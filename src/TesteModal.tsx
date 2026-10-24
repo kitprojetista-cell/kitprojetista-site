@@ -57,7 +57,7 @@ export default function TesteModal({ aberto, fechar, en = false }: Props) {
             <div className="success-icon"><Check size={26} /></div>
             <h3 id="teste-titulo">{t('Tudo pronto', 'All set')}, {nome.split(' ')[0]}.</h3>
             <p>{t('Baixe o Kit, rode o instalador e abra o AutoCAD. O teste de 7 dias começa no primeiro uso.', 'Download the Kit, run the installer and open AutoCAD. The installer has a Português / English button, and the 7-day trial starts the first time you use it.')}</p>
-            <a className="button button-primary" href={LINK_TESTE_GRATIS} target="_blank" rel="noreferrer">
+            <a className="button button-primary" href={LINK_TESTE_GRATIS} download>
               {t('Baixar o Kit', 'Download the Kit')} <Download size={17} />
             </a>
           </div>

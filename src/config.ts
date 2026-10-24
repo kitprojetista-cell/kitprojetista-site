@@ -17,9 +17,9 @@ export const REDES = {
   linkedin: 'https://www.linkedin.com/company/kit-projetista/',
 };
 
-/** Pasta com o instalador do teste grátis (liberada depois do formulário). */
-export const LINK_TESTE_GRATIS =
-  'https://drive.google.com/drive/folders/1ptgHDdMY3EdYjNpjO7veeJzzWjYXIGhA?usp=drive_link';
+/** Instalador do teste grátis, hospedado no próprio domínio (liberado depois do formulário).
+ *  Nome fixo sem a versão, para o link não quebrar a cada atualização. */
+export const LINK_TESTE_GRATIS = import.meta.env.BASE_URL + 'baixar/KitProjetista-Instalador.exe';
 
 /** Link da Calculadora na Play Store. Vazio = botão escondido (app ainda em teste). */
 export const PLAY_STORE = '';
