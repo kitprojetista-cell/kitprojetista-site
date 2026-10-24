@@ -19,11 +19,6 @@ const paginas = [
     imagem: 'og-calculadora.png',
   },
   {
-    rota: 'foto-aerea',
-    titulo: 'Foto aérea oficial no AutoCAD | Kit Projetista',
-    descricao: 'Coloque a ortofoto oficial da sua cidade ou estado por baixo do projeto no AutoCAD, georreferenciada e sem login. Veja como achar o link do serviço WMS da sua prefeitura.',
-  },
-  {
     rota: 'calculadora/privacidade',
     titulo: 'Política de privacidade | Calculadora do Projetista',
     descricao: 'O app não pede cadastro, não coleta dados e não tem anúncios. Veja o que fica no seu celular e o que usa da internet.',

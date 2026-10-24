@@ -1,7 +1,6 @@
 import Inicio from './paginas/Inicio';
 import InicioEn from './paginas/InicioEn';
 import Calculadora from './paginas/Calculadora';
-import FotoAerea from './paginas/FotoAerea';
 import Legal, { PRIVACIDADE_APP, PRIVACIDADE_KIT, PRIVACY_KIT_EN, TERMOS_KIT, TERMS_KIT_EN } from './paginas/Legal';
 import { BASE } from './config';
 
@@ -12,8 +11,6 @@ function App() {
   caminho = caminho.replace(/index\.html$/, '').replace(/\/+$/, '');
 
   switch (caminho) {
-    case 'foto-aerea':
-      return <FotoAerea />;
     case 'calculadora':
       return <Calculadora />;
     case 'calculadora/privacidade':
