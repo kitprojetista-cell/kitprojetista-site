@@ -30,7 +30,7 @@ export const PRIVACIDADE_KIT: Texto = {
     },
     {
       titulo: 'O que o plugin envia pela internet',
-      paragrafos: ['Nenhum dado é enviado automaticamente. O plugin não tem telemetria, anúncios nem rastreamento. Os botões de assinatura e suporte apenas abrem o seu WhatsApp ou o seu e-mail com uma mensagem pronta, e você decide se envia.'],
+      paragrafos: ['Nenhum dado é enviado automaticamente. O plugin não tem telemetria, anúncios nem rastreamento. Os botões de assinatura e suporte apenas abrem o seu WhatsApp ou o seu e-mail com uma mensagem pronta, e você decide se envia.', 'Mapa e planta de situação: só quando você usa os comandos KPSITUACAO ou KPSATELITE, o endereço, o CEP ou as coordenadas que você digitar são enviados aos serviços públicos do OpenStreetMap (Nominatim e Overpass) e, no caso de CEP, ao ViaCEP, apenas para achar o local e baixar as ruas em volta. Nada do desenho é enviado. A imagem de satélite do KPSATELITE é a do próprio AutoCAD (comando GEOMAP), sob as regras da Autodesk.'],
     },
     {
       titulo: 'Nosso site e formulários',
@@ -342,7 +342,7 @@ export const PRIVACY_KIT_EN: Texto = {
     },
     {
       titulo: 'What the plugin sends over the internet',
-      paragrafos: ['No data is sent automatically. The plugin has no telemetry, ads or tracking. The subscription and support buttons only open your WhatsApp or your e-mail with a ready message, and you decide whether to send it.'],
+      paragrafos: ['No data is sent automatically. The plugin has no telemetry, ads or tracking. The subscription and support buttons only open your WhatsApp or your e-mail with a ready message, and you decide whether to send it.', 'Map and site plan: only when you use the KPSITUACAO or KPSATELITE commands, the address, postal code or coordinates you type are sent to the public OpenStreetMap services (Nominatim and Overpass) and, for Brazilian postal codes, to ViaCEP, only to find the location and download the streets around it. Nothing from the drawing is sent. The satellite image in KPSATELITE is AutoCAD\'s own (GEOMAP command), under Autodesk\'s terms.'],
     },
     {
       titulo: 'Our website and forms',
