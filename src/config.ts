@@ -49,3 +49,9 @@ export const EQUIPE = {
   linkedin: 'https://www.linkedin.com/in/danielleprendin/',
   crea: '5071393854',
 };
+
+/**
+ * Contador de visitas: token do Cloudflare Web Analytics (grátis, sem cookies, sem dados pessoais).
+ * Vazio = nenhum script de estatística é carregado.
+ */
+export const CLOUDFLARE_ANALYTICS_TOKEN = '';
