@@ -12,7 +12,22 @@ function JsonLdPerguntas({ t }: { t: TipoTutorial }) {
     '@type': 'FAQPage',
     mainEntity: t.perguntas.map((q) => ({ '@type': 'Question', name: q.p, acceptedAnswer: { '@type': 'Answer', text: q.r } })),
   };
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dados) }} />;
+  const video = t.youtube ? {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: t.h1 + ' ' + t.destaque,
+    description: t.descricao,
+    thumbnailUrl: `https://i.ytimg.com/vi/${t.youtube}/maxresdefault.jpg`,
+    uploadDate: t.youtubeData,
+    embedUrl: `https://www.youtube.com/embed/${t.youtube}`,
+    contentUrl: `https://www.youtube.com/watch?v=${t.youtube}`,
+  } : null;
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dados) }} />
+      {video && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(video) }} />}
+    </>
+  );
 }
 
 export function Tutorial({ t }: { t: TipoTutorial }) {

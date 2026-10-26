@@ -17,6 +17,8 @@ export type Tutorial = {
   video?: { mp4: string; poster: string; legenda: string };
   /** Vídeo do YouTube (o ID, o que vem depois de watch?v= ou /shorts/). Vazio = sem vídeo. */
   youtube?: string;
+  /** Data de publicação do vídeo (AAAA-MM-DD), para o Google mostrar o vídeo na busca. */
+  youtubeData?: string;
   /** Guia simples, passo a passo (ex.: instalação). Usado no lugar da comparação manual × Kit. */
   guia?: { titulo: string; passos: { titulo: string; texto: string }[] };
   /** O jeito de sempre, no AutoCAD puro. */
@@ -36,7 +38,8 @@ export const TUTORIAIS: Tutorial[] = [
     h1: 'Como instalar o Kit Projetista e',
     destaque: 'testar grátis por 7 dias.',
     chamada: 'Do site até as ferramentas abertas no AutoCAD em menos de 2 minutos. Veja o vídeo ou siga os passos escritos.',
-    youtube: '',
+    youtube: '6HBA56JCv6g',
+    youtubeData: '2026-10-26',
     guia: {
       titulo: 'Passo a passo',
       passos: [
