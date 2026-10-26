@@ -253,3 +253,32 @@ a.button { text-decoration: none; }
 .situacao-clicavel { cursor: crosshair; }
 .situacao-dica { margin: 0 0 10px; font-size: 12px; color: #4d6f7c; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
 .situacao-voltar { background: none; border: 0; padding: 0; color: #1e6887; font-weight: 700; font-size: 12px; cursor: pointer; text-decoration: underline; }
+
+/* ── Tutoriais ── */
+.tutorial-secao { padding-top: 60px; padding-bottom: 70px; }
+.tutorial-video { margin: 0 0 28px; max-width: 900px; }
+.tutorial-video video { width: 100%; display: block; border-radius: 16px; border: 1px solid #cfe0e4; box-shadow: 0 10px 26px rgba(20,55,75,.08); background: #0f2533; }
+.tutorial-video figcaption { margin-top: 8px; font-size: 12px; color: #6c8a95; }
+.tutorial-comparacao { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.tutorial-coluna { background: #fff; border: 1px solid #cfe0e4; border-radius: 18px; padding: 24px; color: #4d6f7c; font-size: 14px; line-height: 1.65; }
+.tutorial-coluna-topo { display: flex; align-items: center; gap: 10px; color: #1e6887; margin-bottom: 10px; }
+.tutorial-coluna h2 { margin: 0; font-size: 19px; color: #14394f; letter-spacing: -.02em; }
+.tutorial-coluna h2 code { font-family: ui-monospace, Consolas, monospace; font-size: 15px; background: #e4eff2; color: #1e6887; padding: 2px 7px; border-radius: 6px; }
+.tutorial-coluna ol { margin: 0 0 14px; padding-left: 20px; display: grid; gap: 8px; }
+.tutorial-problema { margin: 0; padding: 12px 14px; border-radius: 12px; background: #fff6e5; color: #7a5410; font-size: 13px; }
+.tutorial-kit { background: #e4eff2; border-color: #b9d6dd; }
+.tutorial-kit .button { margin: 6px 0 10px; }
+.tutorial-gratis { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 8px; color: #1f6b3a; font-weight: 700; font-size: 13px; }
+.tutorial-gratis svg { flex: none; margin-top: 3px; }
+.tutorial-perguntas div { margin-top: 4px; }
+.tutorial-outros { margin-top: 44px; }
+.tutorial-outros h2 { color: #14394f; font-size: clamp(22px, 3vw, 30px); margin: 0 0 14px; }
+.tutorial-cartoes { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.tutorial-cartao { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 14px; background: #fff; border: 1px solid #cfe0e4; color: #14394f; text-decoration: none; font-size: 14px; font-weight: 600; line-height: 1.4; transition: transform .2s, box-shadow .2s; }
+.tutorial-cartao:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(20,55,75,.1); }
+.tutorial-cartao > svg:first-child { flex: none; color: #2e7d91; }
+.tutorial-cartao > svg:last-child { flex: none; margin-left: auto; color: #1e6887; }
+.tutorial-cartao span { display: grid; gap: 4px; }
+.tutorial-cartao small { font-weight: 400; color: #5a7c87; font-size: 12px; line-height: 1.5; }
+.tutorial-cartoes-grandes { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+@media (max-width: 800px) { .tutorial-comparacao { grid-template-columns: 1fr; } }

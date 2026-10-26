@@ -1,7 +1,7 @@
 // Depois do build: cria um index.html para cada endereço (abre direto e ao recarregar, sem erro 404),
 // cada um com seu próprio título e descrição para o Google e para o compartilhamento.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { render } from '../dist-ssr/entry-server.js';
+import { render, paginasTutoriais } from '../dist-ssr/entry-server.js';
 
 const siteUrl = (process.env.SITE_URL || 'https://kitprojetista.com.br').replace(/\/$/, '');
 const base = readFileSync('dist/index.html', 'utf8');
@@ -66,6 +66,8 @@ const paginas = [
 const trocarMeta = (html, chave, valor) =>
   html.replace(new RegExp(`(<meta (?:name|property)="${chave}" content=")[^"]*(")`), `$1${valor}$2`);
 
+paginas.push(...paginasTutoriais);
+
 for (const p of paginas) {
   let html = base.replace(/<title>[^<]*<\/title>/, `<title>${p.titulo}</title>`);
   if (p.idioma) html = html.replace(/<html lang="[^"]*"/, `<html lang="${p.idioma}"`);
@@ -82,3 +84,13 @@ for (const p of paginas) {
   console.log('página:', p.rota);
 }
 writeFileSync('dist/404.html', base);
+
+// sitemap.xml com todas as páginas (o Google lê para achar as páginas novas)
+const prioridade = { '': '1.0', 'planta-de-situacao': '0.9', tutoriais: '0.8', calculadora: '0.8', en: '0.7' };
+const hoje = new Date().toISOString().slice(0, 10);
+const urls = ['', ...paginas.map((p) => p.rota)].map((r) => {
+  const pr = prioridade[r] ?? (paginasTutoriais.some((t) => t.rota === r) ? '0.8' : '0.3');
+  return `  <url><loc>${siteUrl}/${r ? r + '/' : ''}</loc><lastmod>${hoje}</lastmod><priority>${pr}</priority></url>`;
+});
+writeFileSync('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`);
+console.log('sitemap:', urls.length, 'páginas');

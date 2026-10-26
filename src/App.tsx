@@ -2,6 +2,8 @@ import Inicio from './paginas/Inicio';
 import InicioEn from './paginas/InicioEn';
 import Calculadora from './paginas/Calculadora';
 import PlantaSituacao from './paginas/PlantaSituacao';
+import { ListaTutoriais, Tutorial } from './paginas/Tutorial';
+import { buscarTutorial } from './tutoriais/dados';
 import Legal, { PRIVACIDADE_APP, PRIVACIDADE_KIT, PRIVACY_KIT_EN, TERMOS_KIT, TERMS_KIT_EN } from './paginas/Legal';
 import { BASE } from './config';
 
@@ -12,7 +14,12 @@ function App({ caminho: inicial }: { caminho?: string } = {}) {
   if (caminho.startsWith(BASE)) caminho = caminho.slice(BASE.length);
   caminho = caminho.replace(/index\.html$/, '').replace(/\/+$/, '');
 
+  const tutorial = buscarTutorial(caminho);
+  if (tutorial) return <Tutorial t={tutorial} />;
+
   switch (caminho) {
+    case 'tutoriais':
+      return <ListaTutoriais />;
     case 'planta-de-situacao':
       return <PlantaSituacao />;
     case 'calculadora':
