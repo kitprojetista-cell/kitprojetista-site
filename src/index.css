@@ -250,3 +250,6 @@ a.button { text-decoration: none; }
   .faixa-texto { flex-basis: 100%; order: 2; }
   .faixa-acao { order: 3; }
 }
+.situacao-clicavel { cursor: crosshair; }
+.situacao-dica { margin: 0 0 10px; font-size: 12px; color: #4d6f7c; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
+.situacao-voltar { background: none; border: 0; padding: 0; color: #1e6887; font-weight: 700; font-size: 12px; cursor: pointer; text-decoration: underline; }

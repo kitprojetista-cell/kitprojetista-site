@@ -8,6 +8,8 @@ export type P2 = { x: number; y: number };
 export type Local = { lat: number; lon: number; descricao: string; aproximado: string };
 export type Via = { nome: string; tipo: string; pontos: P2[] };
 export type Rotulo = { nome: string; ponto: P2; angulo: number };
+/** O que veio do OpenStreetMap, em metros UTM absolutos (para recentralizar sem baixar de novo). */
+export type Bruto = { vias: Via[]; edificacoes: P2[][]; e0: number; n0: number; alcance: number };
 export type Desenho = {
   local: Local;
   raio: number;
@@ -18,6 +20,7 @@ export type Desenho = {
   sul: boolean;
   e: number;
   n: number;
+  bruto: Bruto;
 };
 
 const TIPOS_VIA = 'motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|road|service|pedestrian';
@@ -55,6 +58,24 @@ export function paraUtm(lat: number, lon: number, fuso: number) {
     + ((61 - 58 * tt + tt * tt + 600 * cc - 330 * EP2) * aa ** 6) / 720));
   if (lat < 0) n += 10000000;
   return { e, n };
+}
+
+/** UTM → latitude/longitude (SIRGAS 2000), para quando o usuário move o local da obra. */
+export function paraGeograficas(e: number, n: number, fuso: number, sul: boolean) {
+  const x = e - 500000, y = sul ? n - 10000000 : n;
+  const mu = y / K0 / (A * (1 - E2 / 4 - (3 * E2 * E2) / 64 - (5 * E2 ** 3) / 256));
+  const e1 = (1 - Math.sqrt(1 - E2)) / (1 + Math.sqrt(1 - E2));
+  const phi1 = mu + ((3 * e1) / 2 - (27 * e1 ** 3) / 32) * Math.sin(2 * mu)
+    + ((21 * e1 * e1) / 16 - (55 * e1 ** 4) / 32) * Math.sin(4 * mu)
+    + ((151 * e1 ** 3) / 96) * Math.sin(6 * mu) + ((1097 * e1 ** 4) / 512) * Math.sin(8 * mu);
+  const s = Math.sin(phi1), c = Math.cos(phi1), t = Math.tan(phi1);
+  const c1 = EP2 * c * c, t1 = t * t;
+  const n1 = A / Math.sqrt(1 - E2 * s * s), r1 = (A * (1 - E2)) / (1 - E2 * s * s) ** 1.5;
+  const d = x / (n1 * K0);
+  const lat = phi1 - ((n1 * t) / r1) * ((d * d) / 2 - ((5 + 3 * t1 + 10 * c1 - 4 * c1 * c1 - 9 * EP2) * d ** 4) / 24
+    + ((61 + 90 * t1 + 298 * c1 + 45 * t1 * t1 - 252 * EP2 - 3 * c1 * c1) * d ** 6) / 720);
+  const lon = (d - ((1 + 2 * t1 + c1) * d ** 3) / 6 + ((5 - 2 * c1 + 28 * t1 - 3 * c1 * c1 + 8 * EP2 + 24 * t1 * t1) * d ** 5) / 120) / c;
+  return { lat: (lat * 180) / Math.PI, lon: fuso * 6 - 183 + (lon * 180) / Math.PI };
 }
 
 // ───────────────────────── endereço → coordenadas ─────────────────────────
@@ -133,8 +154,10 @@ type ElementoOsm = { type: string; tags?: Record<string, string>; geometry?: { l
 
 export async function montar(local: Local, raio: number): Promise<Desenho> {
   const lat = local.lat.toFixed(7), lon = local.lon.toFixed(7);
-  const r = Math.ceil(raio * 1.45);
-  const consulta = `[out:json][timeout:40];(way["highway"~"^(${TIPOS_VIA})$"](around:${r},${lat},${lon});way["building"](around:${Math.round(raio)},${lat},${lon}););out tags geom;`;
+  // Baixa com folga de 1 raio: dá para mover o local da obra até 1 raio sem buscar de novo.
+  const alcance = raio;
+  const r = Math.ceil(raio * 1.45 + alcance);
+  const consulta = `[out:json][timeout:50];(way["highway"~"^(${TIPOS_VIA})$"](around:${r},${lat},${lon});way["building"](around:${r},${lat},${lon}););out tags geom;`;
   let resp: { elements?: ElementoOsm[] } | null = null;
   for (const servidor of OVERPASS) {
     try {
@@ -153,21 +176,54 @@ export async function montar(local: Local, raio: number): Promise<Desenho> {
   const vias: Via[] = [], edificacoes: P2[][] = [];
   for (const el of resp.elements ?? []) {
     if (!el.geometry || el.geometry.length < 2) continue;
-    const pts = el.geometry.map((g) => { const u = paraUtm(g.lat, g.lon, fuso); return { x: u.e - e0, y: u.n - n0 }; });
+    const pts = el.geometry.map((g) => { const u = paraUtm(g.lat, g.lon, fuso); return { x: u.e, y: u.n }; });
     const tags = el.tags ?? {};
     if (tags.highway) vias.push({ nome: tags.name ?? '', tipo: tags.highway, pontos: pts });
-    else if (tags.building && pts.length >= 3) {
-      const cx = pts.reduce((s, p) => s + p.x, 0) / pts.length, cy = pts.reduce((s, p) => s + p.y, 0) / pts.length;
-      if (Math.abs(cx) <= raio && Math.abs(cy) <= raio) edificacoes.push(pts);
-    }
+    else if (tags.building && pts.length >= 3) edificacoes.push(pts);
   }
-  const recortadas = recortar(vias, raio);
+  return compor({ vias, edificacoes, e0, n0, alcance }, local, raio, fuso, sul, e0, n0);
+}
+
+/** Monta o desenho centrado em (e, n) a partir dos dados já baixados. */
+function compor(bruto: Bruto, local: Local, raio: number, fuso: number, sul: boolean, e: number, n: number): Desenho {
+  const mover = (p: P2) => ({ x: p.x - e, y: p.y - n });
+  const recortadas = recortar(bruto.vias.map((v) => ({ ...v, pontos: v.pontos.map(mover) })), raio);
+  const edificacoes = bruto.edificacoes.map((c) => c.map(mover)).filter((c) => {
+    const cx = c.reduce((s, p) => s + p.x, 0) / c.length, cy = c.reduce((s, p) => s + p.y, 0) / c.length;
+    return Math.abs(cx) <= raio && Math.abs(cy) <= raio;
+  });
   return {
-    local, raio, fuso, sul, e: e0, n: n0,
+    local, raio, fuso, sul, e, n, bruto,
     vias: recortadas.map((v) => ({ ...v, largura: largura(v.tipo) })),
     edificacoes,
     rotulos: rotulos(recortadas, raio * 0.25),
   };
+}
+
+/**
+ * Move o local da obra (dx, dy em metros, a partir do centro atual) e recentraliza a planta.
+ * null quando o ponto novo sai da área já baixada: aí é preciso chamar montar() de novo.
+ */
+export function recentrar(d: Desenho, dx: number, dy: number): Desenho | null {
+  const e = d.e + dx, n = d.n + dy;
+  if (Math.abs(e - d.bruto.e0) > d.bruto.alcance || Math.abs(n - d.bruto.n0) > d.bruto.alcance) return null;
+  const g = paraGeograficas(e, n, d.fuso, d.sul);
+  const local: Local = { ...d.local, lat: g.lat, lon: g.lon, aproximado: '', descricao: descricaoAjustada(d.local.descricao, g.lat, g.lon) };
+  return compor(d.bruto, local, d.raio, d.fuso, d.sul, e, n);
+}
+
+/** Endereço: mantém e marca "(ponto ajustado no mapa)". Coordenadas: troca pelas novas. */
+function descricaoAjustada(antes: string, lat: number, lon: number) {
+  const base = antes.replace(/ \(ponto ajustado no mapa\)$/, '');
+  return lerCoordenadas(base) ? `${lat.toFixed(6)}, ${lon.toFixed(6)}` : base + ' (ponto ajustado no mapa)';
+}
+
+/** Ponto ajustado longe demais: busca de novo em volta das novas coordenadas. */
+export async function remontar(d: Desenho, dx: number, dy: number): Promise<Desenho> {
+  const g = paraGeograficas(d.e + dx, d.n + dy, d.fuso, d.sul);
+  const novo = await montar({ ...d.local, lat: g.lat, lon: g.lon, aproximado: '' }, d.raio);
+  novo.local.descricao = descricaoAjustada(d.local.descricao, g.lat, g.lon);
+  return novo;
 }
 
 const dist = (a: P2, b: P2) => Math.hypot(b.x - a.x, b.y - a.y);

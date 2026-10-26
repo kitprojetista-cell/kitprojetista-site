@@ -1,10 +1,10 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, MouseEvent, useMemo, useRef, useState } from 'react';
 import { ArrowRight, Check, Download, FileText, Layers, MapPin, Search, ShieldCheck } from 'lucide-react';
 import Layout from '../Layout';
 import TesteModal from '../TesteModal';
 import { rota } from '../config';
 import { enviarFormulario, guardarPendente } from '../formulario';
-import { Desenho, FONTE_OSM, anguloLegivel, gerarDxf, legenda, localizar, montar } from '../situacao/situacao';
+import { Desenho, FONTE_OSM, anguloLegivel, gerarDxf, legenda, localizar, montar, recentrar, remontar } from '../situacao/situacao';
 
 const RAIOS = [100, 150, 250, 400];
 const CHAVE_CADASTRO = 'kp_cadastro_situacao';
@@ -14,12 +14,22 @@ function jaCadastrado() {
 }
 
 /** Prévia em SVG, no mesmo desenho do DXF (norte para cima). */
-function Previa({ d }: { d: Desenho }) {
+function Previa({ d, aoClicar }: { d: Desenho; aoClicar?: (dx: number, dy: number) => void }) {
+  const ref = useRef<SVGSVGElement>(null);
   const r = d.raio, h = Math.max(2, r / 45);
+  const clicar = (ev: MouseEvent<SVGSVGElement>) => {
+    const svg = ref.current, m = svg?.getScreenCTM();
+    if (!svg || !m || !aoClicar) return;
+    const p = svg.createSVGPoint();
+    p.x = ev.clientX; p.y = ev.clientY;
+    const q = p.matrixTransform(m.inverse());
+    if (Math.abs(q.x) > r || Math.abs(q.y) > r) return;
+    aoClicar(q.x, -q.y);
+  };
   const pts = (lista: { x: number; y: number }[]) => lista.map((p) => `${p.x.toFixed(2)},${(-p.y).toFixed(2)}`).join(' ');
   const rObra = Math.max(4, r / 25), nt = r * 0.09, nb = { x: r - nt * 1.1, y: r - nt * 2.4 };
   return (
-    <svg className="situacao-svg" viewBox={`${-r * 1.04} ${-r * 1.04} ${r * 2.08} ${r * 2.08}`} role="img" aria-label="Prévia da planta de situação">
+    <svg ref={ref} onClick={clicar} className={`situacao-svg${aoClicar ? ' situacao-clicavel' : ''}`} viewBox={`${-r * 1.04} ${-r * 1.04} ${r * 2.08} ${r * 2.08}`} role="img" aria-label="Prévia da planta de situação">
       <defs><clipPath id="moldura"><rect x={-r} y={-r} width={2 * r} height={2 * r} /></clipPath></defs>
       <rect x={-r} y={-r} width={2 * r} height={2 * r} fill="#fff" />
       <g clipPath="url(#moldura)">
@@ -52,6 +62,8 @@ export default function PlantaSituacao() {
   const [passo, setPasso] = useState('');
   const [erro, setErro] = useState('');
   const [desenho, setDesenho] = useState<Desenho | null>(null);
+  const [original, setOriginal] = useState<Desenho | null>(null);
+  const [movendo, setMovendo] = useState(false);
 
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
@@ -73,11 +85,24 @@ export default function PlantaSituacao() {
       const d = await montar(local, raio);
       if (!d.vias.length && !d.edificacoes.length) throw new Error('O mapa não tem ruas cadastradas nesse raio. Tente um raio maior.');
       setDesenho(d);
+      setOriginal(d);
       setEstado('pronto');
     } catch (x) {
       setErro((x as Error).message || 'Não deu para gerar agora. Tente de novo.');
       setEstado('livre');
     }
+  };
+
+  /** Clique no mapa: o local da obra vai para o ponto clicado e a planta se recentraliza. */
+  const mover = async (dx: number, dy: number) => {
+    if (!desenho || movendo) return;
+    setBaixou(false);
+    const perto = recentrar(desenho, dx, dy);
+    if (perto) { setDesenho(perto); return; }
+    setMovendo(true); setErro('');
+    try { setDesenho(await remontar(desenho, dx, dy)); }
+    catch (x) { setErro((x as Error).message || 'Não deu para atualizar o mapa agora.'); }
+    finally { setMovendo(false); }
   };
 
   const baixar = () => {
@@ -148,9 +173,15 @@ export default function PlantaSituacao() {
           <div className="situacao-resultado">
             <div className="situacao-previa">
               {desenho.local.aproximado && (
-                <p className="situacao-aviso">Localização aproximada: {desenho.local.aproximado}. Para o ponto exato, clique com o botão direito no lote no Google Maps, copie as coordenadas e cole aqui.</p>
+                <p className="situacao-aviso">Localização aproximada: {desenho.local.aproximado}. Clique no mapa onde fica o lote, ou cole as coordenadas do Google Maps no campo de busca.</p>
               )}
-              <Previa d={desenho} />
+              <p className="situacao-dica">
+                {movendo ? 'Atualizando o mapa...' : 'Clique no mapa onde fica o lote para mover o local da obra.'}
+                {original && desenho !== original && !movendo && (
+                  <button type="button" className="situacao-voltar" onClick={() => { setDesenho(original); setBaixou(false); }}>Voltar ao ponto do endereço</button>
+                )}
+              </p>
+              <Previa d={desenho} aoClicar={mover} />
               <div className="situacao-legenda">
                 <b>{linhasLegenda[0]}</b>
                 {linhasLegenda.slice(1, 3).map((l) => <span key={l}>{l}</span>)}
@@ -208,7 +239,7 @@ export default function PlantaSituacao() {
           <h2>O que é a planta de situação?</h2>
           <p>É o desenho que mostra onde o lote fica na cidade: as ruas em volta, com os nomes, a quadra, o norte e, em muitas prefeituras, a distância até a esquina mais próxima. Ela é pedida na aprovação de projeto, no alvará de construção, na regularização e em vários processos de cartório.</p>
           <h3>Como usar o arquivo</h3>
-          <p>Abra o DXF no seu CAD, copie o desenho para a prancha e ajuste a escala (é comum 1:1000 ou 1:2000). O círculo marca o ponto encontrado pelo endereço: confira a posição exata do lote e as divisas com o levantamento ou a matrícula, porque o mapa é uma referência, não um levantamento topográfico.</p>
+          <p>Abra o DXF no seu CAD, copie o desenho para a prancha e ajuste a escala (é comum 1:1000 ou 1:2000). O círculo marca o ponto encontrado pelo endereço; se o lote estiver em outro lugar, clique nele no mapa antes de baixar e a planta se recentraliza ali. Confira as divisas com o levantamento ou a matrícula, porque o mapa é uma referência, não um levantamento topográfico.</p>
           <h3>De onde vêm os dados?</h3>
           <p>As ruas e edificações vêm do OpenStreetMap, um mapa aberto mantido por voluntários. Em cidades grandes ele costuma ser bem completo; em loteamentos novos pode faltar alguma rua. O CEP é consultado no ViaCEP. Tudo é feito no seu navegador: o desenho não passa pelos nossos servidores.</p>
         </div>
