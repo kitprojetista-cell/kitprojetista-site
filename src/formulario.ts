@@ -1,28 +1,19 @@
-import { EMAIL_FORMULARIOS } from './config';
+import { EMAIL_FORMULARIOS, WEB3FORMS_CHAVE } from './config';
 
 const CHAVE_PENDENTES = 'kp_formularios_pendentes';
 const TEMPO_LIMITE_MS = 8000;
 
 type Pendente = { assunto: string; dados: Record<string, string>; quando: string };
 
-/**
- * Envia um formulário por e-mail usando o FormSubmit (funciona em site estático).
- * Na primeira vez, o FormSubmit manda um e-mail de ativação para EMAIL_FORMULARIOS.
- * Desiste depois de 8 segundos, para o visitante não ficar preso esperando um serviço fora do ar.
- */
-export async function enviarFormulario(assunto: string, dados: Record<string, string>) {
+/** POST com prazo: desiste depois de 8 s, para o visitante não ficar preso num serviço fora do ar. */
+async function postar(url: string, corpo: Record<string, string>) {
   const controle = new AbortController();
   const prazo = setTimeout(() => controle.abort(), TEMPO_LIMITE_MS);
   try {
-    const resposta = await fetch(`https://formsubmit.co/ajax/${EMAIL_FORMULARIOS}`, {
+    const resposta = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        ...dados,
-        _subject: assunto,
-        _template: 'table',
-        _replyto: dados['E-mail'] ?? '',
-      }),
+      body: JSON.stringify(corpo),
       signal: controle.signal,
     });
     if (!resposta.ok) throw new Error('Falha no envio');
@@ -31,6 +22,32 @@ export async function enviarFormulario(assunto: string, dados: Record<string, st
   } finally {
     clearTimeout(prazo);
   }
+}
+
+/**
+ * Envia um formulário para o e-mail do Kit. Tenta o Web3Forms e, se falhar, o FormSubmit.
+ * Só dá erro se os dois falharem.
+ */
+export async function enviarFormulario(assunto: string, dados: Record<string, string>) {
+  const email = dados['E-mail'] ?? '';
+  try {
+    await postar('https://api.web3forms.com/submit', {
+      ...dados,
+      access_key: WEB3FORMS_CHAVE,
+      subject: assunto,
+      from_name: 'Site Kit Projetista',
+      ...(email ? { replyto: email } : {}),
+    });
+    return;
+  } catch {
+    // segue para o serviço de reserva
+  }
+  await postar(`https://formsubmit.co/ajax/${EMAIL_FORMULARIOS}`, {
+    ...dados,
+    _subject: assunto,
+    _template: 'table',
+    _replyto: email,
+  });
 }
 
 /** Guarda no navegador um formulário que não foi enviado, para tentar de novo na próxima visita. */

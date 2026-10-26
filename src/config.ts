@@ -3,6 +3,10 @@
 /** E-mail que recebe os formulários (contato, teste grátis, testadores). */
 export const EMAIL_FORMULARIOS = 'contato@kitprojetista.com.br';
 
+/** Chave pública do Web3Forms (serviço principal dos formulários; o FormSubmit fica de reserva).
+ *  É feita para ficar no site: só permite enviar e-mail para o endereço cadastrado nela. */
+export const WEB3FORMS_CHAVE = '826064fb-a4b9-4161-afcc-ecc1d6edc166';
+
 /** E-mail mostrado ao público. */
 export const EMAIL_CONTATO = 'contato@kitprojetista.com.br';
 
