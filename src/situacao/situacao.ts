@@ -104,12 +104,38 @@ export function lerCoordenadas(texto: string): Local | null {
 }
 
 type ViaCep = { logradouro?: string; bairro?: string; localidade?: string; uf?: string; erro?: boolean | string };
-type Nominatim = { lat: string; lon: string; display_name: string };
+type Geo = { type: string; coordinates: unknown };
+type Nominatim = { lat: string; lon: string; display_name: string; geojson?: Geo };
 
 async function nominatim(q: string): Promise<Nominatim | null> {
-  const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&accept-language=pt-BR&q=' + encodeURIComponent(q);
+  const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&accept-language=pt-BR&polygon_geojson=1&polygon_threshold=0.00001&q=' + encodeURIComponent(q);
   const lista = await json<Nominatim[]>(url);
   return lista.length ? lista[0] : null;
+}
+
+/**
+ * Para uma rua, o Nominatim devolve o centro geométrico, que numa rua curva ou em L cai fora dela.
+ * Aqui o ponto vai para o meio do comprimento da própria rua (no trecho mais longo, se tiver vários).
+ */
+export function pontoNaRua(geo: Geo | undefined): { lat: number; lon: number } | null {
+  if (!geo) return null;
+  const linhas: number[][][] = geo.type === 'LineString' ? [geo.coordinates as number[][]]
+    : geo.type === 'MultiLineString' ? (geo.coordinates as number[][][]) : [];
+  if (!linhas.length) return null;
+  const m = (a: number[], b: number[]) => Math.hypot((b[0] - a[0]) * Math.cos((a[1] * Math.PI) / 180), b[1] - a[1]);
+  const comp = (l: number[][]) => l.slice(1).reduce((s, p, i) => s + m(l[i], p), 0);
+  const maior = linhas.reduce((x, l) => (comp(l) > comp(x) ? l : x));
+  const total = comp(maior);
+  let acum = 0;
+  for (let i = 1; i < maior.length; i++) {
+    const d = m(maior[i - 1], maior[i]);
+    if (acum + d >= total / 2 && d > 0) {
+      const t = (total / 2 - acum) / d;
+      return { lon: maior[i - 1][0] + t * (maior[i][0] - maior[i - 1][0]), lat: maior[i - 1][1] + t * (maior[i][1] - maior[i - 1][1]) };
+    }
+    acum += d;
+  }
+  return { lon: maior[0][0], lat: maior[0][1] };
 }
 
 /**
@@ -143,7 +169,10 @@ export async function localizar(texto: string): Promise<Local> {
     let r: Nominatim | null = null;
     try { r = await nominatim(tentativas[i].q); }
     catch { throw new Error('O serviço de endereços (OpenStreetMap) não respondeu. Tente de novo em alguns segundos.'); }
-    if (r) return { lat: parseFloat(r.lat), lon: parseFloat(r.lon), descricao: r.display_name, aproximado: tentativas[i].aviso };
+    if (r) {
+      const naRua = pontoNaRua(r.geojson);
+      return { lat: naRua?.lat ?? parseFloat(r.lat), lon: naRua?.lon ?? parseFloat(r.lon), descricao: r.display_name, aproximado: tentativas[i].aviso };
+    }
   }
   throw new Error('Endereço não encontrado. Tente com rua, número, cidade e estado, ou cole as coordenadas do Google Maps.');
 }
