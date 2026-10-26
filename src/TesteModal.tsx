@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { ArrowRight, Check, Download, X } from 'lucide-react';
 import { LINK_TESTE_GRATIS, rota } from './config';
-import { enviarFormulario } from './formulario';
+import { enviarFormulario, guardarPendente } from './formulario';
 
 type Props = { aberto: boolean; fechar: () => void; en?: boolean };
 
@@ -30,18 +30,21 @@ export default function TesteModal({ aberto, fechar, en = false }: Props) {
     e.preventDefault();
     setEnviando(true);
     setErro(false);
+    const assunto = `Teste grátis — ${nome}${en ? ' (EN)' : ''}`;
+    const dados = {
+      Origem: en ? 'Teste grátis (7 dias), página em inglês' : 'Teste grátis (7 dias)',
+      Nome: nome,
+      'E-mail': email,
+      WhatsApp: whats || 'Não informado',
+      'Aceita e-mails': aceitaEmails ? 'Sim' : 'Não',
+    };
     try {
-      await enviarFormulario(`Teste grátis — ${nome}${en ? ' (EN)' : ''}`, {
-        Origem: en ? 'Teste grátis (7 dias), página em inglês' : 'Teste grátis (7 dias)',
-        Nome: nome,
-        'E-mail': email,
-        WhatsApp: whats || 'Não informado',
-        'Aceita e-mails': aceitaEmails ? 'Sim' : 'Não',
-      });
-      setLiberado(true);
+      await enviarFormulario(assunto, dados);
     } catch {
-      setErro(true);
+      // O serviço de e-mail falhou ou demorou: o download sai do mesmo jeito e o cadastro é reenviado depois.
+      guardarPendente(assunto, dados);
     } finally {
+      setLiberado(true);
       setEnviando(false);
     }
   };
