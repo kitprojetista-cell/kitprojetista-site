@@ -117,6 +117,14 @@ export default function Inicio() {
         <a href="https://www.youtube.com/shorts/eGr1QJeuOcI" target="_blank" rel="noreferrer">▶ Assista com som no YouTube</a>
       </section>
 
+      <section className="section-padding faixa-situacao-wrap">
+        <a className="faixa-situacao" href={rota('planta-de-situacao/')}>
+          <span className="faixa-tag">GRÁTIS</span>
+          <span className="faixa-texto"><b>Planta de situação pelo CEP, em DXF.</b> Ruas reais, nomes, norte e coordenadas UTM, prontas para a prancha.</span>
+          <span className="faixa-acao">Gerar agora <ArrowRight size={16} /></span>
+        </a>
+      </section>
+
       <section id="recursos" className="features-section section-padding">
         <div className="section-heading">
           <div><div className="eyebrow dark"><span className="eyebrow-dot" /> MAIS TEMPO PARA CRIAR</div><h2>Seu projeto.<br /><span style={{ color: '#1e6887' }}>Sem o trabalho repetitivo.</span></h2></div>

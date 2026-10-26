@@ -51,6 +51,7 @@ export default function Layout({ children, naInicial, en = false }: Props) {
         <nav className="desktop-nav" aria-label={t('Navegação principal', 'Main navigation')}>
           <button onClick={() => ir(en ? 'features' : 'recursos')}>{t('Recursos', 'Features')}</button>
           <button onClick={() => ir(en ? 'plans' : 'planos')}>{t('Planos', 'Pricing')}</button>
+          {!en && <a href={rota('planta-de-situacao/')}>Planta de situação</a>}
           {!en && <a href={rota('calculadora/')}>Calculadora</a>}
           <button onClick={() => ir(en ? 'contact' : 'contato')}>{t('Contato', 'Contact')}</button>
         </nav>
@@ -90,6 +91,7 @@ export default function Layout({ children, naInicial, en = false }: Props) {
         <div className="mobile-menu">
           <button onClick={() => ir(en ? 'features' : 'recursos')}>{t('Recursos', 'Features')} <ChevronRight size={16} /></button>
           <button onClick={() => ir(en ? 'plans' : 'planos')}>{t('Planos', 'Pricing')} <ChevronRight size={16} /></button>
+          {!en && <a href={rota('planta-de-situacao/')}>Planta de situação grátis <ChevronRight size={16} /></a>}
           {!en && <a href={rota('calculadora/')}>Calculadora do Projetista <ChevronRight size={16} /></a>}
           <button onClick={() => ir(en ? 'contact' : 'contato')}>{t('Contato', 'Contact')} <ChevronRight size={16} /></button>
           <a href={rota(en ? 'en/privacy/' : 'privacidade/')}>{t('Privacidade', 'Privacy')} <ChevronRight size={16} /></a>
@@ -116,6 +118,7 @@ export default function Layout({ children, naInicial, en = false }: Props) {
               </>
             ) : (
               <>
+                <a href={rota('planta-de-situacao/')}>Planta de situação grátis</a>
                 <a href={rota('privacidade/')}>Política de privacidade</a>
                 <a href={rota('calculadora/privacidade/')}>Privacidade da Calculadora</a>
                 <a href={rota('termos/')}>Termos de uso</a>

@@ -19,6 +19,11 @@ const paginas = [
     imagem: 'og-calculadora.png',
   },
   {
+    rota: 'planta-de-situacao',
+    titulo: 'Planta de situação grátis pelo CEP, em DXF | Kit Projetista',
+    descricao: 'Gere a planta de situação do lote pelo CEP ou endereço: ruas reais com nomes, norte, local da obra e coordenadas UTM. Baixe em DXF e abra no AutoCAD ou em qualquer CAD. Grátis.',
+  },
+  {
     rota: 'calculadora/privacidade',
     titulo: 'Política de privacidade | Calculadora do Projetista',
     descricao: 'O app não pede cadastro, não coleta dados e não tem anúncios. Veja o que fica no seu celular e o que usa da internet.',
