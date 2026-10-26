@@ -15,14 +15,46 @@ export type Tutorial = {
   destaque: string;
   chamada: string;
   video?: { mp4: string; poster: string; legenda: string };
+  /** Vídeo do YouTube (o ID, o que vem depois de watch?v= ou /shorts/). Vazio = sem vídeo. */
+  youtube?: string;
+  /** Guia simples, passo a passo (ex.: instalação). Usado no lugar da comparação manual × Kit. */
+  guia?: { titulo: string; passos: { titulo: string; texto: string }[] };
   /** O jeito de sempre, no AutoCAD puro. */
-  manual: { titulo: string; passos: string[]; problema: string };
+  manual?: { titulo: string; passos: string[]; problema: string };
   /** O jeito com o Kit. */
-  kit: { comando: string; passos: string[]; gratis?: string };
+  kit?: { comando: string; passos: string[]; gratis?: string };
   perguntas: { p: string; r: string }[];
 };
 
 export const TUTORIAIS: Tutorial[] = [
+  {
+    slug: 'como-instalar-kit-projetista',
+    titulo: 'Como instalar o Kit Projetista e testar grátis por 7 dias',
+    descricao: 'Passo a passo em vídeo para baixar, instalar e abrir o Kit Projetista no AutoCAD: cadastro no site, avisos do navegador e do Windows e a aba do Kit.',
+    curto: 'Instalar o Kit',
+    selo: 'TUTORIAL · INSTALAÇÃO',
+    h1: 'Como instalar o Kit Projetista e',
+    destaque: 'testar grátis por 7 dias.',
+    chamada: 'Do site até as ferramentas abertas no AutoCAD em menos de 2 minutos. Veja o vídeo ou siga os passos escritos.',
+    youtube: '',
+    guia: {
+      titulo: 'Passo a passo',
+      passos: [
+        { titulo: 'Peça o teste no site', texto: 'Em kitprojetista.com.br, clique em "Teste Gratuito por 7 dias", preencha o nome e o e-mail (o WhatsApp é opcional) e clique em "Liberar download".' },
+        { titulo: 'Baixe o instalador', texto: 'Clique em "Baixar o Kit". Se o Chrome mostrar um aviso sobre o arquivo, clique no aviso e depois em "Baixar arquivo suspeito". O aviso aparece porque o instalador ainda é novo; o arquivo é seguro.' },
+        { titulo: 'Rode o instalador', texto: 'Abra a pasta Downloads e dê um duplo clique no instalador do Kit Projetista. Se o Windows mostrar "Editor desconhecido", clique em "Mais informações" e depois em "Executar assim mesmo".' },
+        { titulo: 'Instale', texto: 'No instalador, clique no botão para instalar e confirme em "OK". Não precisa ser administrador do computador.' },
+        { titulo: 'Abra o AutoCAD', texto: 'Abra o AutoCAD e aguarde carregar. No aviso de segurança, clique em "Always Load" (Sempre carregar): é o AutoCAD pedindo permissão para abrir o plugin.' },
+        { titulo: 'Use o Kit', texto: 'Clique na aba "Kit Projetista", no topo da tela: ali ficam todas as ferramentas. Em "Central" você vê tudo o que o seu plano oferece. O teste de 7 dias começa no primeiro uso.' },
+      ],
+    },
+    perguntas: [
+      { p: 'Precisa de cartão de crédito para testar?', r: 'Não. O teste de 7 dias é liberado só com nome e e-mail, sem cartão e sem compromisso.' },
+      { p: 'Por que o navegador e o Windows mostram aviso?', r: 'Porque o instalador é novo e ainda não tem assinatura digital, então o navegador e o Windows ainda não o conhecem. É um aviso padrão para programas novos; o arquivo vem do nosso próprio site e é seguro.' },
+      { p: 'Funciona em qual AutoCAD?', r: 'No AutoCAD completo e no Civil 3D, do 2015 ao 2027, no Windows. O AutoCAD LT não aceita plugins.' },
+      { p: 'O que acontece depois dos 7 dias?', r: 'As ferramentas pagas pedem a assinatura, e o Medidor de Linhas e a Planta de Situação continuam grátis para sempre.' },
+    ],
+  },
   {
     slug: 'area-dos-comodos-autocad',
     titulo: 'Como calcular a área dos cômodos no AutoCAD | Kit Projetista',

@@ -35,6 +35,26 @@ export function Tutorial({ t }: { t: TipoTutorial }) {
           </figure>
         )}
 
+        {t.youtube && (
+          <figure className="tutorial-video tutorial-youtube">
+            <iframe src={`https://www.youtube-nocookie.com/embed/${t.youtube}`} title={t.h1 + ' ' + t.destaque} loading="lazy"
+              allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+          </figure>
+        )}
+
+        {t.guia && (
+          <div className="tutorial-guia">
+            <h2>{t.guia.titulo}</h2>
+            <ol>
+              {t.guia.passos.map((p, i) => (
+                <li key={p.titulo}><span className="tutorial-num">{i + 1}</span><div><h3>{p.titulo}</h3><p>{p.texto}</p></div></li>
+              ))}
+            </ol>
+            <button className="button button-primary" onClick={() => setTesteAberto(true)}>Começar meu teste grátis <ArrowRight size={17} /></button>
+          </div>
+        )}
+
+        {t.manual && t.kit && (
         <div className="tutorial-comparacao">
           <article className="tutorial-coluna">
             <div className="tutorial-coluna-topo"><Clock size={20} strokeWidth={1.8} /> <h2>{t.manual.titulo}</h2></div>
@@ -49,6 +69,7 @@ export function Tutorial({ t }: { t: TipoTutorial }) {
             <p className="form-note">Para AutoCAD 2015 a 2027 e Civil 3D, no Windows. Não funciona no AutoCAD LT.</p>
           </article>
         </div>
+        )}
 
         <div className="situacao-texto tutorial-perguntas">
           <h2>Perguntas frequentes</h2>
