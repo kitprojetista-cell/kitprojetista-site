@@ -6,8 +6,9 @@ import Legal, { PRIVACIDADE_APP, PRIVACIDADE_KIT, PRIVACY_KIT_EN, TERMOS_KIT, TE
 import { BASE } from './config';
 
 /** Escolhe a página pelo endereço (cada rota tem seu próprio index.html gerado no build). */
-function App() {
-  let caminho = window.location.pathname;
+function App({ caminho: inicial }: { caminho?: string } = {}) {
+  // No build, o caminho vem de fora (HTML pronto de cada página); no navegador, do endereço.
+  let caminho = inicial ?? window.location.pathname;
   if (caminho.startsWith(BASE)) caminho = caminho.slice(BASE.length);
   caminho = caminho.replace(/index\.html$/, '').replace(/\/+$/, '');
 

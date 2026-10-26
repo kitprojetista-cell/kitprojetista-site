@@ -18,7 +18,7 @@ const recursos = [
 /** true no computador (tela larga): o vídeo vai para o topo, ao lado do título. */
 function useTelaLarga() {
   const consulta = '(min-width: 900px)';
-  const [larga, setLarga] = useState(() => window.matchMedia(consulta).matches);
+  const [larga, setLarga] = useState(() => typeof window !== 'undefined' && window.matchMedia(consulta).matches);
   useEffect(() => {
     const mq = window.matchMedia(consulta);
     const mudou = () => setLarga(mq.matches);

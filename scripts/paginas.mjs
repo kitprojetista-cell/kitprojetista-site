@@ -1,9 +1,20 @@
 // Depois do build: cria um index.html para cada endereço (abre direto e ao recarregar, sem erro 404),
 // cada um com seu próprio título e descrição para o Google e para o compartilhamento.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { render } from '../dist-ssr/entry-server.js';
 
 const siteUrl = (process.env.SITE_URL || 'https://kitprojetista.com.br').replace(/\/$/, '');
 const base = readFileSync('dist/index.html', 'utf8');
+const basePath = process.env.BASE_PATH || '/';
+
+/** Põe o HTML já renderizado da página dentro do <div id="root"> (o navegador monta por cima depois). */
+const comConteudo = (html, rota) => {
+  const corpo = render(basePath + (rota ? rota + '/' : ''));
+  if (!html.includes('<div id="root"></div>')) throw new Error('index.html sem <div id="root"></div>');
+  return html.replace('<div id="root"></div>', `<div id="root">${corpo}</div>`);
+};
+writeFileSync('dist/index.html', comConteudo(base, ''));
+console.log('página: (inicial)');
 
 const paginas = [
   {
@@ -67,7 +78,7 @@ for (const p of paginas) {
   html = html.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${siteUrl}/${p.rota}/$2`);
   if (p.imagem) for (const k of ['og:image', 'twitter:image']) html = trocarMeta(html, k, `${siteUrl}/${p.imagem}`);
   mkdirSync(`dist/${p.rota}`, { recursive: true });
-  writeFileSync(`dist/${p.rota}/index.html`, html);
+  writeFileSync(`dist/${p.rota}/index.html`, comConteudo(html, p.rota));
   console.log('página:', p.rota);
 }
 writeFileSync('dist/404.html', base);
