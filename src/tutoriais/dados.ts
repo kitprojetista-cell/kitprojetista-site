@@ -55,7 +55,7 @@ export const TUTORIAIS: Tutorial[] = [
       { p: 'Precisa de cartão de crédito para testar?', r: 'Não. O teste de 7 dias é liberado só com nome e e-mail, sem cartão e sem compromisso.' },
       { p: 'Por que o navegador e o Windows mostram aviso?', r: 'Porque o instalador é novo e ainda não tem assinatura digital, então o navegador e o Windows ainda não o conhecem. É um aviso padrão para programas novos; o arquivo vem do nosso próprio site e é seguro.' },
       { p: 'Funciona em qual AutoCAD?', r: 'No AutoCAD completo e no Civil 3D, do 2015 ao 2027, no Windows. O AutoCAD LT não aceita plugins.' },
-      { p: 'O que acontece depois dos 7 dias?', r: 'As ferramentas pagas pedem a assinatura, e o Medidor de Linhas e a Planta de Situação continuam grátis para sempre.' },
+      { p: 'O que acontece depois dos 7 dias?', r: 'As ferramentas pagas pedem a assinatura, e o Medidor de Linhas, a Planta de Situação e a importação de KML continuam grátis para sempre.' },
     ],
   },
   {
@@ -165,6 +165,44 @@ export const TUTORIAIS: Tutorial[] = [
       { p: 'Soma polilinhas e arcos também?', r: 'Sim. Linhas, polilinhas, arcos e splines entram na soma, cada um no seu layer. No Civil 3D, os objetos lineares também.' },
       { p: 'Serve para quantitativo de instalações?', r: 'É o uso mais comum: tubulação de água e esgoto, eletrodutos e fiação, rodapé, soleiras, cercas e guarda-corpos.' },
       { p: 'E se o desenho não tiver unidade definida?', r: 'O Kit avisa quando a unidade do desenho não está definida e mostra em qual unidade considerou as medidas, para você não errar a metragem.' },
+    ],
+  },
+  {
+    slug: 'importar-kml-autocad',
+    titulo: 'Como importar KML e KMZ do Google Earth no AutoCAD (grátis)',
+    descricao: 'Abra no AutoCAD o KML ou KMZ do Google Earth, o GPX do GPS e pontos em CSV, já em coordenadas UTM SIRGAS 2000, com a área de cada polígono. Grátis com o Kit.',
+    curto: 'Importar KML no AutoCAD',
+    selo: 'TUTORIAL · KML NO AUTOCAD',
+    h1: 'Como importar KML e KMZ do Google Earth no AutoCAD',
+    destaque: 'já em UTM.',
+    chamada: 'O cliente marcou o terreno no Google Earth e mandou o arquivo pelo WhatsApp? Veja por que o AutoCAD não abre KML e como trazer o lote para o desenho em segundos, de graça.',
+    manual: {
+      titulo: 'No AutoCAD, sem plugin',
+      passos: [
+        'O AutoCAD comum não abre KML nem KMZ: o arquivo é um mapa em latitude e longitude, e o desenho trabalha em metros.',
+        'O caminho mais comum é um site conversor de KML para DXF: você envia o arquivo do cliente para um servidor de terceiros e baixa o DXF.',
+        'O DXF convertido costuma vir em graus ou num sistema de coordenadas diferente, fora de escala ou longe da origem, e precisa ser movido e escalado à mão.',
+        'Para ter a área certa e casar com o levantamento, ainda é preciso converter para UTM SIRGAS 2000 no fuso da obra.',
+      ],
+      problema: 'São vários programas e sites para um arquivo só, e um erro de fuso ou de escala muda a área do lote sem você perceber.',
+    },
+    kit: {
+      comando: 'KPIMPORTAR',
+      gratis: 'Importar KML, KMZ, GPX, GeoJSON e CSV é grátis para sempre no Kit, mesmo depois do teste.',
+      passos: [
+        'Digite KPIMPORTAR (ou clique em Importar, no grupo Mapa do Ribbon) e escolha o arquivo: KML, KMZ, GPX, GeoJSON ou CSV de pontos.',
+        'O Kit converte para UTM SIRGAS 2000 no fuso certo e desenha tudo em escala real: cada pasta do Google Earth vira uma layer.',
+        'Pontos entram com o nome, linhas como polilinhas e cada polígono com a área em m² escrita no meio.',
+        'Depois do projeto pronto, KPEXPORTAR devolve o desenho para o Google Earth em KMZ, com área e perímetro, para mandar ao cliente (recurso do plano).',
+      ],
+    },
+    perguntas: [
+      { p: 'É grátis mesmo?', r: 'Sim. A importação (KPIMPORTAR) e a localização do desenho (KPGEOREF) continuam grátis depois dos 7 dias de teste. Exportar o desenho para o Google Earth faz parte do plano.' },
+      { p: 'O arquivo é enviado para algum site?', r: 'Não. O Kit lê o KML direto no seu computador, sem internet. O arquivo do cliente não sai da sua máquina.' },
+      { p: 'Qual a diferença entre KML e KMZ?', r: 'O KMZ é o mesmo KML compactado, como um ZIP. O Google Earth salva em KMZ por padrão. O Kit abre os dois.' },
+      { p: 'A área do polígono fica certa?', r: 'Sim. O desenho entra em UTM SIRGAS 2000, em metros, no fuso da obra, então a área calculada é a área real do terreno no plano UTM.' },
+      { p: 'Dá para importar pontos do levantamento topográfico?', r: 'Sim. Um CSV ou TXT com nome, E, N e cota (ou latitude e longitude) entra como pontos com o nome. O Kit aceita o CSV do Excel em português, com ponto e vírgula e vírgula decimal.' },
+      { p: 'Cai no lugar certo da planta de situação?', r: 'Sim. A planta de situação do Kit (KPSITUACAO) grava a localização no desenho, e o KML importado depois cai em cima das ruas certas.' },
     ],
   },
 ];

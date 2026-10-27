@@ -144,7 +144,7 @@ export default function Inicio() {
       <section id="planos" className="pricing-section section-padding">
         <div className="section-heading pricing-heading">
           <div><div className="eyebrow"><span className="eyebrow-dot" /> UM PLANO, TUDO INCLUSO</div><h2>Tudo do Kit, <em>um preço só.</em></h2></div>
-          <p style={{ fontSize: '15px' }}>Todas as ferramentas do plugin e o KPCad no celular, sem escolher módulo. Teste <span style={{ color: '#79c3d2' }}>7 dias grátis</span> no plugin e, depois de comprar, ainda tem 7 dias de garantia na Hotmart. O Medidor de Linhas continua grátis para sempre.</p>
+          <p style={{ fontSize: '15px' }}>Todas as ferramentas do plugin e o KPCad no celular, sem escolher módulo. Teste <span style={{ color: '#79c3d2' }}>7 dias grátis</span> no plugin e, depois de comprar, ainda tem 7 dias de garantia na Hotmart. O Medidor de Linhas, a planta de situação e a importação de KML continuam grátis para sempre.</p>
         </div>
         <div className="plans-list plans-unico">
           {plans.map((plan) => (
