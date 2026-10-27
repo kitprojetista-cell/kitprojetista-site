@@ -4,7 +4,7 @@ import Layout from '../Layout';
 import TesteModal from '../TesteModal';
 import { rota } from '../config';
 import { enviarFormulario, guardarPendente } from '../formulario';
-import { Desenho, FONTE_OSM, anguloLegivel, gerarDxf, legenda, localizar, montar, recentrar, remontar } from '../situacao/situacao';
+import { Desenho, anguloLegivel, gerarDxf, legenda, localizar, montar, recentrar, remontar } from '../situacao/situacao';
 
 const RAIOS = [100, 150, 250, 400];
 const CHAVE_CADASTRO = 'kp_cadastro_situacao';
@@ -186,7 +186,7 @@ export default function PlantaSituacao() {
                 <b>{linhasLegenda[0]}</b>
                 {linhasLegenda.slice(1, 3).map((l) => <span key={l}>{l}</span>)}
               </div>
-              <p className="situacao-fonte">Mapa: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">{FONTE_OSM}</a>. Confira as divisas com o levantamento do lote.</p>
+              <p className="situacao-fonte">Mapa: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">{desenho.bruto.fonte}</a>. Confira as divisas com o levantamento do lote.</p>
             </div>
 
             <div className="situacao-lado">

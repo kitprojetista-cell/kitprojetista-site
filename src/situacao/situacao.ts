@@ -2,6 +2,8 @@
 // Endereço/CEP → coordenadas (ViaCEP + Nominatim) → ruas e edificações (Overpass/OpenStreetMap)
 // → metros em volta do lote (UTM SIRGAS 2000) → desenho (prévia SVG e arquivo DXF).
 
+import { FONTE_BLOCOS, arredoresPorBlocos } from './blocos';
+
 export const FONTE_OSM = '© colaboradores do OpenStreetMap (ODbL)';
 
 export type P2 = { x: number; y: number };
@@ -9,7 +11,7 @@ export type Local = { lat: number; lon: number; descricao: string; aproximado: s
 export type Via = { nome: string; tipo: string; pontos: P2[] };
 export type Rotulo = { nome: string; ponto: P2; angulo: number };
 /** O que veio do OpenStreetMap, em metros UTM absolutos (para recentralizar sem baixar de novo). */
-export type Bruto = { vias: Via[]; edificacoes: P2[][]; e0: number; n0: number; alcance: number };
+export type Bruto = { vias: Via[]; edificacoes: P2[][]; e0: number; n0: number; alcance: number; fonte: string };
 export type Desenho = {
   local: Local;
   raio: number;
@@ -26,12 +28,12 @@ export type Desenho = {
 const TIPOS_VIA = 'motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|road|service|pedestrian';
 // Servidores públicos do Overpass, em ordem. O principal lota em alguns horários ("at capacity");
 // aí o pedido vai para os espelhos. Prazo curto em cada um para o visitante não esperar demais.
+// Se nenhum responder em alguns segundos, entra a reserva: os blocos vetoriais do OpenFreeMap (blocos.ts).
 const OVERPASS: [string, number][] = [
   ['https://overpass-api.de/api/interpreter', 25000],
-  ['https://maps.mail.ru/osm/tools/overpass/api/interpreter', 35000],
-  ['https://overpass.private.coffee/api/interpreter', 20000],
-  ['https://overpass.kumi.systems/api/interpreter', 20000],
+  ['https://maps.mail.ru/osm/tools/overpass/api/interpreter', 30000],
 ];
+const ESPERA_RESERVA = 10000;
 
 export function largura(tipo: string) {
   switch (tipo) {
@@ -214,27 +216,40 @@ export async function montar(local: Local, raio: number): Promise<Desenho> {
     if (!r.elements?.length && /error|timed out|out of memory/i.test(r.remark ?? '')) throw new Error(r.remark);
     return r;
   };
-  // Os dois melhores servidores ao mesmo tempo (vale o primeiro que responder); se os dois falharem,
-  // os outros espelhos; e, por fim, mais uma vez os dois primeiros (eles lotam por alguns segundos e voltam).
-  const etapas: [string, number][][] = [OVERPASS.slice(0, 2), OVERPASS.slice(2), OVERPASS.slice(0, 2)];
-  let resp: RespOsm | null = null;
-  for (let i = 0; i < etapas.length && !resp; i++) {
-    if (i === 2) await espera(3000);
-    resp = await primeiro(etapas[i].map(pedir));
-  }
-  if (!resp) throw new Error('O serviço de mapas (OpenStreetMap) está ocupado. Tente de novo em um minuto.');
-
   const fuso = fusoDe(local.lon), sul = local.lat < 0;
   const { e: e0, n: n0 } = paraUtm(local.lat, local.lon, fuso);
-  const vias: Via[] = [], edificacoes: P2[][] = [];
-  for (const el of resp.elements ?? []) {
-    if (!el.geometry || el.geometry.length < 2) continue;
-    const pts = el.geometry.map((g) => { const u = paraUtm(g.lat, g.lon, fuso); return { x: u.e, y: u.n }; });
-    const tags = el.tags ?? {};
-    if (tags.highway) vias.push({ nome: tags.name ?? '', tipo: tags.highway, pontos: pts });
-    else if (tags.building && pts.length >= 3) edificacoes.push(pts);
-  }
-  return compor({ vias, edificacoes, e0, n0, alcance }, local, raio, fuso, sul, e0, n0);
+  const utm = (g: { lat: number; lon: number }) => { const u = paraUtm(g.lat, g.lon, fuso); return { x: u.e, y: u.n }; };
+  type Dados = { vias: Via[]; edificacoes: P2[][]; fonte: string };
+
+  // 1) Overpass: os dois servidores ao mesmo tempo, vale o primeiro que responder.
+  const overpass: Promise<Dados> = primeiro(OVERPASS.map(pedir)).then((resp) => {
+    if (!resp) throw new Error('overpass');
+    const vias: Via[] = [], edificacoes: P2[][] = [];
+    for (const el of resp.elements ?? []) {
+      if (!el.geometry || el.geometry.length < 2) continue;
+      const pts = el.geometry.map(utm);
+      const tags = el.tags ?? {};
+      if (tags.highway) vias.push({ nome: tags.name ?? '', tipo: tags.highway, pontos: pts });
+      else if (tags.building && pts.length >= 3) edificacoes.push(pts);
+    }
+    return { vias, edificacoes, fonte: FONTE_OSM };
+  });
+  // 2) Reserva: blocos do OpenFreeMap, se o Overpass falhar ou demorar mais de 10 s (quando lota, ele some por horas).
+  const reserva: Promise<Dados> = new Promise<void>((ok) => {
+    const t = setTimeout(ok, ESPERA_RESERVA);
+    overpass.catch(() => { clearTimeout(t); ok(); });
+  }).then(async () => {
+    const b = await arredoresPorBlocos(local.lat, local.lon, r);
+    return {
+      vias: b.vias.map((v) => ({ nome: v.nome, tipo: v.tipo, pontos: v.pontos.map(utm) })),
+      edificacoes: b.edificacoes.map((c) => c.map(utm)),
+      fonte: FONTE_BLOCOS,
+    };
+  });
+  const dados = await primeiro([overpass, reserva]);
+  if (!dados) throw new Error('O serviço de mapas (OpenStreetMap) está ocupado. Tente de novo em um minuto.');
+  const { vias, edificacoes, fonte } = dados;
+  return compor({ vias, edificacoes, e0, n0, alcance, fonte }, local, raio, fuso, sul, e0, n0);
 }
 
 /** Monta o desenho centrado em (e, n) a partir dos dados já baixados. */
@@ -357,7 +372,7 @@ export function legenda(d: Desenho): string[] {
     'PLANTA DE SITUAÇÃO',
     desc,
     c,
-    `Ruas e edificações: ${FONTE_OSM}. Confira as divisas com o levantamento do lote.`,
+    `Ruas e edificações: ${d.bruto.fonte}. Confira as divisas com o levantamento do lote.`,
     'Gerado grátis em kitprojetista.com.br  ·  No AutoCAD, o Kit Projetista faz isso com um comando (KPSITUACAO).',
   ];
 }
