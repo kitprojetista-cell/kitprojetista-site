@@ -101,6 +101,15 @@ async function json<T>(url: string, init?: RequestInit, ms = 25000): Promise<T> 
 
 const espera = (ms: number) => new Promise((ok) => setTimeout(ok, ms));
 
+/** O primeiro pedido que der certo (null se todos falharem). Igual ao Promise.any, que navegadores antigos não têm. */
+function primeiro<T>(pedidos: Promise<T>[]): Promise<T | null> {
+  return new Promise((ok) => {
+    let falhas = 0;
+    if (!pedidos.length) ok(null);
+    for (const p of pedidos) p.then(ok, () => { if (++falhas === pedidos.length) ok(null); });
+  });
+}
+
 /** "-23.5614, -46.6559", "-23,5614 -46,6559" ou "-23.5614;-46.6559". */
 export function lerCoordenadas(texto: string): Local | null {
   const m = texto.match(/^\s*(-?\d{1,2}(?:[.,]\d+)?)\s*[,;\s]\s*(-?\d{1,3}(?:[.,]\d+)?)\s*$/);
@@ -194,24 +203,24 @@ export async function montar(local: Local, raio: number): Promise<Desenho> {
   const alcance = raio;
   const r = Math.ceil(raio * 1.45 + alcance);
   const consulta = `[out:json][timeout:50];(way["highway"~"^(${TIPOS_VIA})$"](around:${r},${lat},${lon});way["building"](around:${r},${lat},${lon}););out tags geom;`;
-  let resp: { elements?: ElementoOsm[]; remark?: string } | null = null;
-  // Duas rodadas: os servidores públicos lotam por alguns segundos e voltam.
-  // A segunda só nos dois que costumam responder rápido (os outros, quando caem, só expiram o prazo).
-  for (let rodada = 0; rodada < 2 && !resp; rodada++) {
-    if (rodada > 0) await espera(3000);
-    for (const [servidor, prazo] of rodada === 0 ? OVERPASS : OVERPASS.slice(0, 2)) {
-      try {
-        const r = await json<{ elements?: ElementoOsm[]; remark?: string }>(servidor, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: 'data=' + encodeURIComponent(consulta),
-        }, prazo);
-        // Servidor sobrecarregado às vezes responde 200 com "runtime error" e a lista vazia: não é "sem ruas".
-        if (!r.elements?.length && /error|timed out|out of memory/i.test(r.remark ?? '')) continue;
-        resp = r;
-        break;
-      } catch { /* tenta o próximo servidor */ }
-    }
+  type RespOsm = { elements?: ElementoOsm[]; remark?: string };
+  const pedir = async ([servidor, prazo]: [string, number]): Promise<RespOsm> => {
+    const r = await json<RespOsm>(servidor, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'data=' + encodeURIComponent(consulta),
+    }, prazo);
+    // Servidor sobrecarregado às vezes responde 200 com "runtime error" e a lista vazia: não é "sem ruas".
+    if (!r.elements?.length && /error|timed out|out of memory/i.test(r.remark ?? '')) throw new Error(r.remark);
+    return r;
+  };
+  // Os dois melhores servidores ao mesmo tempo (vale o primeiro que responder); se os dois falharem,
+  // os outros espelhos; e, por fim, mais uma vez os dois primeiros (eles lotam por alguns segundos e voltam).
+  const etapas: [string, number][][] = [OVERPASS.slice(0, 2), OVERPASS.slice(2), OVERPASS.slice(0, 2)];
+  let resp: RespOsm | null = null;
+  for (let i = 0; i < etapas.length && !resp; i++) {
+    if (i === 2) await espera(3000);
+    resp = await primeiro(etapas[i].map(pedir));
   }
   if (!resp) throw new Error('O serviço de mapas (OpenStreetMap) está ocupado. Tente de novo em um minuto.');
 
