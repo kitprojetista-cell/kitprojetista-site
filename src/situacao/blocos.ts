@@ -238,5 +238,32 @@ export async function arredoresPorBlocos(lat: number, lon: number, raio: number)
       }
     }
   }
-  return { vias, edificacoes };
+  // Os blocos cobrem bem mais que o pedido (~2 km cada): fica só o que toca o círculo do raio.
+  const kx = 111320 * Math.cos((lat * Math.PI) / 180), ky = 111320, lim = raio * 1.05;
+  const dentro = (p: Ponto) => Math.hypot((p.lon - lon) * kx, (p.lat - lat) * ky) <= lim;
+  return {
+    vias: emendar(vias.filter((v) => v.pontos.some(dentro))),
+    edificacoes: edificacoes.filter((c) => c.some(dentro)),
+  };
+}
+
+/** Junta os trechos da mesma rua cortados na borda dos blocos (ponta com ponta, até ~1 m). */
+export function emendar(vias: ViaBloco[]): ViaBloco[] {
+  const perto = (a: Ponto, b: Ponto) => Math.abs(a.lat - b.lat) < 1e-5 && Math.abs(a.lon - b.lon) < 1e-5;
+  const lista = vias.map((v) => ({ ...v, pontos: [...v.pontos] }));
+  let mudou = true;
+  while (mudou) {
+    mudou = false;
+    for (let i = 0; i < lista.length && !mudou; i++) for (let j = 0; j < lista.length && !mudou; j++) {
+      if (i === j) continue;
+      const a = lista[i], b = lista[j];
+      if (a.nome !== b.nome || a.tipo !== b.tipo) continue;
+      if (perto(a.pontos[a.pontos.length - 1], b.pontos[0])) a.pontos.push(...b.pontos.slice(1));
+      else if (perto(a.pontos[a.pontos.length - 1], b.pontos[b.pontos.length - 1])) a.pontos.push(...b.pontos.slice(0, -1).reverse());
+      else continue;
+      lista.splice(j, 1);
+      mudou = true;
+    }
+  }
+  return lista;
 }

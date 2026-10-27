@@ -58,6 +58,7 @@ function Previa({ d, aoClicar }: { d: Desenho; aoClicar?: (dx: number, dy: numbe
 export default function PlantaSituacao() {
   const [busca, setBusca] = useState('');
   const [raio, setRaio] = useState(150);
+  const [utmReal, setUtmReal] = useState(true);
   const [estado, setEstado] = useState<'livre' | 'buscando' | 'pronto'>('livre');
   const [passo, setPasso] = useState('');
   const [erro, setErro] = useState('');
@@ -107,7 +108,7 @@ export default function PlantaSituacao() {
 
   const baixar = () => {
     if (!desenho) return;
-    const blob = new Blob([gerarDxf(desenho)], { type: 'application/dxf' });
+    const blob = new Blob([gerarDxf(desenho, utmReal)], { type: 'application/dxf' });
     const a = document.createElement('a');
     const primeira = desenho.local.descricao.split(',')[0] || '';
     const local = /^\s*-?\d/.test(primeira) ? 'coordenadas'
@@ -195,6 +196,12 @@ export default function PlantaSituacao() {
                   <div className="situacao-cartao">
                     <h3>Sua planta está pronta.</h3>
                     <p>Arquivo DXF em metros, com camadas separadas (vias, nomes, edificações, obra e moldura).</p>
+                    <label className="situacao-opcao">Posição no desenho
+                      <select value={utmReal ? 'utm' : 'origem'} onChange={(e) => setUtmReal(e.target.value === 'utm')}>
+                        <option value="utm">Coordenadas UTM reais (georreferenciado)</option>
+                        <option value="origem">Local da obra na origem (0,0)</option>
+                      </select>
+                    </label>
                     <button className="button button-primary" onClick={baixar}>Baixar DXF <Download size={17} /></button>
                   </div>
                 ) : (
@@ -204,6 +211,12 @@ export default function PlantaSituacao() {
                     <label>Nome (obrigatório)<input required type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome e Sobrenome" /></label>
                     <label>E-mail (obrigatório)<input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="seu@email.com" /></label>
                     <label>WhatsApp<input type="tel" value={whats} onChange={(e) => setWhats(e.target.value)} placeholder="(00) 00000-0000" /></label>
+                    <label className="situacao-opcao">Posição no desenho
+                      <select value={utmReal ? 'utm' : 'origem'} onChange={(e) => setUtmReal(e.target.value === 'utm')}>
+                        <option value="utm">Coordenadas UTM reais (georreferenciado)</option>
+                        <option value="origem">Local da obra na origem (0,0)</option>
+                      </select>
+                    </label>
                     <button className="button button-primary" type="submit" disabled={enviando}>
                       {enviando ? 'Preparando...' : 'Baixar DXF'} <Download size={17} />
                     </button>

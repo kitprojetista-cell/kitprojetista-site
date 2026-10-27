@@ -390,8 +390,14 @@ function latin1(s: string) {
     .replace(/[^\x00-\xff]/g, '?');
 }
 
-export function gerarDxf(d: Desenho): Uint8Array {
+/**
+ * DXF da planta. utmReal = true: cada ponto na coordenada UTM verdadeira (SIRGAS 2000), georreferenciado,
+ * casa com levantamento, KML (KPIMPORTAR) e Google Earth. false: o local da obra fica na origem (0,0).
+ */
+export function gerarDxf(d: Desenho, utmReal = true): Uint8Array {
   const L: string[] = [];
+  const ox = utmReal ? d.e : 0, oy = utmReal ? d.n : 0;
+  const P = (p: P2): P2 => ({ x: p.x + ox, y: p.y + oy });
   const g = (codigo: number, valor: string | number) => {
     L.push(String(codigo));
     L.push(typeof valor === 'number' ? (Number.isInteger(valor) ? String(valor) : valor.toFixed(4)) : valor);
@@ -402,8 +408,8 @@ export function gerarDxf(d: Desenho): Uint8Array {
   g(9, '$ACADVER'); g(1, 'AC1009');
   g(9, '$DWGCODEPAGE'); g(3, 'ANSI_1252');
   g(9, '$INSBASE'); g(10, 0); g(20, 0); g(30, 0);
-  g(9, '$EXTMIN'); g(10, -raio); g(20, -raio - h * 8); g(30, 0);
-  g(9, '$EXTMAX'); g(10, raio); g(20, raio); g(30, 0);
+  g(9, '$EXTMIN'); g(10, ox - raio); g(20, oy - raio - h * 8); g(30, 0);
+  g(9, '$EXTMAX'); g(10, ox + raio); g(20, oy + raio); g(30, 0);
   g(0, 'ENDSEC');
 
   g(0, 'SECTION'); g(2, 'TABLES');
@@ -423,37 +429,42 @@ export function gerarDxf(d: Desenho): Uint8Array {
   const polilinha = (camada: string, pts: P2[], fechada: boolean, larg = 0) => {
     g(0, 'POLYLINE'); g(8, camada); g(66, 1); g(10, 0); g(20, 0); g(30, 0); g(70, fechada ? 1 : 0);
     if (larg > 0) { g(40, larg); g(41, larg); }
-    for (const p of pts) { g(0, 'VERTEX'); g(8, camada); g(10, p.x); g(20, p.y); g(30, 0); }
+    for (const q of pts) { const p = P(q); g(0, 'VERTEX'); g(8, camada); g(10, p.x); g(20, p.y); g(30, 0); }
     g(0, 'SEQEND'); g(8, camada);
   };
-  const texto = (camada: string, s: string, p: P2, altura: number, rot = 0, centro = false) => {
+  const texto = (camada: string, s: string, q: P2, altura: number, rot = 0, centro = false) => {
+    const p = P(q);
     g(0, 'TEXT'); g(8, camada); g(10, p.x); g(20, p.y); g(30, 0); g(40, altura); g(1, latin1(s));
     if (rot) g(50, rot);
     if (centro) { g(72, 1); g(73, 2); g(11, p.x); g(21, p.y); g(31, 0); }
   };
-  const linha = (camada: string, a: P2, b: P2) => { g(0, 'LINE'); g(8, camada); g(10, a.x); g(20, a.y); g(30, 0); g(11, b.x); g(21, b.y); g(31, 0); };
+  const linha = (camada: string, qa: P2, qb: P2) => { const a = P(qa), b = P(qb); g(0, 'LINE'); g(8, camada); g(10, a.x); g(20, a.y); g(30, 0); g(11, b.x); g(21, b.y); g(31, 0); };
 
   for (const v of [...d.vias].sort((a, b) => b.largura - a.largura)) polilinha('KP-SITUACAO-VIAS', v.pontos, false, v.largura);
   for (const e of d.edificacoes) polilinha('KP-SITUACAO-EDIFICACOES', e, true);
   for (const r of d.rotulos) texto('KP-SITUACAO-NOMES', r.nome, r.ponto, h, anguloLegivel(r.angulo), true);
 
   const rObra = Math.max(4, raio / 25);
-  g(0, 'CIRCLE'); g(8, 'KP-SITUACAO-OBRA'); g(10, 0); g(20, 0); g(30, 0); g(40, rObra);
+  g(0, 'CIRCLE'); g(8, 'KP-SITUACAO-OBRA'); g(10, ox); g(20, oy); g(30, 0); g(40, rObra);
   linha('KP-SITUACAO-OBRA', { x: -rObra * 1.6, y: 0 }, { x: rObra * 1.6, y: 0 });
   linha('KP-SITUACAO-OBRA', { x: 0, y: -rObra * 1.6 }, { x: 0, y: rObra * 1.6 });
   texto('KP-SITUACAO-OBRA', 'LOCAL DA OBRA', { x: rObra * 1.9, y: rObra * 1.2 }, h);
 
   polilinha('KP-SITUACAO-MOLDURA', [{ x: -raio, y: -raio }, { x: raio, y: -raio }, { x: raio, y: raio }, { x: -raio, y: raio }], true);
 
-  const nt = raio * 0.09, nb = { x: raio - nt * 1.1, y: raio - nt * 2.4 };
+  const nt = raio * 0.09, nb = { x: ox + raio - nt * 1.1, y: oy + raio - nt * 2.4 };
   g(0, 'SOLID'); g(8, 'KP-SITUACAO-MOLDURA');
   g(10, nb.x); g(20, nb.y + nt * 1.6); g(30, 0);
   g(11, nb.x - nt * 0.45); g(21, nb.y); g(31, 0);
   g(12, nb.x + nt * 0.45); g(22, nb.y); g(32, 0);
   g(13, nb.x + nt * 0.45); g(23, nb.y); g(33, 0);
-  texto('KP-SITUACAO-MOLDURA', 'N', { x: nb.x, y: nb.y + nt * 2.15 }, h * 1.2, 0, true);
+  texto('KP-SITUACAO-MOLDURA', 'N', { x: nb.x - ox, y: nb.y - oy + nt * 2.15 }, h * 1.2, 0, true);
 
-  legenda(d).forEach((l, i) => texto('KP-SITUACAO-MOLDURA', l, { x: -raio, y: -raio - h * 1.6 * (i + 1) }, i === 0 ? h * 1.1 : h * 0.75));
+  const linhas = legenda(d);
+  linhas.splice(3, 0, utmReal
+    ? `Desenho georreferenciado: coordenadas UTM reais, fuso ${d.fuso}${d.sul ? 'S' : 'N'}, SIRGAS 2000, em metros.`
+    : 'Local da obra na origem (0,0) do desenho, em metros.');
+  linhas.forEach((l, i) => texto('KP-SITUACAO-MOLDURA', l, { x: -raio, y: -raio - h * 1.6 * (i + 1) }, i === 0 ? h * 1.1 : h * 0.75));
 
   g(0, 'ENDSEC');
   g(0, 'EOF');

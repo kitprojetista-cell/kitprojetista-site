@@ -291,3 +291,5 @@ a.button { text-decoration: none; }
 .tutorial-num { flex: none; width: 30px; height: 30px; border-radius: 50%; background: #2e7d91; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 14px; }
 .tutorial-guia h3 { margin: 2px 0 4px; color: #14394f; font-size: 16px; }
 .tutorial-guia p { margin: 0; color: #4d6f7c; font-size: 14px; line-height: 1.6; }
+.situacao-opcao { display: grid; gap: 7px; color: #315f6e; font-size: 11px; font-weight: 700; margin: 4px 0 12px; }
+.situacao-opcao select { width: 100%; height: 46px; padding: 0 14px; border: 1px solid #b4ced2; border-radius: 9px; background: rgba(255,255,255,.52); color: #14394f; font-size: 12px; }
