@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /assinatura/
 
 Sitemap: https://kitprojetista.com.br/sitemap.xml
