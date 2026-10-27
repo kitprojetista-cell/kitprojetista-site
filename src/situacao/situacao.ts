@@ -24,7 +24,14 @@ export type Desenho = {
 };
 
 const TIPOS_VIA = 'motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|road|service|pedestrian';
-const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
+// Servidores públicos do Overpass, em ordem. O principal lota em alguns horários ("at capacity");
+// aí o pedido vai para os espelhos. Prazo curto em cada um para o visitante não esperar demais.
+const OVERPASS: [string, number][] = [
+  ['https://overpass-api.de/api/interpreter', 25000],
+  ['https://maps.mail.ru/osm/tools/overpass/api/interpreter', 35000],
+  ['https://overpass.private.coffee/api/interpreter', 20000],
+  ['https://overpass.kumi.systems/api/interpreter', 20000],
+];
 
 export function largura(tipo: string) {
   switch (tipo) {
@@ -187,16 +194,24 @@ export async function montar(local: Local, raio: number): Promise<Desenho> {
   const alcance = raio;
   const r = Math.ceil(raio * 1.45 + alcance);
   const consulta = `[out:json][timeout:50];(way["highway"~"^(${TIPOS_VIA})$"](around:${r},${lat},${lon});way["building"](around:${r},${lat},${lon}););out tags geom;`;
-  let resp: { elements?: ElementoOsm[] } | null = null;
-  for (const servidor of OVERPASS) {
-    try {
-      resp = await json(servidor, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'data=' + encodeURIComponent(consulta),
-      }, 45000);
-      break;
-    } catch { /* tenta o próximo servidor */ }
+  let resp: { elements?: ElementoOsm[]; remark?: string } | null = null;
+  // Duas rodadas: os servidores públicos lotam por alguns segundos e voltam.
+  // A segunda só nos dois que costumam responder rápido (os outros, quando caem, só expiram o prazo).
+  for (let rodada = 0; rodada < 2 && !resp; rodada++) {
+    if (rodada > 0) await espera(3000);
+    for (const [servidor, prazo] of rodada === 0 ? OVERPASS : OVERPASS.slice(0, 2)) {
+      try {
+        const r = await json<{ elements?: ElementoOsm[]; remark?: string }>(servidor, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'data=' + encodeURIComponent(consulta),
+        }, prazo);
+        // Servidor sobrecarregado às vezes responde 200 com "runtime error" e a lista vazia: não é "sem ruas".
+        if (!r.elements?.length && /error|timed out|out of memory/i.test(r.remark ?? '')) continue;
+        resp = r;
+        break;
+      } catch { /* tenta o próximo servidor */ }
+    }
   }
   if (!resp) throw new Error('O serviço de mapas (OpenStreetMap) está ocupado. Tente de novo em um minuto.');
 
