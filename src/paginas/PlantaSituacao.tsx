@@ -248,6 +248,31 @@ export default function PlantaSituacao() {
           <article className="feature-card feature-slate"><div className="feature-top"><FileText size={25} strokeWidth={1.6} /></div><h3>Abre em qualquer CAD</h3><p>DXF compatível com AutoCAD, ZWCAD, BricsCAD, GstarCAD e LibreCAD. É só inserir na prancha e ajustar a escala.</p></article>
         </div>
 
+        <div className="situacao-video">
+          <iframe src="https://www.youtube-nocookie.com/embed/HI89SHBiOKE" title="Como gerar a planta de situação pelo CEP" loading="lazy"
+            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+          <div>
+            <div className="eyebrow dark"><span className="eyebrow-dot" /> VEJA EM 1 MINUTO</div>
+            <h2>Como gerar a sua planta de situação</h2>
+            <ol>
+              <li>Digite o CEP, o endereço ou cole as coordenadas do Google Maps.</li>
+              <li>Escolha o raio e clique em <b>Gerar planta</b>.</li>
+              <li>Se o lote não estiver no círculo, clique nele no mapa para ajustar.</li>
+              <li>Baixe o DXF e abra no seu CAD, já nas coordenadas UTM reais.</li>
+            </ol>
+            <button className="button button-primary" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Gerar a minha agora <ArrowRight size={17} /></button>
+          </div>
+        </div>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org', '@type': 'VideoObject',
+          name: 'Como gerar a planta de situação pelo CEP, grátis, em DXF',
+          description: 'Planta de situação com as ruas reais, nomes, norte e coordenadas UTM, gerada pelo CEP no site do Kit Projetista e baixada em DXF georreferenciado.',
+          thumbnailUrl: 'https://i.ytimg.com/vi/HI89SHBiOKE/hqdefault.jpg',
+          uploadDate: '2026-10-28',
+          embedUrl: 'https://www.youtube.com/embed/HI89SHBiOKE',
+          contentUrl: 'https://www.youtube.com/shorts/HI89SHBiOKE',
+        }) }} />
+
         <div className="situacao-texto">
           <h2>O que é a planta de situação?</h2>
           <p>É o desenho que mostra onde o lote fica na cidade: as ruas em volta, com os nomes, a quadra, o norte e, em muitas prefeituras, a distância até a esquina mais próxima. Ela é pedida na aprovação de projeto, no alvará de construção, na regularização e em vários processos de cartório.</p>

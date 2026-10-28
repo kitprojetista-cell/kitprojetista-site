@@ -294,3 +294,9 @@ a.button { text-decoration: none; }
 .situacao-opcao { display: grid; gap: 7px; color: #315f6e; font-size: 11px; font-weight: 700; margin: 4px 0 12px; }
 .situacao-opcao select { width: 100%; height: 46px; padding: 0 14px; border: 1px solid #b4ced2; border-radius: 9px; background: rgba(255,255,255,.52); color: #14394f; font-size: 12px; }
 .footer-versiculo { color: #78939c; font-style: italic; font-size: 11px; }
+.situacao-video { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 40px; align-items: center; margin: 48px 0 8px; }
+.situacao-video iframe { width: 100%; aspect-ratio: 9 / 16; border: 0; border-radius: 16px; display: block; box-shadow: 0 10px 26px rgba(20,55,75,.12); background: #0f2533; }
+.situacao-video h2 { margin: 10px 0 14px; font-size: clamp(26px, 3vw, 36px); color: #14394f; text-wrap: balance; }
+.situacao-video ol { margin: 0 0 22px; padding-left: 20px; color: #4f6f7b; line-height: 1.6; }
+.situacao-video li { margin-bottom: 6px; }
+@media (max-width: 760px) { .situacao-video { grid-template-columns: 1fr; gap: 24px; } .situacao-video iframe { max-width: 300px; margin: 0 auto; } }
