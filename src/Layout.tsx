@@ -129,6 +129,7 @@ export default function Layout({ children, naInicial, en = false }: Props) {
             )}
             <a href={`mailto:${EMAIL_CONTATO}`}>{EMAIL_CONTATO}</a>
           </span>
+          {!en && <span className="footer-versiculo">“Eu sou o caminho, a verdade e a vida.” (João 14:6)</span>}
         </div>
         <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>{t('Voltar ao topo', 'Back to top')} <ArrowRight size={14} /></button>
       </footer>
