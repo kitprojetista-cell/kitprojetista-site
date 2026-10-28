@@ -38,8 +38,8 @@ export const TUTORIAIS: Tutorial[] = [
     h1: 'Como instalar o Kit Projetista e',
     destaque: 'testar grátis por 7 dias.',
     chamada: 'Do site até as ferramentas abertas no AutoCAD em menos de 2 minutos. Veja o vídeo ou siga os passos escritos.',
-    youtube: '6HBA56JCv6g',
-    youtubeData: '2026-10-26',
+    youtube: 'cKN9DC7g25I',
+    youtubeData: '2026-10-28',
     guia: {
       titulo: 'Passo a passo',
       passos: [
