@@ -268,7 +268,7 @@ export default function PlantaSituacao() {
           name: 'Como gerar a planta de situação pelo CEP, grátis, em DXF',
           description: 'Planta de situação com as ruas reais, nomes, norte e coordenadas UTM, gerada pelo CEP no site do Kit Projetista e baixada em DXF georreferenciado.',
           thumbnailUrl: 'https://i.ytimg.com/vi/HI89SHBiOKE/hqdefault.jpg',
-          uploadDate: '2026-10-28',
+          uploadDate: '2026-10-28T12:00:00-03:00',
           embedUrl: 'https://www.youtube.com/embed/HI89SHBiOKE',
           contentUrl: 'https://www.youtube.com/shorts/HI89SHBiOKE',
         }) }} />

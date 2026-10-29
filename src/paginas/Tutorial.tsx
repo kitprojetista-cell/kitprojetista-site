@@ -18,7 +18,8 @@ function JsonLdPerguntas({ t }: { t: TipoTutorial }) {
     name: t.h1 + ' ' + t.destaque,
     description: t.descricao,
     thumbnailUrl: `https://i.ytimg.com/vi/${t.youtube}/maxresdefault.jpg`,
-    uploadDate: t.youtubeData,
+    // O Google exige data e hora com fuso (ISO 8601); a data do tutorial vale como meio-dia em Brasília.
+    uploadDate: t.youtubeData && t.youtubeData.length === 10 ? t.youtubeData + 'T12:00:00-03:00' : t.youtubeData,
     embedUrl: `https://www.youtube.com/embed/${t.youtube}`,
     contentUrl: `https://www.youtube.com/watch?v=${t.youtube}`,
   } : null;
