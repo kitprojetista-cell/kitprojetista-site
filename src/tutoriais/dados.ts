@@ -205,6 +205,42 @@ export const TUTORIAIS: Tutorial[] = [
       { p: 'Cai no lugar certo da planta de situação?', r: 'Sim. A planta de situação do Kit (KPSITUACAO) grava a localização no desenho, e o KML importado depois cai em cima das ruas certas.' },
     ],
   },
+  {
+    slug: 'malha-de-coordenadas-autocad',
+    titulo: 'Como fazer malha de coordenadas UTM no AutoCAD',
+    descricao: 'Crie a malha de coordenadas (quadrícula UTM) no AutoCAD com moldura, cruzetas ou linhas e os valores de E e N nas bordas, sem desenhar linha por linha. Com o Kit Projetista.',
+    curto: 'Malha de coordenadas no AutoCAD',
+    selo: 'TUTORIAL · MALHA DE COORDENADAS',
+    h1: 'Como fazer malha de coordenadas UTM no AutoCAD',
+    destaque: 'em um comando.',
+    chamada: 'A prefeitura, o cartório ou o INCRA pediram a planta com a malha de coordenadas? Veja como ela é feita à mão no AutoCAD e como sair pronta, com moldura e os valores de E e N, em segundos.',
+    manual: {
+      titulo: 'No AutoCAD, sem plugin',
+      passos: [
+        'Descubra a primeira coordenada redonda dentro da área (por exemplo, E 312.500 e N 7.456.300) com o comando ID, e desenhe ali uma linha vertical e uma horizontal.',
+        'Copie as linhas no espaçamento escolhido (10, 50, 100 m) com ARRAYRECT ou OFFSET, até cobrir a área toda.',
+        'Desenhe a moldura e corte o que passou dela com TRIM, ou troque as linhas por cruzetas nos cruzamentos, uma a uma.',
+        'Escreva cada valor de E e N nas bordas, com o texto girado nas laterais, conferindo o número de cada linha.',
+      ],
+      problema: 'É trabalho repetitivo e fácil de errar: um valor digitado errado ou uma linha fora do múltiplo certo passa despercebido. E, se a área ou o espaçamento mudar, é preciso refazer tudo.',
+    },
+    kit: {
+      comando: 'KPMALHA',
+      passos: [
+        'Digite KPMALHA (ou clique em Malha de coordenadas, no grupo Topografia do Ribbon).',
+        'Clique dois cantos da área, ou dê Enter e selecione o lote ou o levantamento: a moldura se ajusta em volta.',
+        'Aceite o espaçamento sugerido pelo Kit ou digite outro, e escolha entre cruzetas nos cruzamentos ou linhas inteiras.',
+        'O Kit desenha a moldura, as cruzetas ou linhas nos valores redondos e escreve E e N nos quatro lados, nas layers MALHA-COORDENADAS e MALHA-TEXTOS.',
+      ],
+    },
+    perguntas: [
+      { p: 'O desenho precisa estar em coordenadas UTM?', r: 'Se o desenho está em UTM, a malha usa as coordenadas dele. Se foi georreferenciado pelo Kit (planta de situação, importação de KML ou KPGEOREF), a malha mostra as coordenadas UTM reais mesmo com o desenho deslocado.' },
+      { p: 'Qual espaçamento usar?', r: 'Depende do tamanho da área e da escala da prancha. O Kit sugere um valor redondo que dá de 5 a 8 linhas no maior lado: em um lote urbano costuma ser 10 ou 20 m; em uma gleba, 100 ou 200 m.' },
+      { p: 'Cruzetas ou linhas inteiras?', r: 'As cruzetas deixam a planta mais limpa e são o mais comum em plantas de loteamento e georreferenciamento. As linhas inteiras ajudam a ler a posição de qualquer ponto. O Kit faz os dois.' },
+      { p: 'Se eu mudar a área, preciso apagar a malha antiga?', r: 'Não. Rode o KPMALHA de novo: ele pergunta se quer substituir a malha anterior.' },
+      { p: 'Funciona no Civil 3D?', r: 'Sim. O Kit Projetista funciona no AutoCAD e no Civil 3D, da versão 2015 em diante.' },
+    ],
+  },
 ];
 
 export const buscarTutorial = (slug: string) => TUTORIAIS.find((t) => t.slug === slug);
