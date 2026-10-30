@@ -207,6 +207,7 @@ export default function PlantaSituacao() {
                       </select>
                     </label>
                     <button className="button button-primary" onClick={baixar}>Baixar DXF <Download size={17} /></button>
+                    <p className="situacao-dwg">Abre direto no AutoCAD. Quer em DWG? Abra o arquivo e use <b>Salvar como</b> › Desenho do AutoCAD (*.dwg).</p>
                   </div>
                 ) : (
                   <form className="contact-form situacao-cartao" onSubmit={cadastrarEBaixar}>
@@ -224,6 +225,7 @@ export default function PlantaSituacao() {
                     <button className="button button-primary" type="submit" disabled={enviando}>
                       {enviando ? 'Preparando...' : 'Baixar DXF'} <Download size={17} />
                     </button>
+                    <p className="situacao-dwg">Abre direto no AutoCAD. Quer em DWG? Abra o arquivo e use <b>Salvar como</b> › Desenho do AutoCAD (*.dwg).</p>
                     <p className="form-note">Usamos seu contato para enviar novidades do Kit Projetista, e você pode pedir para sair quando quiser. Veja a <a href={rota('privacidade/')}>política de privacidade</a>.</p>
                   </form>
                 )
@@ -234,6 +236,7 @@ export default function PlantaSituacao() {
                   <p>No AutoCAD, o <b>Kit Projetista</b> faz isso com um comando, direto no desenho, e ainda o carimbo de prefeitura, o quadro de áreas, a área dos cômodos e o memorial descritivo.</p>
                   <button className="button button-primary" onClick={() => setTesteAberto(true)}>Testar o Kit 7 dias grátis <ArrowRight size={17} /></button>
                   <button className="button button-outline" onClick={baixar}>Baixar de novo <Download size={17} /></button>
+                  <p className="situacao-dwg">Abre direto no AutoCAD. Quer em DWG? Abra o arquivo e use <b>Salvar como</b> › Desenho do AutoCAD (*.dwg).</p>
                 </div>
               )}
             </div>
@@ -281,7 +284,7 @@ export default function PlantaSituacao() {
           <h2>O que é a planta de situação?</h2>
           <p>É o desenho que mostra onde o lote fica na cidade: as ruas em volta, com os nomes, a quadra, o norte e, em muitas prefeituras, a distância até a esquina mais próxima. Ela é pedida na aprovação de projeto, no alvará de construção, na regularização e em vários processos de cartório.</p>
           <h3>Como usar o arquivo</h3>
-          <p>Abra o DXF no seu CAD, copie o desenho para a prancha e ajuste a escala (é comum 1:1000 ou 1:2000). O arquivo vem georreferenciado, nas coordenadas UTM reais (SIRGAS 2000): o levantamento topográfico e o KML do Google Earth caem no lugar certo por cima dele. Se preferir o lote no ponto 0,0 do desenho, escolha isso antes de baixar. O círculo marca o ponto encontrado pelo endereço; se o lote estiver em outro lugar, clique nele no mapa antes de baixar e a planta se recentraliza ali. Confira as divisas com o levantamento ou a matrícula, porque o mapa é uma referência, não um levantamento topográfico.</p>
+          <p>O DXF abre direto no AutoCAD e nos outros CADs; para guardar em DWG, abra e use Salvar como (SAVEAS) › Desenho do AutoCAD (*.dwg). Copie o desenho para a prancha e ajuste a escala (é comum 1:1000 ou 1:2000). O arquivo vem georreferenciado, nas coordenadas UTM reais (SIRGAS 2000): o levantamento topográfico e o KML do Google Earth caem no lugar certo por cima dele. Se preferir o lote no ponto 0,0 do desenho, escolha isso antes de baixar. O círculo marca o ponto encontrado pelo endereço; se o lote estiver em outro lugar, clique nele no mapa antes de baixar e a planta se recentraliza ali. Confira as divisas com o levantamento ou a matrícula, porque o mapa é uma referência, não um levantamento topográfico.</p>
           <h3>De onde vêm os dados?</h3>
           <p>As ruas e edificações vêm do OpenStreetMap, um mapa aberto mantido por voluntários. Em cidades grandes ele costuma ser bem completo; em loteamentos novos pode faltar alguma rua. O CEP é consultado no ViaCEP. Tudo é feito no seu navegador: o desenho não passa pelos nossos servidores.</p>
         </div>
