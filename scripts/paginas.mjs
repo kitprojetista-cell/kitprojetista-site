@@ -24,6 +24,11 @@ const paginas = [
     idioma: 'en',
   },
   {
+    rota: 'kpcad',
+    titulo: 'KPCad | Planta do AutoCAD no celular, na obra',
+    descricao: 'Abra o DXF do AutoCAD no celular para medir, cotar e desenhar por cima na obra, e devolva em DXF ou PDF. App para Android, para engenheiros, arquitetos e projetistas.',
+  },
+  {
     rota: 'calculadora',
     titulo: 'Calculadora do Projetista | App grátis para sua obra',
     descricao: 'Calcule tijolo, piso, tinta, concreto e telhado, monte a lista de compras e compare o orçamento das lojas com o preço de referência do SINAPI. Grátis, sem cadastro.',
@@ -86,7 +91,7 @@ for (const p of paginas) {
 writeFileSync('dist/404.html', base);
 
 // sitemap.xml com todas as páginas (o Google lê para achar as páginas novas)
-const prioridade = { '': '1.0', 'planta-de-situacao': '0.9', tutoriais: '0.8', calculadora: '0.8', en: '0.7' };
+const prioridade = { '': '1.0', 'planta-de-situacao': '0.9', tutoriais: '0.8', calculadora: '0.8', kpcad: '0.9', en: '0.7' };
 const hoje = new Date().toISOString().slice(0, 10);
 const urls = ['', ...paginas.map((p) => p.rota)].map((r) => {
   const pr = prioridade[r] ?? (paginasTutoriais.some((t) => t.rota === r) ? '0.8' : '0.3');

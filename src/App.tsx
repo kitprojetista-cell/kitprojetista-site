@@ -1,6 +1,7 @@
 import Inicio from './paginas/Inicio';
 import InicioEn from './paginas/InicioEn';
 import Calculadora from './paginas/Calculadora';
+import KPCad from './paginas/KPCad';
 import PlantaSituacao from './paginas/PlantaSituacao';
 import { ListaTutoriais, Tutorial } from './paginas/Tutorial';
 import { buscarTutorial } from './tutoriais/dados';
@@ -22,6 +23,8 @@ function App({ caminho: inicial }: { caminho?: string } = {}) {
       return <ListaTutoriais />;
     case 'planta-de-situacao':
       return <PlantaSituacao />;
+    case 'kpcad':
+      return <KPCad />;
     case 'calculadora':
       return <Calculadora />;
     case 'calculadora/privacidade':

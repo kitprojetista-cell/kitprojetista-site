@@ -52,7 +52,7 @@ export default function Layout({ children, naInicial, en = false }: Props) {
           <button onClick={() => ir(en ? 'features' : 'recursos')}>{t('Recursos', 'Features')}</button>
           <button onClick={() => ir(en ? 'plans' : 'planos')}>{t('Planos', 'Pricing')}</button>
           {!en && <a href={rota('planta-de-situacao/')}>Planta de situação</a>}
-          {!en && <a href={rota('calculadora/')}>Calculadora</a>}
+          {!en && <a href={rota('kpcad/')}>KPCad</a>}
           {!en && <a href={rota('tutoriais/')}>Tutoriais</a>}
           <button onClick={() => ir(en ? 'contact' : 'contato')}>{t('Contato', 'Contact')}</button>
         </nav>
@@ -93,6 +93,7 @@ export default function Layout({ children, naInicial, en = false }: Props) {
           <button onClick={() => ir(en ? 'features' : 'recursos')}>{t('Recursos', 'Features')} <ChevronRight size={16} /></button>
           <button onClick={() => ir(en ? 'plans' : 'planos')}>{t('Planos', 'Pricing')} <ChevronRight size={16} /></button>
           {!en && <a href={rota('planta-de-situacao/')}>Planta de situação grátis <ChevronRight size={16} /></a>}
+          {!en && <a href={rota('kpcad/')}>KPCad: planta no celular <ChevronRight size={16} /></a>}
           {!en && <a href={rota('calculadora/')}>Calculadora do Projetista <ChevronRight size={16} /></a>}
           {!en && <a href={rota('tutoriais/')}>Tutoriais de AutoCAD <ChevronRight size={16} /></a>}
           <button onClick={() => ir(en ? 'contact' : 'contato')}>{t('Contato', 'Contact')} <ChevronRight size={16} /></button>
@@ -121,6 +122,8 @@ export default function Layout({ children, naInicial, en = false }: Props) {
             ) : (
               <>
                 <a href={rota('planta-de-situacao/')}>Planta de situação grátis</a>
+                <a href={rota('kpcad/')}>KPCad</a>
+                <a href={rota('calculadora/')}>Calculadora do Projetista</a>
                 <a href={rota('tutoriais/')}>Tutoriais</a>
                 <a href={rota('privacidade/')}>Política de privacidade</a>
                 <a href={rota('calculadora/privacidade/')}>Privacidade da Calculadora</a>
