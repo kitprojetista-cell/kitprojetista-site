@@ -33,8 +33,12 @@ function Previa({ d, aoClicar }: { d: Desenho; aoClicar?: (dx: number, dy: numbe
       <defs><clipPath id="moldura"><rect x={-r} y={-r} width={2 * r} height={2 * r} /></clipPath></defs>
       <rect x={-r} y={-r} width={2 * r} height={2 * r} fill="#fff" />
       <g clipPath="url(#moldura)">
+        {/* Rua = borda escura (o meio-fio, como sai no DXF) + pista clara por cima */}
         {[...d.vias].sort((a, b) => b.largura - a.largura).map((v, i) => (
-          <polyline key={i} points={pts(v.pontos)} fill="none" stroke="#c9d3d8" strokeWidth={v.largura} strokeLinecap="round" strokeLinejoin="round" />
+          <polyline key={'b' + i} points={pts(v.pontos)} fill="none" stroke="#6f8590" strokeWidth={v.largura + r / 160} strokeLinecap="round" strokeLinejoin="round" />
+        ))}
+        {[...d.vias].sort((a, b) => b.largura - a.largura).map((v, i) => (
+          <polyline key={'p' + i} points={pts(v.pontos)} fill="none" stroke="#dfe7eb" strokeWidth={v.largura} strokeLinecap="round" strokeLinejoin="round" />
         ))}
         {d.edificacoes.map((e, i) => <polygon key={i} points={pts(e)} fill="#eef2f4" stroke="#8a99a3" strokeWidth={r / 450} />)}
         {d.rotulos.map((t, i) => (
