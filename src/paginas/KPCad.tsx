@@ -56,7 +56,7 @@ export default function KPCad() {
             {PLAY_STORE ? (
               <a className="button button-primary" href={PLAY_STORE} target="_blank" rel="noreferrer">Baixar na Play Store <ArrowRight size={17} /></a>
             ) : (
-              <span className="button button-primary kpcad-embreve">Em breve na Google Play</span>
+              <span className="button button-primary kpcad-embreve">Em breve na Play Store</span>
             )}
             <button className="button button-outline" onClick={() => rolar('como-funciona')}>Ver como funciona <ChevronDown size={17} /></button>
           </div>
