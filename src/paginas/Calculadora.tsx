@@ -142,6 +142,23 @@ export default function Calculadora() {
         <div className="section-rule"><span>KP</span><div /></div>
       </section>
 
+      {PLAY_STORE ? (
+        <section id="baixar" className="contact-section section-padding">
+          <div className="contact-panel">
+            <div className="contact-copy">
+              <div className="eyebrow"><span className="eyebrow-dot" /> JÁ NA PLAY STORE</div>
+              <h2>Baixe grátis e faça a conta <em>da sua obra.</em></h2>
+              <p>Tijolo, piso, tinta, concreto, telhado e a lista de compras com a comparação entre lojas. Sem cadastro e sem anúncios.</p>
+              <div className="contact-detail"><span className="detail-line" /><span>Grátis para Android</span></div>
+            </div>
+            <div className="success-state">
+              <a className="button button-primary" href={PLAY_STORE} target="_blank" rel="noreferrer">Baixar na Play Store <ArrowRight size={17} /></a>
+              <p style={{ marginTop: '14px' }}>Gostou? Uma avaliação na Play Store ajuda muito o app a chegar em mais gente.</p>
+            </div>
+          </div>
+          <p className="disclaimer">Os resultados são de apoio e pré-dimensionamento. Eles não substituem o projeto e a responsabilidade técnica de um profissional habilitado.</p>
+        </section>
+      ) : (
       <section id="testadores" className="contact-section section-padding">
         <div className="contact-panel">
           <div className="contact-copy">
@@ -186,6 +203,7 @@ export default function Calculadora() {
         </div>
         <p className="disclaimer">Os resultados são de apoio e pré-dimensionamento. Eles não substituem o projeto e a responsabilidade técnica de um profissional habilitado.</p>
       </section>
+      )}
     </Layout>
   );
 }

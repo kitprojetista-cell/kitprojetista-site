@@ -100,7 +100,7 @@ export default function Inicio() {
           <button className="button button-primary" onClick={() => setTesteAberto(true)}>
             Teste Gratuito por 7 dias <ArrowRight size={17} />
           </button>
-          <a className="button button-glass" href={rota('calculadora/')}>Conheça a Calculadora do Projetista <Sparkles size={16} /></a>
+          <a className="button button-glass" href={rota('calculadora/')}>App grátis na Play Store: Calculadora do Projetista <Sparkles size={16} /></a>
           <button className="button button-outline" onClick={() => ir('planos')}>Ver planos <ChevronDown size={17} /></button>
         </div>
         <div className="hero-video">

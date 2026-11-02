@@ -26,7 +26,7 @@ export const REDES = {
 export const LINK_TESTE_GRATIS = import.meta.env.BASE_URL + 'baixar/KitProjetista-Instalador.exe';
 
 /** Link da Calculadora na Play Store. Vazio = botão escondido (app ainda em teste). */
-export const PLAY_STORE = '';
+export const PLAY_STORE = 'https://play.google.com/store/apps/details?id=br.com.kitprojetista.calculadoras';
 
 /** ID do Short do YouTube mostrado na página da Calculadora (o que vem depois de /shorts/). Vazio = sem vídeo. */
 export const YOUTUBE_SHORT = 'OU_fz9o2fj4';
