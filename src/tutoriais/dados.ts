@@ -245,6 +245,45 @@ export const TUTORIAIS: Tutorial[] = [
       { p: 'Funciona no Civil 3D?', r: 'Sim. O Kit Projetista funciona no AutoCAD e no Civil 3D, da versão 2015 em diante.' },
     ],
   },
+  {
+    slug: 'transformar-linhas-em-bloco-autocad',
+    titulo: 'Como transformar linhas soltas em bloco no AutoCAD',
+    descricao: 'Planta com símbolos desenhados soltos, sem bloco? Transforme um em bloco e troque todas as cópias iguais de uma vez, mesmo giradas ou espelhadas. Com o Kit Projetista.',
+    curto: 'Linhas soltas em bloco no AutoCAD',
+    selo: 'TUTORIAL · CORRETOR DE PLANTA',
+    youtube: 'ziXFoBGyYGc',
+    youtubeData: '2026-11-01T22:40:00-03:00',
+    h1: 'Como transformar linhas soltas em bloco no AutoCAD',
+    destaque: 'todas as cópias de uma vez.',
+    chamada: 'Recebeu uma planta com tomadas, janelas ou móveis desenhados com linhas soltas, sem bloco? Veja como isso é corrigido à mão no AutoCAD e como trocar todas as cópias iguais pelo seu bloco em um comando.',
+    manual: {
+      titulo: 'No AutoCAD, sem plugin',
+      passos: [
+        'Transforme um dos símbolos em bloco com o comando BLOCK, escolhendo o ponto base.',
+        'Procure na planta cada cópia desenhada solta do mesmo símbolo, uma por uma.',
+        'Para cada cópia, apague as linhas e insira o bloco no mesmo lugar, acertando o giro e o espelhamento à mão.',
+        'Repita para cada tipo de símbolo (tomada, interruptor, janela, móvel) e confira se nenhuma cópia ficou para trás.',
+      ],
+      problema: 'Em uma planta com dezenas de símbolos, isso leva horas e é fácil esquecer uma cópia ou inserir o bloco girado errado. E, enquanto os símbolos não viram bloco, a contagem de blocos e os levantamentos não enxergam nada.',
+    },
+    kit: {
+      comando: 'KPCORRIGIR',
+      passos: [
+        'Transforme UM símbolo em bloco com o comando BLOCK (ex.: "Janela" ou "Tomada média").',
+        'Digite KPCORRIGIR e selecione a planta com uma janela, deixando a legenda de fora.',
+        'Digite B (Blocos-modelo), clique no bloco que você criou e tecle Enter.',
+        'O Kit destaca as cópias soltas iguais, mesmo giradas ou espelhadas. Tecle Enter (Sim) e ele troca todas pelo seu bloco, no lugar e no ângulo certos.',
+      ],
+    },
+    perguntas: [
+      { p: 'Funciona com símbolos girados ou espelhados?', r: 'Sim. O Kit compara a forma do símbolo, não a posição: acha as cópias em qualquer ângulo e espelhadas e insere o bloco com o mesmo giro e espelhamento.' },
+      { p: 'E se o símbolo estiver em mais de uma layer?', r: 'Funciona. Símbolos com o traço numa layer e o texto ou a hachura noutra também são reconhecidos (versão 1.9.6 em diante).' },
+      { p: 'Preciso criar o bloco antes?', r: 'No modo Blocos-modelo, sim: você cria um bloco de cada tipo com o BLOCK. Se preferir, também dá para clicar numa figura solta e escrever o nome (Cama, Tomada, Lâmpada...): o Kit cria o bloco e troca todas as iguais.' },
+      { p: 'O desenho está marcado em milímetros, mas desenhado em metros. Funciona?', r: 'Sim. O Kit percebe quando a unidade marcada não bate com as medidas do desenho, avisa na linha de comando e usa a unidade certa.' },
+      { p: 'Para que serve depois?', r: 'Com os símbolos em bloco, a contagem de blocos, o levantamento de material elétrico (KPLEVELETRICA) e o 3D da elétrica (KPELETRICA3D) passam a contar tudo.' },
+      { p: 'Dá para desfazer?', r: 'Sim. Um Ctrl+Z desfaz a troca inteira.' },
+    ],
+  },
 ];
 
 export const buscarTutorial = (slug: string) => TUTORIAIS.find((t) => t.slug === slug);
