@@ -270,6 +270,10 @@ a.button { text-decoration: none; }
 .tutorial-kit .button { margin: 6px 0 10px; }
 .tutorial-gratis { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 8px; color: #1f6b3a; font-weight: 700; font-size: 13px; }
 .tutorial-gratis svg { flex: none; margin-top: 3px; }
+.tutorial-dica { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; max-width: 980px; margin: 28px auto 0; padding: 18px 20px; border-radius: 16px; background: #eef6fb; border: 1px solid #cfe3ef; color: #1d4560; }
+.tutorial-dica svg { flex: none; color: #2b6c91; }
+.tutorial-dica p { flex: 1 1 260px; margin: 0; font-weight: 600; }
+.tutorial-alterno { text-align: center; margin-top: 16px; }
 .tutorial-perguntas div { margin-top: 4px; }
 .tutorial-outros { margin-top: 44px; }
 .tutorial-outros h2 { color: #14394f; font-size: clamp(22px, 3vw, 30px); margin: 0 0 14px; }

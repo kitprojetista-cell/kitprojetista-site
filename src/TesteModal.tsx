@@ -3,10 +3,10 @@ import { ArrowRight, Check, Download, X } from 'lucide-react';
 import { LINK_TESTE_GRATIS, rota } from './config';
 import { enviarFormulario, guardarPendente } from './formulario';
 
-type Props = { aberto: boolean; fechar: () => void; en?: boolean };
+type Props = { aberto: boolean; fechar: () => void; en?: boolean; /** Marca de onde veio o pedido (ex.: página em espanhol). */ origem?: string };
 
 /** Formulário do teste grátis: pede nome e e-mail e só então libera o download. */
-export default function TesteModal({ aberto, fechar, en = false }: Props) {
+export default function TesteModal({ aberto, fechar, en = false, origem }: Props) {
   const t = (pt: string, ingles: string) => (en ? ingles : pt);
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
@@ -30,9 +30,9 @@ export default function TesteModal({ aberto, fechar, en = false }: Props) {
     e.preventDefault();
     setEnviando(true);
     setErro(false);
-    const assunto = `Teste grátis — ${nome}${en ? ' (EN)' : ''}`;
+    const assunto = `Teste grátis — ${nome}${origem ? ` (${origem})` : en ? ' (EN)' : ''}`;
     const dados = {
-      Origem: en ? 'Teste grátis (7 dias), página em inglês' : 'Teste grátis (7 dias)',
+      Origem: origem ? `Teste grátis (7 dias), ${origem}` : en ? 'Teste grátis (7 dias), página em inglês' : 'Teste grátis (7 dias)',
       Nome: nome,
       'E-mail': email,
       WhatsApp: whats || 'Não informado',

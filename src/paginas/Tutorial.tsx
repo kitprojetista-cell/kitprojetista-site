@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowRight, BookOpen, Check, Clock, MousePointerClick } from 'lucide-react';
+import { ArrowRight, BookOpen, Check, Clock, MapPin, MousePointerClick } from 'lucide-react';
 import Layout from '../Layout';
 import TesteModal from '../TesteModal';
 import { rota } from '../config';
@@ -33,9 +33,11 @@ function JsonLdPerguntas({ t }: { t: TipoTutorial }) {
 
 export function Tutorial({ t }: { t: TipoTutorial }) {
   const [testeAberto, setTesteAberto] = useState(false);
-  const outros = TUTORIAIS.filter((x) => x.slug !== t.slug);
+  const es = t.idioma === 'es';
+  const L = (pt: string, esp: string) => (es ? esp : pt);
+  const outros = TUTORIAIS.filter((x) => x.slug !== t.slug && x.idioma === t.idioma);
   return (
-    <Layout naInicial={false}>
+    <Layout naInicial={false} en={es}>
       <section className="hero hero-legal section-padding">
         <div className="hero-orbit orbit-one" />
         <div className="eyebrow"><span className="eyebrow-dot" /> {t.selo}</div>
@@ -78,17 +80,27 @@ export function Tutorial({ t }: { t: TipoTutorial }) {
             <p className="tutorial-problema">{t.manual.problema}</p>
           </article>
           <article className="tutorial-coluna tutorial-kit">
-            <div className="tutorial-coluna-topo"><MousePointerClick size={20} strokeWidth={1.8} /> <h2>Com o Kit Projetista: <code>{t.kit.comando}</code></h2></div>
+            <div className="tutorial-coluna-topo"><MousePointerClick size={20} strokeWidth={1.8} /> <h2>{L('Com o Kit Projetista', 'Con el Kit Projetista')}: <code>{t.kit.comando}</code></h2></div>
             <ol>{t.kit.passos.map((p) => <li key={p}>{p}</li>)}</ol>
             {t.kit.gratis && <p className="tutorial-gratis"><Check size={16} /> {t.kit.gratis}</p>}
-            <button className="button button-primary" onClick={() => setTesteAberto(true)}>Testar 7 dias grátis <ArrowRight size={17} /></button>
-            <p className="form-note">Para AutoCAD 2015 a 2027 e Civil 3D, no Windows. Não funciona no AutoCAD LT.</p>
+            <button className="button button-primary" onClick={() => setTesteAberto(true)}>{L('Testar 7 dias grátis', 'Probar gratis 7 días')} <ArrowRight size={17} /></button>
+            <p className="form-note">{L('Para AutoCAD 2015 a 2027 e Civil 3D, no Windows. Não funciona no AutoCAD LT.', 'Para AutoCAD 2015 a 2027 y Civil 3D, en Windows. No funciona en AutoCAD LT.')}</p>
           </article>
         </div>
         )}
 
+        {t.dica && (
+          <div className="tutorial-dica">
+            <MapPin size={22} strokeWidth={1.8} />
+            <p>{t.dica.texto}</p>
+            <a className="button button-outline" href={rota(t.dica.href)}>{t.dica.rotulo} <ArrowRight size={16} /></a>
+          </div>
+        )}
+
+        {es && t.alterno && <p className="form-note tutorial-alterno"><a href={rota(t.alterno + '/')}>Ver esta página en portugués</a></p>}
+
         <div className="situacao-texto tutorial-perguntas">
-          <h2>Perguntas frequentes</h2>
+          <h2>{L('Perguntas frequentes', 'Preguntas frecuentes')}</h2>
           {t.perguntas.map((q) => (
             <div key={q.p}>
               <h3>{q.p}</h3>
@@ -97,7 +109,7 @@ export function Tutorial({ t }: { t: TipoTutorial }) {
           ))}
         </div>
 
-        <div className="tutorial-outros">
+        {!es && <div className="tutorial-outros">
           <h2>Outros tutoriais</h2>
           <div className="tutorial-cartoes">
             {outros.map((x) => (
@@ -113,11 +125,11 @@ export function Tutorial({ t }: { t: TipoTutorial }) {
               <ArrowRight size={16} />
             </a>
           </div>
-        </div>
+        </div>}
       </section>
 
       <JsonLdPerguntas t={t} />
-      <TesteModal aberto={testeAberto} fechar={() => setTesteAberto(false)} />
+      <TesteModal aberto={testeAberto} fechar={() => setTesteAberto(false)} en={es} origem={es ? 'página em espanhol' : undefined} />
     </Layout>
   );
 }
@@ -134,7 +146,7 @@ export function ListaTutoriais() {
       </section>
       <section className="features-section section-padding tutorial-secao">
         <div className="tutorial-cartoes tutorial-cartoes-grandes">
-          {TUTORIAIS.map((x) => (
+          {TUTORIAIS.filter((x) => !x.idioma).map((x) => (
             <a key={x.slug} className="tutorial-cartao" href={rota(x.slug + '/')}>
               <BookOpen size={22} strokeWidth={1.7} />
               <span><b>{x.h1}</b><small>{x.descricao}</small></span>

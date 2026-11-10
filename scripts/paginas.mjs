@@ -77,8 +77,14 @@ for (const p of paginas) {
   let html = base.replace(/<title>[^<]*<\/title>/, `<title>${p.titulo}</title>`);
   if (p.idioma) html = html.replace(/<html lang="[^"]*"/, `<html lang="${p.idioma}"`);
   if (p.idioma === 'en') html = trocarMeta(html, 'og:locale', 'en_US');
-  // hreflang só faz sentido na inicial em português e na em inglês
+  if (p.idioma === 'es') html = trocarMeta(html, 'og:locale', 'es_419');
+  // hreflang só faz sentido na inicial em português e na em inglês (e nas páginas que têm versão em espanhol)
   if (p.rota !== 'en') html = html.replace(/\s*<link rel="alternate" hreflang="[^"]*" href="[^"]*" \/>/g, '');
+  if (p.alterno) {
+    const [pt, es] = p.idioma === 'es' ? [p.alterno, p.rota] : [p.rota, p.alterno];
+    const links = `<link rel="alternate" hreflang="pt-BR" href="${siteUrl}/${pt}/" />\n    <link rel="alternate" hreflang="es" href="${siteUrl}/${es}/" />\n    <link rel="alternate" hreflang="x-default" href="${siteUrl}/${pt}/" />`;
+    html = html.replace('</head>', `    ${links}\n  </head>`);
+  }
   for (const k of ['description', 'og:description', 'twitter:description']) html = trocarMeta(html, k, p.descricao);
   for (const k of ['og:title', 'twitter:title']) html = trocarMeta(html, k, p.titulo);
   html = trocarMeta(html, 'og:url', `${siteUrl}/${p.rota}/`);

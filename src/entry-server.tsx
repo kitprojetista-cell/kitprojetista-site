@@ -8,7 +8,7 @@ import { TUTORIAIS } from './tutoriais/dados';
 /** Páginas que saem da lista de tutoriais (título e descrição do Google de cada uma). */
 export const paginasTutoriais = [
   { rota: 'tutoriais', titulo: 'Tutoriais de AutoCAD para projetistas | Kit Projetista', descricao: 'Passo a passo das tarefas que mais se repetem no AutoCAD: área dos cômodos, quadro de áreas, metragem por layer e mais, do jeito manual e do jeito rápido.' },
-  ...TUTORIAIS.map((t) => ({ rota: t.slug, titulo: t.titulo, descricao: t.descricao })),
+  ...TUTORIAIS.map((t) => ({ rota: t.slug, titulo: t.titulo, descricao: t.descricao, idioma: t.idioma, alterno: t.alterno })),
 ];
 
 export function render(caminho: string) {

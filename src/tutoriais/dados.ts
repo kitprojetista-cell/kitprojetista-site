@@ -26,6 +26,12 @@ export type Tutorial = {
   /** O jeito com o Kit. */
   kit?: { comando: string; passos: string[]; gratis?: string };
   perguntas: { p: string; r: string }[];
+  /** Quadro "veja também" depois da comparação (ex.: a planta de situação grátis). */
+  dica?: { texto: string; href: string; rotulo: string };
+  /** Página em outro idioma: fica fora das listas em português e usa o cabeçalho em inglês. */
+  idioma?: 'es';
+  /** A mesma página no outro idioma (slug), para o Google ligar as duas (hreflang). */
+  alterno?: string;
 };
 
 export const TUTORIAIS: Tutorial[] = [
@@ -169,15 +175,17 @@ export const TUTORIAIS: Tutorial[] = [
   },
   {
     slug: 'importar-kml-autocad',
-    titulo: 'Como importar KML e KMZ do Google Earth no AutoCAD (grátis)',
-    descricao: 'Abra no AutoCAD o KML ou KMZ do Google Earth, o GPX do GPS e pontos em CSV, já em coordenadas UTM SIRGAS 2000, com a área de cada polígono. Grátis com o Kit.',
+    titulo: 'Importar KML/KMZ no AutoCAD grátis, já em UTM | Kit Projetista',
+    descricao: 'Importe para o AutoCAD o KML ou KMZ do Google Earth (polígono do terreno, pontos e linhas) em 1 minuto, já em UTM SIRGAS 2000 e com a área. Grátis para sempre.',
     curto: 'Importar KML no AutoCAD',
     selo: 'TUTORIAL · KML NO AUTOCAD',
     youtube: 'GUCfiTZlXB0',
     youtubeData: '2026-10-30T15:00:00-03:00',
     h1: 'Como importar KML e KMZ do Google Earth no AutoCAD',
     destaque: 'já em UTM.',
-    chamada: 'O cliente marcou o terreno no Google Earth e mandou o arquivo pelo WhatsApp? Veja por que o AutoCAD não abre KML e como trazer o lote para o desenho em segundos, de graça.',
+    chamada: 'Funciona com o polígono do terreno marcado no Google Earth: o cliente mandou o KMZ pelo WhatsApp e, em 1 minuto, o lote está no desenho, em escala, nas coordenadas certas e com a área. Veja por que o AutoCAD não abre KML e como importar de graça.',
+    alterno: 'es/importar-kml-autocad',
+    dica: { texto: 'Vai precisar também da planta de situação do lote? Gere grátis pelo CEP, com as ruas reais, e baixe em DXF.', href: 'planta-de-situacao/', rotulo: 'Gerar a planta de situação' },
     manual: {
       titulo: 'No AutoCAD, sem plugin',
       passos: [
@@ -282,6 +290,75 @@ export const TUTORIAIS: Tutorial[] = [
       { p: 'O desenho está marcado em milímetros, mas desenhado em metros. Funciona?', r: 'Sim. O Kit percebe quando a unidade marcada não bate com as medidas do desenho, avisa na linha de comando e usa a unidade certa.' },
       { p: 'Para que serve depois?', r: 'Com os símbolos em bloco, a contagem de blocos, o levantamento de material elétrico (KPLEVELETRICA) e o 3D da elétrica (KPELETRICA3D) passam a contar tudo.' },
       { p: 'Dá para desfazer?', r: 'Sim. Um Ctrl+Z desfaz a troca inteira.' },
+    ],
+  },
+  {
+    slug: 'exportar-poligono-google-earth-autocad',
+    titulo: 'Como passar um polígono do Google Earth para o AutoCAD',
+    descricao: 'Desenhe ou receba o polígono do terreno no Google Earth, salve em KMZ e abra no AutoCAD em escala, em UTM SIRGAS 2000 e com a área. Passo a passo grátis.',
+    curto: 'Polígono do Google Earth no AutoCAD',
+    selo: 'TUTORIAL · GOOGLE EARTH PARA AUTOCAD',
+    h1: 'Como passar um polígono do Google Earth para o AutoCAD',
+    destaque: 'em escala e com a área.',
+    chamada: 'Marcou o terreno no Google Earth (ou o cliente marcou e mandou) e precisa dele no projeto? O Google Earth não exporta DWG nem DXF, mas salva o polígono em KMZ, e o KMZ entra no AutoCAD em 1 minuto, de graça.',
+    guia: {
+      titulo: 'Passo a passo',
+      passos: [
+        { titulo: 'Desenhe o polígono no Google Earth Pro', texto: 'No Google Earth Pro (no computador), clique em "Adicionar polígono", dê um nome, como "Terreno", e clique nos cantos do lote no mapa. Clique em OK para terminar.' },
+        { titulo: 'Salve em KMZ', texto: 'No painel Lugares, clique com o botão direito no polígono e escolha "Salvar lugar como...". Deixe o tipo KMZ e salve. Se quiser levar vários itens juntos, coloque todos numa pasta e salve a pasta.' },
+        { titulo: 'No Google Earth da web', texto: 'Se usa o Google Earth no navegador: crie um Projeto, desenhe com "Desenhar linha ou forma" e, no menu do projeto (os três pontinhos), escolha "Exportar como arquivo KML". Se o cliente mandou o arquivo pelo WhatsApp, é só salvar no computador.' },
+        { titulo: 'Abra o AutoCAD com o Kit', texto: 'Com o Kit Projetista instalado, digite KPIMPORTAR (ou clique em Importar, no grupo Mapa da aba Kit Projetista) e escolha o KMZ ou KML.' },
+        { titulo: 'Confira a área', texto: 'O polígono entra em UTM SIRGAS 2000, em metros e no fuso certo, com a área em m² escrita no meio. Cada pasta do Google Earth vira uma layer.' },
+        { titulo: 'Devolva para o cliente (opcional)', texto: 'Com o projeto pronto, o KPEXPORTAR gera um KMZ do desenho para o cliente abrir no Google Earth, com área e perímetro. Esse recurso faz parte do plano; a importação é grátis para sempre.' },
+      ],
+    },
+    dica: { texto: 'Precisa também da planta de situação do terreno? Gere grátis pelo CEP, com as ruas reais, e baixe em DXF.', href: 'planta-de-situacao/', rotulo: 'Gerar a planta de situação' },
+    perguntas: [
+      { p: 'O Google Earth exporta DWG ou DXF?', r: 'Não. O Google Earth só salva em KML ou KMZ. Por isso é preciso converter, e o Kit faz isso dentro do próprio AutoCAD, sem site conversor.' },
+      { p: 'A área do polígono fica igual à do Google Earth?', r: 'Fica muito próxima. O Kit calcula a área no plano UTM SIRGAS 2000, que é o que se usa em projeto e levantamento. Diferenças pequenas vêm da projeção e da precisão do clique no mapa.' },
+      { p: 'Serve como levantamento topográfico?', r: 'Não. O polígono do Google Earth é bom para estudo, implantação inicial e planta de situação, mas não substitui o levantamento de um topógrafo.' },
+      { p: 'É grátis?', r: 'Sim. Importar KML, KMZ, GPX, GeoJSON e CSV é grátis para sempre no Kit, mesmo depois dos 7 dias de teste.' },
+      { p: 'Funciona no AutoCAD LT?', r: 'Não. O Kit funciona no AutoCAD 2015 a 2027 e no Civil 3D, no Windows. O AutoCAD LT não aceita plugins.' },
+    ],
+  },
+  {
+    slug: 'es/importar-kml-autocad',
+    idioma: 'es',
+    alterno: 'importar-kml-autocad',
+    titulo: 'Importar KML/KMZ de Google Earth a AutoCAD gratis, en UTM',
+    descricao: 'Importa a AutoCAD el KML o KMZ de Google Earth (polígono del terreno, puntos y líneas) en 1 minuto, ya en coordenadas UTM y con el área. Gratis para siempre.',
+    curto: 'Importar KML a AutoCAD',
+    selo: 'TUTORIAL · KML A AUTOCAD',
+    h1: 'Cómo importar KML y KMZ de Google Earth a AutoCAD',
+    destaque: 'ya en UTM.',
+    chamada: '¿El cliente marcó el terreno en Google Earth y te envió el archivo? AutoCAD no abre KML, pero con el Kit Projetista el polígono entra al dibujo en 1 minuto, a escala real, en la zona UTM correcta y con el área. La importación es gratis para siempre.',
+    manual: {
+      titulo: 'En AutoCAD, sin plugin',
+      passos: [
+        'AutoCAD no abre KML ni KMZ: el archivo está en latitud y longitud, y el dibujo trabaja en metros.',
+        'Lo más común es usar un sitio web que convierte KML a DXF: subes el archivo del cliente a un servidor de terceros y descargas el DXF.',
+        'El DXF convertido suele venir en grados o en otro sistema de coordenadas, fuera de escala o lejos del origen, y hay que moverlo y escalarlo a mano.',
+        'Para tener el área correcta y que coincida con el levantamiento, todavía hay que pasarlo a UTM en la zona de la obra.',
+      ],
+      problema: 'Son varios programas y sitios para un solo archivo, y un error de zona o de escala cambia el área del terreno sin que lo notes.',
+    },
+    kit: {
+      comando: 'KPIMPORTAR',
+      gratis: 'Importar KML, KMZ, GPX, GeoJSON y CSV es gratis para siempre, incluso después de la prueba de 7 días.',
+      passos: [
+        'Escribe KPIMPORTAR (o haz clic en Import, en el grupo Map de la pestaña Kit Projetista) y elige el archivo: KML, KMZ, GPX, GeoJSON o CSV de puntos.',
+        'El Kit calcula la zona UTM a partir de la ubicación (norte o sur) y dibuja todo a escala real: cada carpeta de Google Earth se convierte en una capa.',
+        'Los puntos entran con su nombre, las líneas como polilíneas y cada polígono con el área en m² escrita en el centro.',
+        'La interfaz del Kit está en inglés y portugués: en Windows en español se abre en inglés automáticamente.',
+      ],
+    },
+    perguntas: [
+      { p: '¿Es gratis de verdad?', r: 'Sí. La importación (KPIMPORTAR) sigue gratis después de los 7 días de prueba. Las demás herramientas del Kit forman parte del plan de pago.' },
+      { p: '¿El Kit está en español?', r: 'Todavía no. La interfaz está en inglés y portugués; si tu Windows está en español, el Kit se abre en inglés. Los comandos son los mismos en cualquier idioma.' },
+      { p: '¿Funciona fuera de Brasil?', r: 'Sí. El Kit calcula la zona UTM y el hemisferio a partir de las coordenadas del archivo, así que el terreno entra en la posición correcta en cualquier país.' },
+      { p: '¿El archivo se envía a algún sitio web?', r: 'No. El Kit lee el KML directamente en tu computadora, sin internet. El archivo del cliente no sale de tu máquina.' },
+      { p: '¿Cuál es la diferencia entre KML y KMZ?', r: 'El KMZ es el mismo KML comprimido, como un ZIP. Google Earth guarda en KMZ por defecto. El Kit abre los dos.' },
+      { p: '¿Funciona en AutoCAD LT?', r: 'No. El Kit funciona en AutoCAD 2015 a 2027 y en Civil 3D, en Windows. AutoCAD LT no acepta plugins.' },
     ],
   },
 ];
