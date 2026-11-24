@@ -4,18 +4,24 @@ import Layout from '../Layout';
 import TesteModal from '../TesteModal';
 import { rota, PLANILHA_PLANTA_URL, PLANILHA_PLANTA_CHAVE, PRODUTOS_APROVACAO } from '../config';
 import { enviarFormulario, guardarPendente } from '../formulario';
-import VersaoCompleta from '../situacao/VersaoCompleta';
-import { Desenho, anguloLegivel, gerarDxf, legenda, localizar, montar, recentrar, remontar } from '../situacao/situacao';
+import VersaoCompleta, { CHAVE_LISTA } from '../situacao/VersaoCompleta';
+import { CotaDesenho, Desenho, anguloLegivel, gerarDxf, legenda, localizar, meioDaCota, montar, recentrar, remontar } from '../situacao/situacao';
+import { esquinas } from '../situacao/esquina';
 
 const RAIOS = [100, 150, 250, 400];
 const CHAVE_CADASTRO = 'kp_cadastro_situacao';
+
+function naLista() {
+  try { return localStorage.getItem(CHAVE_LISTA) === '1'; } catch { return false; }
+}
+const metros = (v: number) => v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 function jaCadastrado() {
   try { return localStorage.getItem(CHAVE_CADASTRO) === '1'; } catch { return false; }
 }
 
 /** Prévia em SVG, no mesmo desenho do DXF (norte para cima). */
-function Previa({ d, aoClicar }: { d: Desenho; aoClicar?: (dx: number, dy: number) => void }) {
+function Previa({ d, aoClicar, cota }: { d: Desenho; aoClicar?: (dx: number, dy: number) => void; cota?: CotaDesenho }) {
   const ref = useRef<SVGSVGElement>(null);
   const r = d.raio, h = Math.max(2, r / 45);
   const clicar = (ev: MouseEvent<SVGSVGElement>) => {
@@ -53,6 +59,20 @@ function Previa({ d, aoClicar }: { d: Desenho; aoClicar?: (dx: number, dy: numbe
         <line x1={0} y1={-rObra * 1.6} x2={0} y2={rObra * 1.6} />
       </g>
       <text x={rObra * 1.9} y={-rObra * 1.2} fontSize={h} fill="#b03a8f" style={{ fontFamily: 'Arial, sans-serif', fontWeight: 700 }}>LOCAL DA OBRA</text>
+      {cota && cota.pontos.length >= 2 && (() => {
+        const m = meioDaCota(cota.pontos, h * 0.9), pts2 = cota.pontos, t = h * 0.6;
+        const tiques = [[pts2[0], pts2[1]], [pts2[pts2.length - 1], pts2[pts2.length - 2]]].map(([p, q], i) => {
+          const a = Math.atan2(q.y - p.y, q.x - p.x) + Math.PI / 4;
+          return <line key={i} x1={p.x - Math.cos(a) * t} y1={-(p.y - Math.sin(a) * t)} x2={p.x + Math.cos(a) * t} y2={-(p.y + Math.sin(a) * t)} />;
+        });
+        return (
+          <g className="situacao-cota">
+            <g stroke="#d1342f" strokeWidth={r / 320} fill="none"><polyline points={pts(cota.pontos)} />{tiques}</g>
+            <text x={m.ponto.x} y={-m.ponto.y} fontSize={h} textAnchor="middle" dominantBaseline="middle" fill="#d1342f"
+              transform={`rotate(${-m.angulo} ${m.ponto.x} ${-m.ponto.y})`} style={{ fontFamily: 'Arial, sans-serif', fontWeight: 700 }}>{cota.texto}</text>
+          </g>
+        );
+      })()}
       <rect x={-r} y={-r} width={2 * r} height={2 * r} fill="none" stroke="#14394f" strokeWidth={r / 250} />
       <polygon points={pts([{ x: nb.x, y: nb.y + nt * 1.6 }, { x: nb.x - nt * 0.45, y: nb.y }, { x: nb.x + nt * 0.45, y: nb.y }])} fill="#14394f" />
       <text x={nb.x} y={-(nb.y + nt * 2.05)} fontSize={h * 1.2} textAnchor="middle" fill="#14394f" style={{ fontFamily: 'Arial, sans-serif', fontWeight: 700 }}>N</text>
@@ -78,12 +98,30 @@ export default function PlantaSituacao() {
   const [baixou, setBaixou] = useState(false);
   const [cadastrado, setCadastrado] = useState(jaCadastrado);
   const [testeAberto, setTesteAberto] = useState(false);
+  // Versão completa (opcional): cota até a esquina. Desligada, a planta sai igual a sempre.
+  const [comEsquina, setComEsquina] = useState(false);
+  const [escolha, setEscolha] = useState(0);
+  const [valor, setValor] = useState('');
+  const [listaOk, setListaOk] = useState(naLista);
+  const opcoes = useMemo(() => (desenho && comEsquina ? esquinas(desenho) : []), [desenho, comEsquina]);
+  const esquina = opcoes[Math.min(escolha, opcoes.length - 1)];
+  const cota: CotaDesenho | undefined = useMemo(() => {
+    if (!comEsquina || !listaOk || !esquina) return undefined;
+    const digitado = Number(valor.replace(',', '.'));
+    const usa = valor.trim() && digitado > 0 ? digitado : esquina.distancia;
+    const informado = !!(valor.trim() && digitado > 0 && Math.abs(digitado - esquina.distancia) > 0.004);
+    return {
+      pontos: esquina.cota,
+      texto: `${metros(usa)} m`,
+      legenda: `Distância do lote até a esquina com a ${esquina.cruza}: ${metros(usa)} m ${informado ? '(valor informado)' : '(medida pelo mapa, confira com a matrícula)'}.`,
+    };
+  }, [comEsquina, listaOk, esquina, valor]);
 
   const linhasLegenda = useMemo(() => (desenho ? legenda(desenho) : []), [desenho]);
 
   const gerar = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErro(''); setDesenho(null); setBaixou(false); setEstado('buscando');
+    setErro(''); setDesenho(null); setBaixou(false); setEstado('buscando'); setValor(''); setEscolha(0);
     try {
       setPasso('Procurando o endereço...');
       const local = await localizar(busca);
@@ -102,7 +140,7 @@ export default function PlantaSituacao() {
   /** Clique no mapa: o local da obra vai para o ponto clicado e a planta se recentraliza. */
   const mover = async (dx: number, dy: number) => {
     if (!desenho || movendo) return;
-    setBaixou(false);
+    setBaixou(false); setValor(''); setEscolha(0);
     const perto = recentrar(desenho, dx, dy);
     if (perto) { setDesenho(perto); return; }
     setMovendo(true); setErro('');
@@ -113,7 +151,7 @@ export default function PlantaSituacao() {
 
   const baixar = () => {
     if (!desenho) return;
-    const blob = new Blob([gerarDxf(desenho, utmReal)], { type: 'application/dxf' });
+    const blob = new Blob([gerarDxf(desenho, utmReal, cota)], { type: 'application/dxf' });
     const a = document.createElement('a');
     const primeira = desenho.local.descricao.split(',')[0] || '';
     const local = /^\s*-?\d/.test(primeira) ? 'coordenadas'
@@ -193,7 +231,41 @@ export default function PlantaSituacao() {
                   <button type="button" className="situacao-voltar" onClick={() => { setDesenho(original); setBaixou(false); }}>Voltar ao ponto do endereço</button>
                 )}
               </p>
-              <Previa d={desenho} aoClicar={mover} />
+              <Previa d={desenho} aoClicar={mover} cota={cota} />
+              <div className={'situacao-extra' + (comEsquina ? ' ligada' : '')}>
+                <label className="situacao-extra-liga">
+                  <input type="checkbox" checked={comEsquina} onChange={(e) => { setComEsquina(e.target.checked); setBaixou(false); }} />
+                  <span><b>Adicionar a cota até a esquina</b> <em>Novo · versão completa</em><small>Opcional. Desligado, a planta sai igual a sempre.</small></span>
+                </label>
+                {comEsquina && !listaOk && (
+                  <div className="situacao-extra-corpo">
+                    <p>A cota até a esquina é um presente de lançamento para quem entra na lista da versão completa. Leva 10 segundos.</p>
+                    <a className="button button-primary" href="#completa">Entrar na lista e liberar <ArrowRight size={16} /></a>
+                  </div>
+                )}
+                {comEsquina && listaOk && (
+                  <div className="situacao-extra-corpo">
+                    {!opcoes.length ? (
+                      <p>Não achamos uma esquina na rua da frente dentro desta planta. Tente um raio maior ou clique no mapa mais perto do lote.</p>
+                    ) : (
+                      <>
+                        {opcoes.length > 1 && (
+                          <label>Esquina
+                            <select value={escolha} onChange={(e) => { setEscolha(Number(e.target.value)); setValor(''); setBaixou(false); }}>
+                              {opcoes.map((o, i) => <option key={i} value={i}>Com a {o.cruza} ({metros(o.distancia)} m pelo mapa)</option>)}
+                            </select>
+                          </label>
+                        )}
+                        <label>Distância até a esquina (m)
+                          <input inputMode="decimal" value={valor} placeholder={esquina ? metros(esquina.distancia) : ''}
+                            onChange={(e) => { setValor(e.target.value.replace(/[^\d,.]/g, '')); setBaixou(false); }} />
+                        </label>
+                        <p>Medida pelo mapa, pela {esquina?.rua}, até o alinhamento da {esquina?.cruza}. É uma referência: se a matrícula ou a planta do loteamento trouxer a distância, digite aqui. Para mudar o ponto da frente do lote, clique no mapa.</p>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
               <div className="situacao-legenda">
                 <b>{linhasLegenda[0]}</b>
                 {linhasLegenda.slice(1, 3).map((l) => <span key={l}>{l}</span>)}
@@ -294,7 +366,7 @@ export default function PlantaSituacao() {
           contentUrl: 'https://www.youtube.com/shorts/HI89SHBiOKE',
         }) }} />
 
-        <VersaoCompleta nomeInicial={nome} emailInicial={email} whatsInicial={whats} />
+        <VersaoCompleta nomeInicial={nome} emailInicial={email} whatsInicial={whats} aoEntrar={() => setListaOk(true)} />
 
         {PRODUTOS_APROVACAO.length > 0 && <div className="produtos-aprovacao" id="modelos">
           <div className="section-heading">

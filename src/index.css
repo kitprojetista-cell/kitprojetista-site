@@ -241,6 +241,18 @@ a.button { text-decoration: none; }
 .situacao-extras a { display: inline-flex; align-items: center; gap: 6px; color: #1e6887; font-weight: 600; text-decoration: none; }
 .situacao-extras a:hover { text-decoration: underline; }
 .produtos-aprovacao { margin: 56px 0 8px; }
+.situacao-extra { margin-top: 14px; border: 1px solid #dbe7ec; border-radius: 14px; background: #ffffff; }
+.situacao-extra.ligada { border-color: #d1342f55; }
+.situacao-extra-liga { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; cursor: pointer; }
+.situacao-extra-liga input { width: 18px; height: 18px; margin-top: 2px; accent-color: #d1342f; flex: none; }
+.situacao-extra-liga b { color: #14394f; font-size: 14px; }
+.situacao-extra-liga em { font-style: normal; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #ffffff; background: #d1342f; border-radius: 999px; padding: 2px 8px; margin-left: 6px; }
+.situacao-extra-liga small { display: block; color: #4d6f7c; font-size: 12px; margin-top: 2px; }
+.situacao-extra-corpo { display: grid; gap: 10px; padding: 0 14px 14px 44px; }
+.situacao-extra-corpo p { margin: 0; color: #4d6f7c; font-size: 13px; line-height: 1.55; }
+.situacao-extra-corpo label { display: grid; gap: 4px; font-size: 13px; font-weight: 600; color: #14394f; }
+.situacao-extra-corpo select, .situacao-extra-corpo input { border: 1px solid #cfdde4; border-radius: 10px; padding: 9px 11px; font: inherit; font-size: 14px; background: #ffffff; max-width: 340px; }
+.situacao-extra-corpo .button { justify-self: start; }
 .situacao-completa-link { display: block; padding: 12px 14px; border-radius: 12px; background: #14394f; color: #ffffff; font-size: 13px; font-weight: 600; line-height: 1.5; text-decoration: none; }
 .situacao-completa-link svg { vertical-align: -2px; }
 .completa { margin: 56px 0 8px; }

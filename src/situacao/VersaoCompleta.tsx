@@ -5,16 +5,19 @@ import { enviarFormulario, guardarPendente } from '../formulario';
 
 /** O que a versão completa da planta de situação vai trazer (a lista de espera mede o que pesa mais). */
 export const ITENS_COMPLETA = [
-  { id: 'esquina', titulo: 'Distância até a esquina, cotada', texto: 'Clique na frente do lote e a cota até a esquina mais próxima sai desenhada.' },
+  { id: 'esquina', titulo: 'Distância até a esquina, cotada', texto: 'Já disponível para quem entra na lista: a cota sai desenhada na planta, e você pode digitar o valor da matrícula.' },
   { id: 'lote', titulo: 'Contorno do lote', texto: 'Desenhado pelos cantos no mapa ou pela testada e profundidade, com quadra e número.' },
   { id: 'ruas', titulo: 'Largura das ruas cotada', texto: 'As ruas na frente do lote com a largura em metros.' },
   { id: 'localizacao', titulo: 'Planta de localização junto', texto: 'O bairro em volta, além do lote na quadra, como muitas prefeituras pedem.' },
   { id: 'pdf', titulo: 'Prancha pronta em PDF', texto: 'A4 ou A3, escala 1:1000 ou 1:2000, com carimbo preenchido. Para quem não usa CAD.' },
 ];
 
-type Props = { nomeInicial: string; emailInicial: string; whatsInicial: string };
+/** Quem entrou na lista (neste navegador) já usa a cota até a esquina, como presente de lançamento. */
+export const CHAVE_LISTA = 'kp_lista_completa';
 
-export default function VersaoCompleta({ nomeInicial, emailInicial, whatsInicial }: Props) {
+type Props = { nomeInicial: string; emailInicial: string; whatsInicial: string; aoEntrar?: () => void };
+
+export default function VersaoCompleta({ nomeInicial, emailInicial, whatsInicial, aoEntrar }: Props) {
   const [marcados, setMarcados] = useState<string[]>([]);
   const [outro, setOutro] = useState('');
   const [nome, setNome] = useState(nomeInicial);
@@ -48,7 +51,10 @@ export default function VersaoCompleta({ nomeInicial, emailInicial, whatsInicial
       'Itens marcados': itens || 'Nenhum', 'Pedido da prefeitura (outro)': outro.trim() || '—' };
     try { await enviarFormulario(assunto, dados); }
     catch { guardarPendente(assunto, dados); }
-    finally { setEnviando(false); setFeito(true); }
+    finally {
+      try { localStorage.setItem(CHAVE_LISTA, '1'); } catch { /* nada */ }
+      setEnviando(false); setFeito(true); aoEntrar?.();
+    }
   };
 
   return (
@@ -62,7 +68,7 @@ export default function VersaoCompleta({ nomeInicial, emailInicial, whatsInicial
           <div className="success-icon"><Check size={26} /></div>
           <div>
             <h3>Você está na lista.</h3>
-            <p>Avisamos por e-mail quando a versão completa sair, com condição especial para quem entrou na lista.{outro.trim() ? ' Vamos olhar o pedido da sua prefeitura e responder por e-mail.' : ''}</p>
+            <p>Avisamos por e-mail quando a versão completa sair, com condição especial para quem entrou na lista.{outro.trim() ? ' Vamos olhar o pedido da sua prefeitura e responder por e-mail.' : ''} E já liberamos para você a <b>cota até a esquina</b>: é só ligar a opção embaixo da planta.</p>
           </div>
         </div>
       ) : (

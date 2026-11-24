@@ -381,8 +381,27 @@ export function legenda(d: Desenho): string[] {
 
 const CAMADAS: [string, number][] = [
   ['KP-SITUACAO-VIAS', 253], ['KP-SITUACAO-NOMES', 7], ['KP-SITUACAO-EDIFICACOES', 8],
-  ['KP-SITUACAO-OBRA', 6], ['KP-SITUACAO-MOLDURA', 7],
+  ['KP-SITUACAO-OBRA', 6], ['KP-SITUACAO-MOLDURA', 7], ['KP-SITUACAO-COTAS', 1],
 ];
+
+/** Cota opcional (versão completa): linha já deslocada para o lado do lote, o texto e a linha da legenda. */
+export type CotaDesenho = { pontos: P2[]; texto: string; legenda: string };
+
+/** Onde vai o texto da cota: no meio do comprimento, de pé, um pouco para fora da linha. */
+export function meioDaCota(pts: P2[], afastar: number) {
+  const total = pts.slice(1).reduce((s, p, i) => s + Math.hypot(p.x - pts[i].x, p.y - pts[i].y), 0);
+  let acum = 0;
+  for (let i = 1; i < pts.length; i++) {
+    const a = pts[i - 1], b = pts[i], L = Math.hypot(b.x - a.x, b.y - a.y);
+    if (acum + L >= total / 2 && L > 1e-9) {
+      const t = (total / 2 - acum) / L, ang = Math.atan2(b.y - a.y, b.x - a.x), g = anguloLegivel(ang) * Math.PI / 180;
+      const p = { x: a.x + t * (b.x - a.x), y: a.y + t * (b.y - a.y) };
+      return { ponto: { x: p.x - Math.sin(g) * afastar, y: p.y + Math.cos(g) * afastar }, angulo: anguloLegivel(ang), dir: ang };
+    }
+    acum += L;
+  }
+  return { ponto: pts[0], angulo: 0, dir: 0 };
+}
 
 /** Texto em Windows-1252 (o que o DXF R12 espera): acentos do português ficam certos. */
 function latin1(s: string) {
@@ -394,7 +413,7 @@ function latin1(s: string) {
  * DXF da planta. utmReal = true: cada ponto na coordenada UTM verdadeira (SIRGAS 2000), georreferenciado,
  * casa com levantamento, KML (KPIMPORTAR) e Google Earth. false: o local da obra fica na origem (0,0).
  */
-export function gerarDxf(d: Desenho, utmReal = true): Uint8Array {
+export function gerarDxf(d: Desenho, utmReal = true, cota?: CotaDesenho): Uint8Array {
   const L: string[] = [];
   const ox = utmReal ? d.e : 0, oy = utmReal ? d.n : 0;
   const P = (p: P2): P2 => ({ x: p.x + ox, y: p.y + oy });
@@ -460,7 +479,19 @@ export function gerarDxf(d: Desenho, utmReal = true): Uint8Array {
   g(13, nb.x + nt * 0.45); g(23, nb.y); g(33, 0);
   texto('KP-SITUACAO-MOLDURA', 'N', { x: nb.x - ox, y: nb.y - oy + nt * 2.15 }, h * 1.2, 0, true);
 
+  if (cota && cota.pontos.length >= 2) {
+    polilinha('KP-SITUACAO-COTAS', cota.pontos, false);
+    const tique = h * 0.6, pts = cota.pontos;
+    for (const [p, q] of [[pts[0], pts[1]], [pts[pts.length - 1], pts[pts.length - 2]]] as [P2, P2][]) {
+      const a = Math.atan2(q.y - p.y, q.x - p.x) + Math.PI / 4;
+      linha('KP-SITUACAO-COTAS', { x: p.x - Math.cos(a) * tique, y: p.y - Math.sin(a) * tique }, { x: p.x + Math.cos(a) * tique, y: p.y + Math.sin(a) * tique });
+    }
+    const m = meioDaCota(pts, h * 0.9);
+    texto('KP-SITUACAO-COTAS', cota.texto, m.ponto, h, m.angulo, true);
+  }
+
   const linhas = legenda(d);
+  if (cota) linhas.splice(3, 0, cota.legenda);
   linhas.splice(3, 0, utmReal
     ? `Desenho georreferenciado: coordenadas UTM reais, fuso ${d.fuso}${d.sul ? 'S' : 'N'}, SIRGAS 2000, em metros.`
     : 'Local da obra na origem (0,0) do desenho, em metros.');
