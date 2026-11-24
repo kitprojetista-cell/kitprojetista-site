@@ -66,3 +66,23 @@ export const CLOUDFLARE_ANALYTICS_TOKEN = '82866e57033d4cde914938682e6f98dc';
  */
 export const PLANILHA_PLANTA_URL = 'https://script.google.com/macros/s/AKfycbz_YH0uqroVkYhODKmEkNT9QI5JN7WUqV5F1JveIzdHLS5iRCEwJD7JjzIsYA8zbso/exec';
 export const PLANILHA_PLANTA_CHAVE = 'kp-situacao-7x2q';
+
+/** Modelos para aprovação vendidos na Hotmart (aparecem na planta de situação e nos e-mails da sequência). */
+export const PRODUTOS_APROVACAO = [
+  {
+    nome: 'Modelo de Memorial Descritivo',
+    formato: 'Word editável',
+    preco: 'R$ 19,90',
+    texto: 'Pronto para a aprovação de residência na prefeitura: identificação, áreas e índices, ambientes e todas as especificações técnicas com as normas ABNT. É só preencher.',
+    imagem: 'produtos/memorial-descritivo.png',
+    link: 'https://pay.hotmart.com/S107938754U?off=rob70lle',
+  },
+  {
+    nome: 'Planilha Quadro de Áreas e Índices',
+    formato: 'Excel',
+    preco: 'R$ 19,90',
+    texto: 'Calcula sozinha a taxa de ocupação, o coeficiente de aproveitamento e a permeabilidade, e mostra em verde ou vermelho se o projeto passa na lei de zoneamento.',
+    imagem: 'produtos/quadro-de-areas.png',
+    link: 'https://pay.hotmart.com/S107938754U?off=l7mhjivq',
+  },
+];

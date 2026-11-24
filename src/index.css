@@ -237,6 +237,17 @@ a.button { text-decoration: none; }
 .situacao-cartao { background: #d4e4e7; border-radius: 18px; padding: 24px; display: grid; gap: 12px; }
 .situacao-cartao h3 { color: #14394f; font-size: 22px; letter-spacing: -.03em; margin: 0; }
 .situacao-cartao p { color: #4d6f7c; font-size: 13px; line-height: 1.6; margin: 0; }
+.situacao-extras { display: grid; gap: 6px; padding: 12px 14px; background: #ffffff; border-radius: 12px; font-size: 13px; color: #14394f; }
+.situacao-extras a { display: inline-flex; align-items: center; gap: 6px; color: #1e6887; font-weight: 600; text-decoration: none; }
+.situacao-extras a:hover { text-decoration: underline; }
+.produtos-aprovacao { margin: 56px 0 8px; }
+.produtos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 24px; }
+.produto-card { display: grid; grid-template-columns: 150px 1fr; gap: 18px; align-items: start; background: #ffffff; border: 1px solid #dbe7ec; border-radius: 18px; padding: 18px; }
+.produto-card img { width: 150px; height: 150px; border-radius: 12px; object-fit: cover; }
+.produto-card h3 { margin: 0; color: #14394f; font-size: 19px; letter-spacing: -.02em; }
+.produto-card p { margin: 6px 0 12px; color: #4d6f7c; font-size: 14px; line-height: 1.55; }
+.produto-card .produto-formato { margin: 2px 0 0; font-size: 12px; font-weight: 700; color: #2b6c91; text-transform: uppercase; letter-spacing: .06em; }
+@media (max-width: 560px) { .produto-card { grid-template-columns: 1fr; } .produto-card img { width: 100%; height: auto; } }
 .situacao-convite .success-icon { margin-bottom: 4px; }
 .situacao-texto { max-width: 760px; margin-top: 40px; color: #4d6f7c; font-size: 14px; line-height: 1.7; }
 .situacao-texto h2 { color: #14394f; font-size: clamp(26px, 3.4vw, 36px); margin: 0 0 10px; }
