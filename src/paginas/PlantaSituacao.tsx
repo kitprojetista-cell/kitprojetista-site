@@ -4,6 +4,7 @@ import Layout from '../Layout';
 import TesteModal from '../TesteModal';
 import { rota, PLANILHA_PLANTA_URL, PLANILHA_PLANTA_CHAVE, PRODUTOS_APROVACAO } from '../config';
 import { enviarFormulario, guardarPendente } from '../formulario';
+import VersaoCompleta from '../situacao/VersaoCompleta';
 import { Desenho, anguloLegivel, gerarDxf, legenda, localizar, montar, recentrar, remontar } from '../situacao/situacao';
 
 const RAIOS = [100, 150, 250, 400];
@@ -241,6 +242,7 @@ export default function PlantaSituacao() {
                   <h3>Download feito.</h3>
                   <p>No AutoCAD, o <b>Kit Projetista</b> faz isso com um comando, direto no desenho, e ainda o carimbo de prefeitura, o quadro de áreas, a área dos cômodos e o memorial descritivo.</p>
                   <button className="button button-primary" onClick={() => setTesteAberto(true)}>Testar o Kit 7 dias grátis <ArrowRight size={17} /></button>
+                  <a className="situacao-completa-link" href="#completa">Em breve: a versão completa, com a cota até a esquina, o contorno do lote e a prancha em PDF. Entre na lista <ArrowRight size={14} /></a>
                   {PRODUTOS_APROVACAO.length > 0 && <div className="situacao-extras">
                     <b>Também para a aprovação na prefeitura:</b>
                     {PRODUTOS_APROVACAO.map((p) => (
@@ -291,6 +293,8 @@ export default function PlantaSituacao() {
           embedUrl: 'https://www.youtube.com/embed/HI89SHBiOKE',
           contentUrl: 'https://www.youtube.com/shorts/HI89SHBiOKE',
         }) }} />
+
+        <VersaoCompleta nomeInicial={nome} emailInicial={email} whatsInicial={whats} />
 
         {PRODUTOS_APROVACAO.length > 0 && <div className="produtos-aprovacao" id="modelos">
           <div className="section-heading">
