@@ -68,14 +68,14 @@ export const PLANILHA_PLANTA_URL = 'https://script.google.com/macros/s/AKfycbz_Y
 export const PLANILHA_PLANTA_CHAVE = 'kp-situacao-7x2q';
 
 /** Modelos para aprovação vendidos na Hotmart (aparecem na planta de situação e nos e-mails da sequência). */
-export const PRODUTOS_APROVACAO = [
+export const PRODUTOS_APROVACAO_TODOS = [
   {
     nome: 'Modelo de Memorial Descritivo',
     formato: 'Word editável',
     preco: 'R$ 19,90',
     texto: 'Pronto para a aprovação de residência na prefeitura: identificação, áreas e índices, ambientes e todas as especificações técnicas com as normas ABNT. É só preencher.',
     imagem: 'produtos/memorial-descritivo.png',
-    link: 'https://pay.hotmart.com/S107938754U?off=rob70lle',
+    link: '', // aguardando o produto próprio na Hotmart (o link antigo era uma oferta do produto Kit Projetista)
   },
   {
     nome: 'Planilha Quadro de Áreas e Índices',
@@ -83,6 +83,9 @@ export const PRODUTOS_APROVACAO = [
     preco: 'R$ 19,90',
     texto: 'Calcula sozinha a taxa de ocupação, o coeficiente de aproveitamento e a permeabilidade, e mostra em verde ou vermelho se o projeto passa na lei de zoneamento.',
     imagem: 'produtos/quadro-de-areas.png',
-    link: 'https://pay.hotmart.com/S107938754U?off=l7mhjivq',
+    link: '', // aguardando o produto próprio na Hotmart
   },
 ];
+
+/** Só os que já têm link de compra aparecem no site. */
+export const PRODUTOS_APROVACAO = PRODUTOS_APROVACAO_TODOS.filter((p) => p.link);

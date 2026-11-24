@@ -241,12 +241,12 @@ export default function PlantaSituacao() {
                   <h3>Download feito.</h3>
                   <p>No AutoCAD, o <b>Kit Projetista</b> faz isso com um comando, direto no desenho, e ainda o carimbo de prefeitura, o quadro de áreas, a área dos cômodos e o memorial descritivo.</p>
                   <button className="button button-primary" onClick={() => setTesteAberto(true)}>Testar o Kit 7 dias grátis <ArrowRight size={17} /></button>
-                  <div className="situacao-extras">
+                  {PRODUTOS_APROVACAO.length > 0 && <div className="situacao-extras">
                     <b>Também para a aprovação na prefeitura:</b>
                     {PRODUTOS_APROVACAO.map((p) => (
                       <a key={p.link} href={p.link} target="_blank" rel="noopener">{p.nome} ({p.formato}) · {p.preco} <ArrowRight size={14} /></a>
                     ))}
-                  </div>
+                  </div>}
                   <button className="button button-outline" onClick={baixar}>Baixar de novo <Download size={17} /></button>
                   <p className="situacao-dwg">Abre direto no AutoCAD. Quer em DWG? Abra o arquivo e use <b>Salvar como</b> › Desenho do AutoCAD (*.dwg).</p>
                 </div>
@@ -292,7 +292,7 @@ export default function PlantaSituacao() {
           contentUrl: 'https://www.youtube.com/shorts/HI89SHBiOKE',
         }) }} />
 
-        <div className="produtos-aprovacao" id="modelos">
+        {PRODUTOS_APROVACAO.length > 0 && <div className="produtos-aprovacao" id="modelos">
           <div className="section-heading">
             <div><div className="eyebrow dark"><span className="eyebrow-dot" /> MODELOS PARA APROVAÇÃO</div><h2>O resto da papelada, <span style={{ color: '#1e6887' }}>já pronto.</span></h2></div>
             <p>A planta de situação é só uma parte do processo na prefeitura. Estes modelos poupam horas em cada projeto. Pagamento único, download na hora.</p>
@@ -311,7 +311,7 @@ export default function PlantaSituacao() {
             ))}
           </div>
           <p className="form-note">Venda e entrega pela Hotmart. São modelos de referência: confira as exigências do seu município.</p>
-        </div>
+        </div>}
 
         <div className="situacao-texto">
           <h2>O que é a planta de situação?</h2>
