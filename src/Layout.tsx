@@ -1,4 +1,5 @@
-import { ReactNode, useState } from 'react';
+import { guardarCampanha } from './origem';
+import { ReactNode, useState, useEffect } from 'react';
 import { ArrowRight, ChevronRight, Instagram, Linkedin, Menu, MessageCircle, Search, X, Youtube } from 'lucide-react';
 import { EMAIL_CONTATO, REDES, WHATSAPP, rota } from './config';
 
@@ -26,6 +27,7 @@ export default function Layout({ children, naInicial, en = false }: Props) {
   const t = (pt: string, ingles: string) => (en ? ingles : pt);
   const inicio = rota(en ? 'en/' : '');
   const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => { guardarCampanha(); }, []);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
 

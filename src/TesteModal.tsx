@@ -1,3 +1,5 @@
+import { campanha } from './origem';
+import { PLANILHA_PLANTA_CHAVE, PLANILHA_PLANTA_URL } from './config';
 import { FormEvent, useEffect, useState } from 'react';
 import { ArrowRight, Check, Download, X } from 'lucide-react';
 import { LINK_TESTE_GRATIS, rota } from './config';
@@ -30,9 +32,18 @@ export default function TesteModal({ aberto, fechar, en = false, origem }: Props
     e.preventDefault();
     setEnviando(true);
     setErro(false);
-    const assunto = `Teste grátis — ${nome}${origem ? ` (${origem})` : en ? ' (EN)' : ''}`;
+    const camp = campanha();
+    const pagina = origem || (en ? 'página em inglês' : 'site');
+    const onde = camp ? `${pagina}, via ${camp}` : pagina;
+    if (PLANILHA_PLANTA_URL) {
+      try {
+        void fetch(PLANILHA_PLANTA_URL, { method: 'POST', mode: 'no-cors',
+          body: new URLSearchParams({ chave: PLANILHA_PLANTA_CHAVE, tipo: 'teste', nome, email, whats, pagina, campanha: camp }) });
+      } catch { /* nada */ }
+    }
+    const assunto = `Teste grátis — ${nome}${origem || camp ? ` (${onde})` : en ? ' (EN)' : ''}`;
     const dados = {
-      Origem: origem ? `Teste grátis (7 dias), ${origem}` : en ? 'Teste grátis (7 dias), página em inglês' : 'Teste grátis (7 dias)',
+      Origem: `Teste grátis (7 dias), ${onde}`,
       Nome: nome,
       'E-mail': email,
       WhatsApp: whats || 'Não informado',

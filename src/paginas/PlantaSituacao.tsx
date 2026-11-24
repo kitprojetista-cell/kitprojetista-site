@@ -336,7 +336,7 @@ export default function PlantaSituacao() {
         </div>
       </section>
 
-      <TesteModal aberto={testeAberto} fechar={() => setTesteAberto(false)} />
+      <TesteModal aberto={testeAberto} fechar={() => setTesteAberto(false)} origem='planta de situação' />
     </Layout>
   );
 }

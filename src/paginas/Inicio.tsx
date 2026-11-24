@@ -226,7 +226,7 @@ export default function Inicio() {
         </div>
       </section>
 
-      <TesteModal aberto={testeAberto} fechar={() => setTesteAberto(false)} />
+      <TesteModal aberto={testeAberto} fechar={() => setTesteAberto(false)} origem='página inicial' />
     </Layout>
   );
 }

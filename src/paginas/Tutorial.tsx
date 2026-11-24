@@ -129,7 +129,7 @@ export function Tutorial({ t }: { t: TipoTutorial }) {
       </section>
 
       <JsonLdPerguntas t={t} />
-      <TesteModal aberto={testeAberto} fechar={() => setTesteAberto(false)} en={es} origem={es ? 'página em espanhol' : undefined} />
+      <TesteModal aberto={testeAberto} fechar={() => setTesteAberto(false)} en={es} origem={es ? 'página em espanhol' : 'tutorial: ' + t.slug} />
     </Layout>
   );
 }

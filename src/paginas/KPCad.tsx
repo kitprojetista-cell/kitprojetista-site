@@ -103,7 +103,7 @@ export default function KPCad() {
         ))}
         <p className="kpcad-calc"><FileText size={16} /> Também quer calcular material? O KPCad fica dentro da <a href={rota('calculadora/')}>Calculadora do Projetista</a>, com as calculadoras de obra grátis.</p>
       </section>
-      <TesteModal aberto={testeAberto} fechar={() => setTesteAberto(false)} />
+      <TesteModal aberto={testeAberto} fechar={() => setTesteAberto(false)} origem='KPCad' />
     </Layout>
   );
 }

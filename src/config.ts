@@ -75,7 +75,7 @@ export const PRODUTOS_APROVACAO_TODOS = [
     preco: 'R$ 19,90',
     texto: 'Pronto para a aprovação de residência na prefeitura: identificação, áreas e índices, ambientes e todas as especificações técnicas com as normas ABNT. É só preencher.',
     imagem: 'produtos/memorial-descritivo.png',
-    link: 'https://pay.hotmart.com/E108642982M?off=jrmnlpsg',
+    link: 'https://pay.hotmart.com/E108642982M?off=jrmnlpsg&src=planta-situacao',
   },
   {
     nome: 'Planilha Quadro de Áreas e Índices',
@@ -83,7 +83,7 @@ export const PRODUTOS_APROVACAO_TODOS = [
     preco: 'R$ 19,90',
     texto: 'Calcula sozinha a taxa de ocupação, o coeficiente de aproveitamento e a permeabilidade, e mostra em verde ou vermelho se o projeto passa na lei de zoneamento.',
     imagem: 'produtos/quadro-de-areas.png',
-    link: 'https://pay.hotmart.com/I108642995H?off=g4j236qw',
+    link: 'https://pay.hotmart.com/I108642995H?off=g4j236qw&src=planta-situacao',
   },
 ];
 
