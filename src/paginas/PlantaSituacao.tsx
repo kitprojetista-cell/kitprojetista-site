@@ -2,7 +2,7 @@ import { FormEvent, MouseEvent, useMemo, useRef, useState } from 'react';
 import { ArrowRight, Check, Download, FileText, Layers, MapPin, Search, ShieldCheck } from 'lucide-react';
 import Layout from '../Layout';
 import TesteModal from '../TesteModal';
-import { rota } from '../config';
+import { rota, PLANILHA_PLANTA_URL, PLANILHA_PLANTA_CHAVE } from '../config';
 import { enviarFormulario, guardarPendente } from '../formulario';
 import { Desenho, anguloLegivel, gerarDxf, legenda, localizar, montar, recentrar, remontar } from '../situacao/situacao';
 
@@ -137,6 +137,12 @@ export default function PlantaSituacao() {
       'Local pesquisado': busca,
       'Endereço encontrado': desenho.local.descricao,
     };
+    // Também para a planilha da sequência de e-mails (sem esperar resposta; se falhar, o e-mail acima ainda chega)
+    if (PLANILHA_PLANTA_URL) {
+      try {
+        void fetch(PLANILHA_PLANTA_URL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({ chave: PLANILHA_PLANTA_CHAVE, nome, email, whats }) });
+      } catch { /* nada */ }
+    }
     try { await enviarFormulario(assunto, dados); }
     catch { guardarPendente(assunto, dados); }
     finally {

@@ -59,3 +59,10 @@ export const EQUIPE = {
  * Vazio = nenhum script de estatística é carregado.
  */
 export const CLOUDFLARE_ANALYTICS_TOKEN = '82866e57033d4cde914938682e6f98dc';
+
+/**
+ * Planilha de prospecção (Apps Script publicado como "App da Web"): recebe o cadastro de quem baixa a planta de
+ * situação, para a sequência de e-mails. Vazio = desligado (o cadastro continua indo só por e-mail).
+ */
+export const PLANILHA_PLANTA_URL = '';
+export const PLANILHA_PLANTA_CHAVE = 'kp-situacao-7x2q';
